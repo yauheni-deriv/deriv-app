@@ -243,7 +243,7 @@
     "-1269362917": "Adicionar novo",
     "-146021156": "Deletar {{payment_method_name}}?",
     "-1846700504": "Tem certeza de que deseja remover este método de pagamento?",
-    "-231863107": "No",
+    "-231863107": "Não",
     "-532709160": "Seu apelido",
     "-2008992756": "Quer cancelar este pedido?",
     "-1666369246": "Se você cancelar seu pedido {{cancellation_limit}} vezes em {{cancellation_period}} horas, você será bloqueado de usar o Deriv P2P durante {{block_duration}} horas.<br /> ({{number_of_cancels_remaining}} cancelamentos restantes.)",
@@ -274,6 +274,6 @@
     "-750202930": "Pedidos ativos",
     "-471540636": "Eu recebi {{amount}} {{currency}}.",
     "-2054589794": "Você foi temporariamente impedido de usar nossos serviços devido às várias tentativas de cancelamento. Tente novamente após {{date_time}} GMT.",
-    "-1079963355": "trades",
+    "-1079963355": "negócios",
     "-930400128": "Para usar o Deriv P2P, você precisa escolher um nome de exibição (um apelido) e verificar sua identidade."
 }
