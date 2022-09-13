@@ -16,6 +16,7 @@ import {
     unique,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { income_status_codes } from '@deriv/account';
 import { BinaryLink } from 'App/Components/Routes';
 import { action, computed, observable, reaction } from 'mobx';
 import React from 'react';
@@ -289,11 +290,13 @@ export default class NotificationStore extends BaseStore {
 
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
-                    (needs_verification.includes('document') || document?.status !== 'verified');
-                const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                    (needs_verification.includes('document') || document?.status !== income_status_codes.verified);
+                const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== income_status_codes.verified;
                 const needs_poinc =
-                    needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
-                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
+                    needs_verification.includes('income') &&
+                    [income_status_codes.rejected, income_status_codes.none].includes(income?.status);
+                const poinc_upload_limited =
+                    needs_verification.includes('income') && income?.status === income_status_codes.locked;
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
                 this.addVerificationNotifications(identity, document);

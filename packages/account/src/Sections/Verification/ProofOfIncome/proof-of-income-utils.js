@@ -1,13 +1,5 @@
 import { localize } from '@deriv/translations';
 
-export const income_status_codes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    locked: 'locked',
-};
-
 export const poinc_documents_list = [
     { text: localize('Tax return'), value: 'tax_return' },
     { text: localize('Employment contract'), value: 'employment_contract' },

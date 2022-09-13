@@ -68,6 +68,7 @@ module.exports = function (env) {
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'text-container': 'Components/text-container',
+            'status-codes': 'Constants/status-codes',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
