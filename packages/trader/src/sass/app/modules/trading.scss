@@ -596,10 +596,6 @@
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
-
-        &--accumulator {
-            display: block;
-        }
     }
 
     .contract-limit-overlay {
