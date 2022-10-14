@@ -595,7 +595,11 @@
     @include mobile {
         display: grid;
         grid-template-areas: 'a b';
-        grid-column-gap: 0.8rem;
+        grid-column-gap: 0.5rem;
+
+        &--accumulator {
+            grid-column-gap: 0.8rem;
+        }
     }
 
     .contract-limit-overlay {
