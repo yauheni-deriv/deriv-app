@@ -349,6 +349,12 @@
                     border-top-right-radius: 0.4rem;
                 }
             }
+            &__top--accumulator {
+                @include mobile {
+                    justify-content: center;
+                    gap: 0.3rem;
+                }
+            }
         }
     }
 }

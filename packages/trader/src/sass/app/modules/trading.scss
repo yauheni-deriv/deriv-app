@@ -147,6 +147,10 @@
         &:focus {
             border-color: var(--border-active);
         }
+
+        &--accumulator {
+            padding: 0 !important;
+        }
     }
     &__error {
         justify-content: center;
