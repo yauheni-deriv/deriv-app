@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
@@ -12,6 +13,7 @@ const TakeProfit = ({
     currency,
     current_focus,
     has_take_profit,
+    is_accumulator,
     is_single_currency,
     onChange,
     onChangeMultiple,
@@ -37,7 +39,9 @@ const TakeProfit = ({
                 addToast={addToast}
                 removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
-                classNameInput='trade-container__input'
+                classNameInput={classNames('trade-container__input', {
+                    'trade-container__input--accumulator': is_accumulator,
+                })}
                 className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}
                 currency={currency}
                 current_focus={current_focus}
@@ -67,6 +71,7 @@ TakeProfit.propTypes = {
     current_focus: PropTypes.string,
     has_info: PropTypes.bool,
     has_take_profit: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeMultiple: PropTypes.func,
@@ -81,6 +86,7 @@ export default connect(({ modules, client, ui }, props) => ({
     currency: modules.trade.currency,
     current_focus: ui.current_focus,
     has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,
+    is_accumulator: modules.trade.is_accumulator,
     is_single_currency: client.is_single_currency,
     onChange: props.onChange ?? modules.trade.onChange,
     onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
