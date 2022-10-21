@@ -223,7 +223,7 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
-    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_marker_with_barriers.type];
+    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_barriers_marker.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
@@ -288,11 +288,11 @@ const Chart = props => {
             ))}
             {props.is_accumulator_contract && (
                 <AccumulatorsMarkerWithBarriers
-                    key={props.accumulators_marker_with_barriers.key}
+                    key={props.accumulators_barriers_marker.key}
                     is_dark_theme={props.is_dark_theme}
                     granularity={props.granularity}
                     is_in_contract_details
-                    {...props.accumulators_marker_with_barriers}
+                    {...props.accumulators_barriers_marker}
                 />
             )}
         </SmartChart>
@@ -300,7 +300,7 @@ const Chart = props => {
 };
 
 Chart.propTypes = {
-    accumulators_marker_with_barriers: PropTypes.object,
+    accumulators_barriers_marker: PropTypes.object,
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
     chartStateChange: PropTypes.func,
@@ -355,7 +355,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     };
 
     return {
-        accumulators_marker_with_barriers: contract_store.accumulators_marker_with_barriers,
+        accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
