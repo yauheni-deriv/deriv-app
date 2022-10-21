@@ -23,7 +23,7 @@ const AccumulatorsAmountMobile = ({
             <MobileWrapper>
                 <LabeledQuantityInputMobile
                     input_label={localize('Stake')}
-                    className='trade-container__amount'
+                    className={classNames('trade-container__amount', 'trade-container__amount--accumulator')}
                     classNameInlinePrefix='trade-container__currency'
                     classNameInput={classNames('trade-container__input', 'trade-container__input--accumulator')}
                     currency={currency}

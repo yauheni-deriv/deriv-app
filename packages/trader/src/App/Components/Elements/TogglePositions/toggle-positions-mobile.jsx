@@ -17,6 +17,7 @@ const TogglePositionsMobile = ({
     disableApp,
     enableApp,
     error,
+    is_accumulator,
     is_empty,
     is_positions_drawer_on,
     onClickSell,
@@ -116,7 +117,13 @@ const TogglePositionsMobile = ({
                             className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                             to={routes.positions}
                         >
-                            <span className='dc-btn__text'>{localize('Go to Reports')}</span>
+                            {is_accumulator ? (
+                                <Text size='xs' weight='bold'>
+                                    {localize('Go to Reports')}
+                                </Text>
+                            ) : (
+                                <span className='dc-btn__text'>{localize('Go to Reports')}</span>
+                            )}
                         </NavLink>
                     </div>
                 </Div100vhContainer>
@@ -131,5 +138,6 @@ export default connect(({ modules, ui, portfolio }) => ({
     trade_contract_type: modules.trade.contract_type,
     onClickRemove: portfolio.removePositionById,
     togglePositionsDrawer: ui.togglePositionsDrawer,
+    is_accumulator: modules.trade.is_accumulator,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

@@ -345,19 +345,16 @@
             &.btn-purchase--1 {
                 .btn-purchase__type-wrapper {
                     transform: translate3d(60px, 0, 0);
-
-                    .btn-purchase__text_wrapper {
-                        white-space: unset;
-                    }
                 }
             }
             &.btn-purchase--2 {
                 .btn-purchase__type-wrapper {
                     transform: translate3d(50px, 0, 0);
-
-                    .btn-purchase__text_wrapper {
-                        white-space: unset;
-                    }
+                }
+            }
+            &.btn-purchase {
+                .btn-purchase__text_wrapper {
+                    white-space: unset;
                 }
             }
         }
