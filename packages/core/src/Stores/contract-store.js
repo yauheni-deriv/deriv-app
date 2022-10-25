@@ -50,9 +50,6 @@ export default class ContractStore extends BaseStore {
     @observable is_static_chart = false;
     @observable end_time = null;
 
-    // Accumulator contract
-    @observable.ref accumulators_marker_with_barriers = null;
-
     // Multiplier contract update config
     @observable contract_update_take_profit = '';
     @observable contract_update_stop_loss = '';
@@ -80,10 +77,6 @@ export default class ContractStore extends BaseStore {
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
         this.marker = calculate_marker(this.contract_info);
-        if (isAccumulatorContract(this.contract_info.contract_type)) {
-            // create markers for accumulators barriers on contract details page:
-            this.accumulators_marker_with_barriers = calculate_marker(this.contract_info, true);
-        }
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
