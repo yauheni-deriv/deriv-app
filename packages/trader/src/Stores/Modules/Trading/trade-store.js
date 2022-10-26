@@ -972,9 +972,9 @@ export default class TradeStore extends BaseStore {
         if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
             const {
                 maximum_ticks,
-                ticks_stayed_in: stay_in_history,
+                ticks_stayed_in,
                 tick_size_barrier,
-                last_tick_epoch: last_tick_epoch_accu,
+                last_tick_epoch,
                 maximum_payout,
                 high_barrier,
                 low_barrier,
@@ -983,8 +983,8 @@ export default class TradeStore extends BaseStore {
             this.root_store.contract_trade.current_spot_time = spot_time;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
-                new_ticks_history_stats: stay_in_history,
-                last_tick_epoch: last_tick_epoch_accu,
+                new_ticks_history_stats: ticks_stayed_in,
+                last_tick_epoch,
             });
             this.tick_size_barrier = tick_size_barrier;
             this.maximum_ticks = maximum_ticks;
