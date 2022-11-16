@@ -43,6 +43,12 @@
 
             &--trader {
                 grid-template-columns: 1.5fr 1fr;
+                &--accumulator {
+                    grid-template-columns: 1.2fr 1fr;
+                    &-sold {
+                        padding-top: 1rem;
+                    }
+                }
             }
             &--mobile {
                 grid-template-columns: 1fr 1fr 25%;
