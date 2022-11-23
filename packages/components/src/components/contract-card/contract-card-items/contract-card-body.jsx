@@ -175,15 +175,14 @@ const AccumulatorCardBody = ({
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().INDICATIVE_PRICE}>
-                    <Money currency={currency} amount={sell_price || indicative} />
+                <ContractCardItem header={getCardLabels().CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
+                        className={classNames({
+                            'dc-contract-card--profit': +profit > 0,
+                            'dc-contract-card--loss': +profit < 0,
                         })}
                     >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
+                        <Money amount={sell_price || indicative} currency={currency} />
                     </div>
                 </ContractCardItem>
                 <ContractCardItem
