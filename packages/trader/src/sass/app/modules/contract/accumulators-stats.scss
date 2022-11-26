@@ -72,7 +72,7 @@
     &__spot-emphasizing {
         position: relative;
 
-        &::before {
+        &:before {
             content: '';
             position: absolute;
             width: 3.2rem;
