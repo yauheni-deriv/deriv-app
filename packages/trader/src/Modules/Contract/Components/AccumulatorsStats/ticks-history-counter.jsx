@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const TicksHistoryCounter = ({ has_progress_dots, value }) => {
-    const [is_spot_emphasizing, setIsSpotEmphasizing] = React.useState(has_progress_dots && value);
+    const [is_spot_emphasizing, setIsSpotEmphasizing] = React.useState(has_progress_dots && value === 0);
 
     React.useLayoutEffect(() => {
         let emphasizing_timeout;
-        if (has_progress_dots && value) {
+        if (has_progress_dots && value === 0) {
             setIsSpotEmphasizing(true);
             emphasizing_timeout = setTimeout(() => {
                 setIsSpotEmphasizing(false);
