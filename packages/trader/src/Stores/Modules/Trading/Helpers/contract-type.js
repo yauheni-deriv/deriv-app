@@ -545,7 +545,7 @@ export const ContractType = (() => {
 
         return {
             accumulator_range_list: arr_growth_rates,
-            growth_rate: stored_growth_rate || growth_rate,
+            growth_rate: stored_growth_rate || growth_rate || 0.03,
         };
     };
 
