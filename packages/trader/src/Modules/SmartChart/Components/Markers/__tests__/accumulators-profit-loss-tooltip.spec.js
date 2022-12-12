@@ -1,6 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import AccumulatorsProfitLossTooltip from '../accumulators-profit-loss-tooltip.jsx';
 
 jest.mock('Modules/SmartChart', () => ({
@@ -26,7 +25,7 @@ describe('AccumulatorsProfitLossTooltip', () => {
         expect(screen.getByText('AccumulatorsProfitLossText')).toBeInTheDocument();
     });
 
-    it('should render the right-side tooltip with an arrow on the left', () => {
+    it('should render AccumulatorsProfitLossTooltip when contract is sold', () => {
         jest.useFakeTimers();
         props.is_sold = 1;
 
