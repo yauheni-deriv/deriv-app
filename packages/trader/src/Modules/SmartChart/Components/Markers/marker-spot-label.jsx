@@ -9,6 +9,7 @@ import MarkerSpot from './marker-spot.jsx';
 
 const MarkerSpotLabel = ({
     align_label,
+    is_value_hidden,
     has_hover_toggle,
     spot_className,
     spot_count,
@@ -34,7 +35,7 @@ const MarkerSpotLabel = ({
 
     return (
         <div className={'chart-spot-label'}>
-            {show_label && (
+            {show_label && !is_value_hidden && (
                 <div className='chart-spot-label__info-container'>
                     <div
                         className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
@@ -70,10 +71,12 @@ const MarkerSpotLabel = ({
 
 MarkerSpotLabel.defaultProps = {
     align_label: 'top',
+    is_value_hidden: false,
 };
 
 MarkerSpotLabel.propTypes = {
     align_label: PropTypes.oneOf(['top', 'bottom']),
+    is_value_hidden: PropTypes.bool,
     has_hover_toggle: PropTypes.bool,
     spot_className: PropTypes.string,
     spot_count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
