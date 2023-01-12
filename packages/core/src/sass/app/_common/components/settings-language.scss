@@ -1,0 +1,61 @@
+/** @define settings-language */
+.settings-language {
+    @include mobile {
+        display: flex;
+    }
+
+    &__language-container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(90px, 1fr));
+        grid-template-rows: repeat(5, auto);
+        grid-gap: 1.6rem;
+        @include mobile {
+            grid-template-columns: repeat(2, minmax(100%, 1fr));
+            grid-gap: 0.3rem;
+            grid-template-rows: auto;
+        }
+    }
+    &__language {
+        &-link {
+            color: var(--text-prominent);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: $BORDER_RADIUS;
+            padding: 16px;
+            text-decoration: none;
+            background-color: var(--state-normal);
+            cursor: pointer;
+
+            &--active {
+                border: 1px solid var(--border-active);
+                color: var(--text-prominent);
+            }
+        }
+        &-flag {
+            width: 5rem;
+            height: 4rem;
+
+            @include mobile {
+                margin-top: 1rem;
+                width: 5rem;
+                height: 4rem;
+            }
+        }
+        &-name {
+            @include typeface(--paragraph-left-normal-black);
+            color: var(--text-prominent);
+            margin-top: 0.8rem;
+
+            &--active {
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+
+            @include mobile {
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
