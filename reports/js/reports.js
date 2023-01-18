@@ -15,7 +15,7 @@
 		exports["@deriv/reports"] = factory(require("@deriv/components"), require("@deriv/shared"), require("@deriv/translations"), require("mobx"), require("mobx-react"), require("react"), require("react-router"), require("react-router-dom"));
 	else
 		root["@deriv/reports"] = factory(root["@deriv/components"], root["@deriv/shared"], root["@deriv/translations"], root["mobx"], root["mobx-react"], root["react"], root["react-router"], root["react-router-dom"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_router__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) => {
+})(self, function(__WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_router__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -215,7 +215,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "reports/js/reports." + chunkId + "." + {"404":"ea557ce8903a19fd68e3","vendors-node_modules_lodash_debounce_index_js-node_modules_prop-types_index_js":"37e0edd4d1df12f2ca93","reports-app":"8dd5e3dc03256e9cdec7","vendors-node_modules_classnames_index_js-node_modules_react-content-loader_dist_react-content-d9aa86":"951f587ae244d81d4bb0","reports-routes":"529751420bc243f2cbf3","vendors-node_modules_moment_moment_js":"cb309ae590cfa38e865c","two-month-picker":"0dd60626f07d384ad610"}[chunkId] + ".js";
+/******/ 			return "reports/js/reports." + chunkId + "." + {"404":"76ff41ee1e4609d810c5","vendors-node_modules_lodash_debounce_index_js-node_modules_prop-types_index_js":"37e0edd4d1df12f2ca93","reports-app":"4d623650246ac786321a","vendors-node_modules_classnames_index_js-node_modules_react-content-loader_dist_react-content-d9aa86":"f728dd91534a1d1d3f5d","reports-routes":"f27e2566fc838f152fac","vendors-node_modules_moment_moment_js":"cb309ae590cfa38e865c","two-month-picker":"52221aac8852dd725a7d"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -282,7 +282,8 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
-/******/ 			};
+/******/ 			}
+/******/ 			;
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);

@@ -15,7 +15,7 @@
 		exports["@deriv/cfd"] = factory(require("@deriv/account/dist/account/css/proof-of-identity-container-for-mt5.css"), require("@deriv/account/dist/account/css/reset-trading-password-modal.css"), require("@deriv/account/dist/account/js/file-uploader-container"), require("@deriv/account/dist/account/js/form-sub-header"), require("@deriv/account/dist/account/js/poa-status-codes"), require("@deriv/account/dist/account/js/poi-poa-docs-submitted"), require("@deriv/account/dist/account/js/proof-of-identity-container-for-mt5"), require("@deriv/account/dist/account/js/reset-trading-password-modal"), require("@deriv/account/dist/account/js/sent-email-modal"), require("@deriv/components"), require("@deriv/shared"), require("@deriv/translations"), require("mobx"), require("mobx-react"), require("react"), require("react-dom"), require("react-router"), require("react-router-dom"));
 	else
 		root["@deriv/cfd"] = factory(root["@deriv/account/dist/account/css/proof-of-identity-container-for-mt5.css"], root["@deriv/account/dist/account/css/reset-trading-password-modal.css"], root["@deriv/account/dist/account/js/file-uploader-container"], root["@deriv/account/dist/account/js/form-sub-header"], root["@deriv/account/dist/account/js/poa-status-codes"], root["@deriv/account/dist/account/js/poi-poa-docs-submitted"], root["@deriv/account/dist/account/js/proof-of-identity-container-for-mt5"], root["@deriv/account/dist/account/js/reset-trading-password-modal"], root["@deriv/account/dist/account/js/sent-email-modal"], root["@deriv/components"], root["@deriv/shared"], root["@deriv/translations"], root["mobx"], root["mobx-react"], root["react"], root["react-dom"], root["react-router"], root["react-router-dom"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_css_proof_of_identity_container_for_mt5_css__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_css_reset_trading_password_modal_css__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_file_uploader_container__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_form_sub_header__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_poa_status_codes__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_poi_poa_docs_submitted__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_proof_of_identity_container_for_mt5__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_reset_trading_password_modal__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_sent_email_modal__, __WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__, __WEBPACK_EXTERNAL_MODULE_react_router__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) => {
+})(self, function(__WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_css_proof_of_identity_container_for_mt5_css__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_css_reset_trading_password_modal_css__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_file_uploader_container__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_form_sub_header__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_poa_status_codes__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_poi_poa_docs_submitted__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_proof_of_identity_container_for_mt5__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_reset_trading_password_modal__, __WEBPACK_EXTERNAL_MODULE__deriv_account_dist_account_js_sent_email_modal__, __WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__, __WEBPACK_EXTERNAL_MODULE_react_router__, __WEBPACK_EXTERNAL_MODULE_react_router_dom__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -282,7 +282,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "cfd/js/cfd." + chunkId + "." + {"404":"49e9299f9820e9435cb4","vendors-node_modules_classnames_index_js-node_modules_formik_dist_formik_esm_js-node_modules_-7edb63":"8b8c20d963ca36800d12","cfd-app":"e96357bb2a00ccc3caac"}[chunkId] + ".js";
+/******/ 			return "cfd/js/cfd." + chunkId + "." + {"404":"e4b9a29009f728cfaaee","vendors-node_modules_classnames_index_js-node_modules_formik_dist_formik_esm_js-node_modules_-7edb63":"205a204d419e2c336729","cfd-app":"b8855c567d0405f85d5a"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -337,7 +337,8 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
-/******/ 			};
+/******/ 			}
+/******/ 			;
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);

@@ -15,7 +15,7 @@
 		exports["@deriv/bot-web-ui"] = factory(require("@deriv/components"), require("@deriv/deriv-charts"), require("@deriv/shared"), require("@deriv/translations"), require("classnames"), require("formik"), require("mobx"), require("mobx-react"), require("react"), require("react-dom"));
 	else
 		root["@deriv/bot-web-ui"] = factory(root["@deriv/components"], root["@deriv/deriv-charts"], root["@deriv/shared"], root["@deriv/translations"], root["classnames"], root["formik"], root["mobx"], root["mobx-react"], root["react"], root["react-dom"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_deriv_charts__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_classnames__, __WEBPACK_EXTERNAL_MODULE_formik__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__) => {
+})(self, function(__WEBPACK_EXTERNAL_MODULE__deriv_components__, __WEBPACK_EXTERNAL_MODULE__deriv_deriv_charts__, __WEBPACK_EXTERNAL_MODULE__deriv_shared__, __WEBPACK_EXTERNAL_MODULE__deriv_translations__, __WEBPACK_EXTERNAL_MODULE_classnames__, __WEBPACK_EXTERNAL_MODULE_formik__, __WEBPACK_EXTERNAL_MODULE_mobx__, __WEBPACK_EXTERNAL_MODULE_mobx_react__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -232,7 +232,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "bot/js/bot." + chunkId + "." + {"vendors-node_modules_deriv_deriv-api_dist_DerivAPIBasic_js-node_modules_deriv_js-interpreter_-7c5351":"ef74b56d08bf1581e81e","bot-web-ui-app":"a97363cf25b733e72530","dalembert-xml":"ffd5ebe7f62d0ca4fb0a","martingale-xml":"9c5372ab9faaca4ce96a","oscars_grind-xml":"23b9b94bb7a3945734c8","dbot-collection":"a93810fed0b113f239de"}[chunkId] + ".js";
+/******/ 			return "bot/js/bot." + chunkId + "." + {"vendors-node_modules_deriv_deriv-api_dist_DerivAPIBasic_js-node_modules_deriv_js-interpreter_-7c5351":"15adffc9348a5ea3e301","bot-web-ui-app":"754a8fd9e0c7e504b787","dalembert-xml":"ffd5ebe7f62d0ca4fb0a","martingale-xml":"9c5372ab9faaca4ce96a","oscars_grind-xml":"23b9b94bb7a3945734c8","dbot-collection":"a93810fed0b113f239de"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -299,7 +299,8 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
-/******/ 			};
+/******/ 			}
+/******/ 			;
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);

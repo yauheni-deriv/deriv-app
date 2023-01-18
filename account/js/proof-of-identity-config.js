@@ -15,25 +15,19 @@
 		exports["@deriv/account"] = factory(require("@deriv/translations"));
 	else
 		root["@deriv/account"] = factory(root["@deriv/translations"]);
-})(self, (__WEBPACK_EXTERNAL_MODULE__deriv_translations__) => {
+})(self, function(__WEBPACK_EXTERNAL_MODULE__deriv_translations__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./Configs/proof-of-identity-config.js":
-/*!*********************************************!*\
-  !*** ./Configs/proof-of-identity-config.js ***!
-  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _deriv_translations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @deriv/translations */ \"@deriv/translations\");\n/* harmony import */ var _deriv_translations__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_deriv_translations__WEBPACK_IMPORTED_MODULE_0__);\n\nvar proofOfIdentityConfig = function proofOfIdentityConfig(_ref, ProofOfIdentityForm) {\n  var account_settings = _ref.account_settings;\n  return {\n    header: {\n      active_title: (0,_deriv_translations__WEBPACK_IMPORTED_MODULE_0__.localize)('Identity information'),\n      title: (0,_deriv_translations__WEBPACK_IMPORTED_MODULE_0__.localize)('Identity information')\n    },\n    body: ProofOfIdentityForm,\n    props: {\n      citizen: account_settings.citizen || account_settings.country_code\n    },\n    passthrough: ['refreshNotifications', 'residence_list']\n  };\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (proofOfIdentityConfig);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9Db25maWdzL3Byb29mLW9mLWlkZW50aXR5LWNvbmZpZy5qcy5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQTtBQUVBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFFQSIsInNvdXJjZXMiOlsid2VicGFjazovL0BkZXJpdi9hY2NvdW50Ly4vQ29uZmlncy9wcm9vZi1vZi1pZGVudGl0eS1jb25maWcuanM/OTA1YyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBsb2NhbGl6ZSB9IGZyb20gJ0BkZXJpdi90cmFuc2xhdGlvbnMnO1xuXG5jb25zdCBwcm9vZk9mSWRlbnRpdHlDb25maWcgPSAoeyBhY2NvdW50X3NldHRpbmdzIH0sIFByb29mT2ZJZGVudGl0eUZvcm0pID0+IHtcbiAgICByZXR1cm4ge1xuICAgICAgICBoZWFkZXI6IHtcbiAgICAgICAgICAgIGFjdGl2ZV90aXRsZTogbG9jYWxpemUoJ0lkZW50aXR5IGluZm9ybWF0aW9uJyksXG4gICAgICAgICAgICB0aXRsZTogbG9jYWxpemUoJ0lkZW50aXR5IGluZm9ybWF0aW9uJyksXG4gICAgICAgIH0sXG4gICAgICAgIGJvZHk6IFByb29mT2ZJZGVudGl0eUZvcm0sXG4gICAgICAgIHByb3BzOiB7IGNpdGl6ZW46IGFjY291bnRfc2V0dGluZ3MuY2l0aXplbiB8fCBhY2NvdW50X3NldHRpbmdzLmNvdW50cnlfY29kZSB9LFxuICAgICAgICBwYXNzdGhyb3VnaDogWydyZWZyZXNoTm90aWZpY2F0aW9ucycsICdyZXNpZGVuY2VfbGlzdCddLFxuICAgIH07XG59O1xuXG5leHBvcnQgZGVmYXVsdCBwcm9vZk9mSWRlbnRpdHlDb25maWc7XG4iXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./Configs/proof-of-identity-config.js\n");
+eval("/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _deriv_translations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(\"@deriv/translations\");\n/* harmony import */ var _deriv_translations__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_deriv_translations__WEBPACK_IMPORTED_MODULE_0__);\n\n\nvar proofOfIdentityConfig = function proofOfIdentityConfig(_ref, ProofOfIdentityForm) {\n  var account_settings = _ref.account_settings;\n  return {\n    header: {\n      active_title: (0,_deriv_translations__WEBPACK_IMPORTED_MODULE_0__.localize)('Identity information'),\n      title: (0,_deriv_translations__WEBPACK_IMPORTED_MODULE_0__.localize)('Identity information')\n    },\n    body: ProofOfIdentityForm,\n    props: {\n      citizen: account_settings.citizen || account_settings.country_code\n    },\n    passthrough: ['refreshNotifications', 'residence_list']\n  };\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (proofOfIdentityConfig);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9Db25maWdzL3Byb29mLW9mLWlkZW50aXR5LWNvbmZpZy5qcy5qcyIsIm1hcHBpbmdzIjoiOzs7OztBQUFBOztBQUVBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUZBO0FBSUE7QUFDQTtBQUFBO0FBQUE7QUFDQTtBQVBBO0FBU0E7O0FBRUEiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9AZGVyaXYvYWNjb3VudC8uL0NvbmZpZ3MvcHJvb2Ytb2YtaWRlbnRpdHktY29uZmlnLmpzPzkwNWMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgbG9jYWxpemUgfSBmcm9tICdAZGVyaXYvdHJhbnNsYXRpb25zJztcblxuY29uc3QgcHJvb2ZPZklkZW50aXR5Q29uZmlnID0gKHsgYWNjb3VudF9zZXR0aW5ncyB9LCBQcm9vZk9mSWRlbnRpdHlGb3JtKSA9PiB7XG4gICAgcmV0dXJuIHtcbiAgICAgICAgaGVhZGVyOiB7XG4gICAgICAgICAgICBhY3RpdmVfdGl0bGU6IGxvY2FsaXplKCdJZGVudGl0eSBpbmZvcm1hdGlvbicpLFxuICAgICAgICAgICAgdGl0bGU6IGxvY2FsaXplKCdJZGVudGl0eSBpbmZvcm1hdGlvbicpLFxuICAgICAgICB9LFxuICAgICAgICBib2R5OiBQcm9vZk9mSWRlbnRpdHlGb3JtLFxuICAgICAgICBwcm9wczogeyBjaXRpemVuOiBhY2NvdW50X3NldHRpbmdzLmNpdGl6ZW4gfHwgYWNjb3VudF9zZXR0aW5ncy5jb3VudHJ5X2NvZGUgfSxcbiAgICAgICAgcGFzc3Rocm91Z2g6IFsncmVmcmVzaE5vdGlmaWNhdGlvbnMnLCAncmVzaWRlbmNlX2xpc3QnXSxcbiAgICB9O1xufTtcblxuZXhwb3J0IGRlZmF1bHQgcHJvb2ZPZklkZW50aXR5Q29uZmlnO1xuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./Configs/proof-of-identity-config.js\n");
 
 /***/ }),
 
 /***/ "@deriv/translations":
-/*!**************************************!*\
-  !*** external "@deriv/translations" ***!
-  \**************************************/
 /***/ ((module) => {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__deriv_translations__;
@@ -94,17 +88,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__deriv_translations__;
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /************************************************************************/
