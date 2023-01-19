@@ -215,7 +215,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_router_dom__;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "reports/js/reports." + chunkId + "." + {"404":"76ff41ee1e4609d810c5","vendors-node_modules_lodash_debounce_index_js-node_modules_prop-types_index_js":"37e0edd4d1df12f2ca93","reports-app":"4d623650246ac786321a","vendors-node_modules_classnames_index_js-node_modules_react-content-loader_dist_react-content-d9aa86":"f728dd91534a1d1d3f5d","reports-routes":"f27e2566fc838f152fac","vendors-node_modules_moment_moment_js":"cb309ae590cfa38e865c","two-month-picker":"52221aac8852dd725a7d"}[chunkId] + ".js";
+/******/ 			return "reports/js/reports." + chunkId + "." + {"404":"76ff41ee1e4609d810c5","vendors-node_modules_lodash_debounce_index_js-node_modules_prop-types_index_js":"37e0edd4d1df12f2ca93","reports-app":"4d623650246ac786321a","vendors-node_modules_classnames_index_js-node_modules_react-content-loader_dist_react-content-d9aa86":"f728dd91534a1d1d3f5d","reports-routes":"5951cd4c34d8a8e7f64a","vendors-node_modules_moment_moment_js":"cb309ae590cfa38e865c","two-month-picker":"52221aac8852dd725a7d"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
