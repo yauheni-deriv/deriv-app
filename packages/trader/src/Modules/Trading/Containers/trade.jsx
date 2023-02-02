@@ -225,12 +225,11 @@ const Trade = ({
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
-                        !is_virtual
-                            ? is_trade_enabled &&
-                              form_components.length > 0 &&
-                              network_status.class === 'online' &&
-                              !form_components.includes('accumulator')
-                            : is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                        is_trade_enabled &&
+                        form_components.length > 0 &&
+                        network_status.class === 'online' &&
+                        // TODO: delete the below line for releasing ACCU trade for real
+                        (is_virtual || !form_components.includes('accumulator'))
                     }
                 />
             </div>
