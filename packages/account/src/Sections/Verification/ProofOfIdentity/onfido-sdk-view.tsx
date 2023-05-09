@@ -235,7 +235,11 @@ const OnfidoSdkView = ({
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-            <div className='onfido-container'>
+            <div
+                className={classNames('onfido-container', {
+                    'onfido-container--enabled': !is_onfido_disabled,
+                })}
+            >
                 {component_to_load || (
                     <CSSTransition
                         appear={!are_details_saved}
@@ -257,33 +261,37 @@ const OnfidoSdkView = ({
                         </div>
                     </CSSTransition>
                 )}
-                <div className={classNames({ 'onfido-container__status-message_container': are_details_saved })}>
-                    <CSSTransition
-                        appear={is_status_message_visible}
-                        in={is_status_message_visible}
-                        timeout={{
-                            exit: 350,
-                        }}
-                        classNames={{
-                            exit: 'onfido-container__status-message--exit',
-                        }}
-                        unmountOnExit
-                    >
-                        <HintBox
-                            className='onfido-container__status-message'
-                            icon='IcAlertAnnounce'
-                            icon_height={16}
-                            icon_width={16}
-                            message={
-                                <Text as='p' size='xxxs'>
-                                    <Localize i18n_default_text='Your personal details have been saved successfully.' />
-                                </Text>
-                            }
-                            is_info
-                        />
-                    </CSSTransition>
-                </div>
                 <div style={{ position: 'relative' }}>
+                    {!is_onfido_disabled && (
+                        <div
+                            className={classNames({ 'onfido-container__status-message_container': are_details_saved })}
+                        >
+                            <CSSTransition
+                                appear={is_status_message_visible}
+                                in={is_status_message_visible}
+                                timeout={{
+                                    exit: 350,
+                                }}
+                                classNames={{
+                                    exit: 'onfido-container__status-message--exit',
+                                }}
+                                unmountOnExit
+                            >
+                                <HintBox
+                                    className='onfido-container__status-message'
+                                    icon='IcAlertAnnounce'
+                                    icon_height={16}
+                                    icon_width={16}
+                                    message={
+                                        <Text as='p' size='xxxs'>
+                                            <Localize i18n_default_text='Your personal details have been saved successfully.' />
+                                        </Text>
+                                    }
+                                    is_info
+                                />
+                            </CSSTransition>
+                        </div>
+                    )}
                     {is_onfido_disabled && (
                         <HintBox
                             className='onfido-container__info-message'
