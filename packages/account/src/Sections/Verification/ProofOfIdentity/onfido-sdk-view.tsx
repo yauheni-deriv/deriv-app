@@ -33,7 +33,7 @@ type TOnfidoSdkView = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
-    is_mt5?: boolean;
+    is_external?: boolean;
 };
 
 const OnfidoSdkView = ({
@@ -43,7 +43,7 @@ const OnfidoSdkView = ({
     getChangeableFields,
     handleViewComplete,
     height,
-    is_mt5,
+    is_external,
 }: TOnfidoSdkView) => {
     const [api_error, setAPIError] = React.useState<TAPI_error>();
     const [onfido_service_token, setOnfidoToken] = React.useState('');
@@ -239,7 +239,7 @@ const OnfidoSdkView = ({
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div
                 className={classNames('onfido-container', {
-                    'onfido-container--layout': !is_mt5 && !is_onfido_disabled,
+                    'onfido-container--layout': !is_external && !is_onfido_disabled,
                 })}
             >
                 {component_to_load || (

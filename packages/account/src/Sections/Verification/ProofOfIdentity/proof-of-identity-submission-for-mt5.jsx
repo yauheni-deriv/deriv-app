@@ -97,7 +97,7 @@ const POISubmissionForMT5 = ({
                                     documents_supported={documents_supported}
                                     handleViewComplete={handlePOIComplete}
                                     height={height}
-                                    is_mt5
+                                    is_external
                                 />
                             </div>
                         )}
