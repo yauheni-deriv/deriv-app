@@ -33,6 +33,7 @@ type TOnfidoSdkView = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
+    is_mt5?: boolean;
 };
 
 const OnfidoSdkView = ({
@@ -42,6 +43,7 @@ const OnfidoSdkView = ({
     getChangeableFields,
     handleViewComplete,
     height,
+    is_mt5,
 }: TOnfidoSdkView) => {
     const [api_error, setAPIError] = React.useState<TAPI_error>();
     const [onfido_service_token, setOnfidoToken] = React.useState('');
@@ -237,7 +239,7 @@ const OnfidoSdkView = ({
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div
                 className={classNames('onfido-container', {
-                    'onfido-container--enabled': !is_onfido_disabled,
+                    'onfido-container--layout': !is_mt5 && !is_onfido_disabled,
                 })}
             >
                 {component_to_load || (
@@ -262,36 +264,32 @@ const OnfidoSdkView = ({
                     </CSSTransition>
                 )}
                 <div style={{ position: 'relative' }}>
-                    {!is_onfido_disabled && (
-                        <div
-                            className={classNames({ 'onfido-container__status-message_container': are_details_saved })}
+                    <div className={classNames({ 'onfido-container__status-message_container': are_details_saved })}>
+                        <CSSTransition
+                            appear={is_status_message_visible}
+                            in={is_status_message_visible}
+                            timeout={{
+                                exit: 350,
+                            }}
+                            classNames={{
+                                exit: 'onfido-container__status-message--exit',
+                            }}
+                            unmountOnExit
                         >
-                            <CSSTransition
-                                appear={is_status_message_visible}
-                                in={is_status_message_visible}
-                                timeout={{
-                                    exit: 350,
-                                }}
-                                classNames={{
-                                    exit: 'onfido-container__status-message--exit',
-                                }}
-                                unmountOnExit
-                            >
-                                <HintBox
-                                    className='onfido-container__status-message'
-                                    icon='IcAlertAnnounce'
-                                    icon_height={16}
-                                    icon_width={16}
-                                    message={
-                                        <Text as='p' size='xxxs'>
-                                            <Localize i18n_default_text='Your personal details have been saved successfully.' />
-                                        </Text>
-                                    }
-                                    is_info
-                                />
-                            </CSSTransition>
-                        </div>
-                    )}
+                            <HintBox
+                                className='onfido-container__status-message'
+                                icon='IcAlertAnnounce'
+                                icon_height={16}
+                                icon_width={16}
+                                message={
+                                    <Text as='p' size='xxxs'>
+                                        <Localize i18n_default_text='Your personal details have been saved successfully.' />
+                                    </Text>
+                                }
+                                is_info
+                            />
+                        </CSSTransition>
+                    </div>
                     {is_onfido_disabled && (
                         <HintBox
                             className='onfido-container__info-message'

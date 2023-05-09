@@ -4,7 +4,7 @@
     align-items: center;
     gap: 1.6rem;
 
-    &--enabled {
+    &--layout {
         flex-direction: row;
     }
     .onfido-sdk-ui-Modal-inner {
@@ -14,7 +14,7 @@
     @include mobile() {
         gap: 0.4rem;
 
-        &--enabled {
+        &--layout {
             flex-direction: column;
         }
         .onfido-sdk-ui-PageTitle-titleSpan {
