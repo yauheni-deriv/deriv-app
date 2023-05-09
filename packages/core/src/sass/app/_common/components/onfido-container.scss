@@ -45,15 +45,11 @@
 
     &__status-message {
         background-color: var(--transparent-correct-message);
-        width: 50.4rem;
         justify-content: flex-start;
         transition: transform 0.35s ease, opacity 0.35s linear;
         transform-origin: top;
         opacity: 1;
-
-        @include mobile() {
-            width: 32rem;
-        }
+        width: 98%;
 
         &--exit {
             transform: scale(1, 0);
@@ -63,10 +59,10 @@
         &_container {
             position: absolute;
             top: 0.4rem;
-            left: 0.4rem;
             min-height: 3.4rem;
             text-align: center;
             z-index: 1;
+            width: 100%;
         }
     }
 
