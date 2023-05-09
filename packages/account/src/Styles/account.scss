@@ -563,7 +563,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__personal-details {
             &--dashboard {
-                // buto
                 & .account-form__fieldset {
                     margin-bottom: 3.2rem;
 
@@ -2268,6 +2267,10 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: unset;
             overflow-y: scroll;
             justify-content: center;
+        }
+
+        &--reset {
+            align-items: normal;
         }
 
         .icon {

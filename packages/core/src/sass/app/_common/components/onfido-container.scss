@@ -74,6 +74,10 @@
         flex-direction: column;
         gap: 0.8rem;
 
+        .account-form__fieldset {
+            max-width: unset;
+        }
+
         &_container {
             @include desktop() {
                 border: 1px solid var(--general-active);
@@ -223,13 +227,16 @@
 }
 
 .idv-layout {
-    width: 60%;
+    width: 100%;
     .poi-form-on-signup__fields {
         .proof-of-identity__container {
             width: 100%;
         }
         .proof-of-identity__fieldset {
             margin-bottom: unset;
+            &-input {
+                margin-bottom: unset;
+            }
         }
     }
 }
