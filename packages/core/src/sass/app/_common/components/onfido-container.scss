@@ -233,9 +233,13 @@
             width: 100%;
         }
         .proof-of-identity__fieldset {
-            margin-bottom: unset;
-            &-input {
+            @include desktop {
                 margin-bottom: unset;
+            }
+            &-input {
+                @include desktop {
+                    margin-bottom: unset;
+                }
             }
         }
     }

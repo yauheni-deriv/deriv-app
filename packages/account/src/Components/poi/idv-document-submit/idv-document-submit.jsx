@@ -4,7 +4,15 @@ import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { WS, IDV_NOT_APPLICABLE_OPTION, toMoment, validLength, validName, filterObjProperties } from '@deriv/shared';
+import {
+    WS,
+    IDV_NOT_APPLICABLE_OPTION,
+    toMoment,
+    validLength,
+    validName,
+    filterObjProperties,
+    isDesktop,
+} from '@deriv/shared';
 import { documentAdditionalError, getRegex, validate } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -216,9 +224,11 @@ const IdvDocumentSubmit = ({
                     </Field>
 
                     <FormFooter className='proof-of-identity__footer'>
-                        <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                            <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
-                        </Button>
+                        {isDesktop() && (
+                            <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                                <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
+                            </Button>
+                        )}
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
