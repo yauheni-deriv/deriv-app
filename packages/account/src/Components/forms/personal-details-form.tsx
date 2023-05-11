@@ -12,6 +12,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
+import { TPersonalDetailsForm } from 'Types';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
@@ -33,7 +34,7 @@ const PersonalDetailsForm = ({
     warning_items,
     setFieldTouched,
     ...props
-}) => {
+}: TPersonalDetailsForm) => {
     const {
         is_virtual,
         is_mf,
@@ -50,13 +51,22 @@ const PersonalDetailsForm = ({
         salutation_list,
         is_rendered_for_onfido,
         should_close_tooltip,
-        setShouldCloseTooltip,
+        setShouldCloseTooltip = () => undefined,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    const handleToolTipStatus = React.useCallback(() => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -70,7 +80,7 @@ const PersonalDetailsForm = ({
         return is_svg || is_mf ? localize('Last name*') : localize('Last name');
     };
 
-    const getFieldHint = field_name => {
+    const getFieldHint = (field_name: string) => {
         return (
             <Localize
                 i18n_default_text={
@@ -82,15 +92,6 @@ const PersonalDetailsForm = ({
             />
         );
     };
-
-    const handleToolTipStatus = React.useCallback(() => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
     const name_dob_clarification_message = (
         <Localize
@@ -111,7 +112,7 @@ const PersonalDetailsForm = ({
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (
                         <div>
-                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() ? 'center' : 'left'}>
                                 {is_virtual ? (
                                     localize(
                                         'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
@@ -146,7 +147,7 @@ const PersonalDetailsForm = ({
                             }}
                             required
                         >
-                            {salutation_list.map(item => (
+                            {salutation_list?.map(item => (
                                 <RadioGroup.Item
                                     key={item.value}
                                     label={item.label}
@@ -446,7 +447,7 @@ const PersonalDetailsForm = ({
                                                     ]}
                                                 />
                                             }
-                                            zIndex={9998}
+                                            zIndex='9998'
                                             disable_message_icon
                                         />
                                     </div>
@@ -509,11 +510,6 @@ const PersonalDetailsForm = ({
                                         {
                                             legal_entity_name: getLegalEntityName('maltainvest'),
                                         }
-                                    )}
-                                    renderlabel={title => (
-                                        <Text size='xs' line_height='s'>
-                                            {title}
-                                        </Text>
                                     )}
                                     withTabIndex={0}
                                     data-testid='tax_identification_confirm'
