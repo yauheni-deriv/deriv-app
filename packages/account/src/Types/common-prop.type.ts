@@ -94,3 +94,23 @@ export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
 };
+
+export type TPersonalDetailsForm = {
+    warning_items?: Record<string, string>;
+    is_virtual?: boolean;
+    is_mf?: boolean;
+    is_svg?: boolean;
+    is_qualified_for_idv?: boolean;
+    should_hide_helper_image: boolean;
+    is_appstore?: boolean;
+    editable_fields: Array<string>;
+    has_real_account?: boolean;
+    residence_list?: ResidenceList;
+    is_fully_authenticated?: boolean;
+    account_opening_reason_list?: Record<string, string>[];
+    closeRealAccountSignup: () => void;
+    salutation_list?: Record<string, string>[];
+    is_rendered_for_onfido?: boolean;
+    should_close_tooltip?: boolean;
+    setShouldCloseTooltip?: (should_close_tooltip: boolean) => void;
+} & FormikProps<FormikValues>;
