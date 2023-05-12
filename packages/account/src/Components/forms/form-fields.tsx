@@ -2,9 +2,8 @@ import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { DateOfBirthPicker, Input } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import { TInputProps } from '../../../../components/src/components/input';
 
-type DateOfBirthFieldProps = {
+type TDateOfBirthFieldProps = {
     name: string;
     required?: boolean;
     label?: string;
@@ -14,7 +13,7 @@ type DateOfBirthFieldProps = {
     portal_id?: string;
 };
 
-export const DateOfBirthField: React.FC<DateOfBirthFieldProps> = ({ name, portal_id, ...rest }) => (
+export const DateOfBirthField: React.FC<TDateOfBirthFieldProps> = ({ name, portal_id, ...rest }) => (
     <Field name={name}>
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }: FieldProps) => (
             <DateOfBirthPicker
@@ -36,7 +35,9 @@ export const DateOfBirthField: React.FC<DateOfBirthFieldProps> = ({ name, portal
     </Field>
 );
 
-export const FormInputField: React.FC<TInputProps> = ({ name, ...rest }) => (
+type TInputFieldProps = React.ComponentProps<typeof Input>;
+
+export const FormInputField: React.FC<TInputFieldProps> = ({ name, ...rest }) => (
     <Field name={name}>
         {({ field, form: { touched, errors } }: FieldProps) => (
             <Input
