@@ -12,12 +12,7 @@ import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
-
-type TAPIError = {
-    code?: string;
-    message?: string;
-    type?: string;
-};
+import { TAPIError } from 'Types';
 
 type TServiceToken = {
     error?: TAPIError;
@@ -246,7 +241,6 @@ const OnfidoSdkViewContainer = ({
                     >
                         <div className='account-form__poi-confirm-example_wrapper account-form__poi-confirm-example_container'>
                             <PoiConfirmWithExampleFormContainer
-                                account_settings={account_settings}
                                 getChangeableFields={getChangeableFields}
                                 onFormConfirm={onConfirm}
                             />

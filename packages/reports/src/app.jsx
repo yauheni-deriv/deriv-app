@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { APIProvider } from '@deriv/api';
 import Routes from 'Containers/routes.jsx';
 import { MobxContentProvider } from 'Stores/connect';
 import 'Sass/app.scss';
@@ -10,9 +11,11 @@ const App = ({ passthrough }) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <React.Fragment>
-                <Routes />
-            </React.Fragment>
+            <APIProvider>
+                <React.Fragment>
+                    <Routes />
+                </React.Fragment>
+            </APIProvider>
         </MobxContentProvider>
     );
 };

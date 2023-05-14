@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
@@ -32,12 +33,14 @@ const App = ({ passthrough }: Apptypes) => {
     return (
         <MobxContentProvider store={root_store}>
             <StoreProvider store={root_store}>
-                <Routes />
-                <TradeModals />
-                <NetworkStatusToastErrorPopup />
-                <TradeHeaderExtensions store={root_store} />
-                <TradeFooterExtensions />
-                <TradeSettingsExtensions store={root_store} />
+                <APIProvider>
+                    <Routes />
+                    <TradeModals />
+                    <NetworkStatusToastErrorPopup />
+                    <TradeHeaderExtensions store={root_store} />
+                    <TradeFooterExtensions />
+                    <TradeSettingsExtensions store={root_store} />
+                </APIProvider>
             </StoreProvider>
         </MobxContentProvider>
     );

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import { APIProvider } from '@deriv/api';
 import { setWebsocket, routes } from '@deriv/shared';
 import { StoreProvider, observer } from '@deriv/stores';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
@@ -23,17 +24,19 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     return (
         <CashierStoreProvider store={root_store}>
             <StoreProvider store={root_store as any}>
-                <main
-                    className={classNames('dashboard', {
-                        'theme--light': !ui.is_dark_mode_on,
-                        'theme--dark': ui.is_dark_mode_on,
-                        'dashboard-onboarding': window.location.pathname === routes.onboarding,
-                    })}
-                >
-                    <div className='dw-dashboard'>
-                        <Routes />
-                    </div>
-                </main>
+                <APIProvider>
+                    <main
+                        className={classNames('dashboard', {
+                            'theme--light': !ui.is_dark_mode_on,
+                            'theme--dark': ui.is_dark_mode_on,
+                            'dashboard-onboarding': window.location.pathname === routes.onboarding,
+                        })}
+                    >
+                        <div className='dw-dashboard'>
+                            <Routes />
+                        </div>
+                    </main>
+                </APIProvider>
             </StoreProvider>
         </CashierStoreProvider>
     );
