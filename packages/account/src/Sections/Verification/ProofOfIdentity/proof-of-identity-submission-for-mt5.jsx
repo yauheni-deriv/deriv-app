@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+//TODO: incorporate the fix for Onfido path
 import React from 'react';
 import { WS, IDV_NOT_APPLICABLE_OPTION, makeSettingsRequest } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
+import { IdvDocSubmitOnSignup } from 'Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
+import { APIProvider } from '@deriv/api';
 
 const POISubmissionForMT5 = ({
     account_settings,
@@ -115,15 +117,17 @@ const POISubmissionForMT5 = ({
                     <AutoHeightWrapper default_height={620} height_offset={50}>
                         {({ setRef, height }) => (
                             <div ref={setRef} style={{ height }}>
-                                <OnfidoUpload
-                                    account_settings={account_settings}
-                                    getChangeableFields={getChangeableFields}
-                                    country_code={country_code}
-                                    documents_supported={documents_supported}
-                                    handleViewComplete={handlePOIComplete}
-                                    height={height}
-                                    is_external
-                                />
+                                <APIProvider>
+                                    <OnfidoUpload
+                                        account_settings={account_settings}
+                                        getChangeableFields={getChangeableFields}
+                                        country_code={country_code}
+                                        documents_supported={documents_supported}
+                                        handleViewComplete={handlePOIComplete}
+                                        height={height}
+                                        is_external
+                                    />
+                                </APIProvider>
                             </div>
                         )}
                     </AutoHeightWrapper>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PoiConfirmWithExampleFormContainer from '../poi-confirm-with-example-form-container';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -38,6 +39,19 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useRequest: jest.fn().mockReturnValue({
+        mutateAsync: jest.fn(),
+        isLoading: false,
+    }),
+    useFetch: jest.fn().mockReturnValue({
+        data: {},
+        error: {},
+        isLoading: false,
+    }),
+}));
+
 describe('<PoiConfirmWithExampleFormContainer/>', () => {
     beforeAll(() => {
         (ReactDOM.createPortal as jest.Mock) = jest.fn(element => element);
@@ -56,7 +70,9 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         'I confirm that the name and date of birth above match my chosen identity document (see below)';
 
     it('should render PersonalDetailsForm with image and checkbox', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, {
+            wrapper: ({ children }) => <APIProvider>{children}</APIProvider>,
+        });
 
         expect(await screen.findByText('PoiNameDobExampleImage')).toBeInTheDocument();
         expect(screen.getByText(clarification_message)).toBeInTheDocument();
@@ -71,7 +87,9 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         expect(input_fields[2].name).toBe('date_of_birth');
     });
     it('should change fields and trigger submit', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, {
+            wrapper: ({ children }) => <APIProvider>{children}</APIProvider>,
+        });
 
         const checkbox_el: HTMLInputElement = await screen.findByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();
