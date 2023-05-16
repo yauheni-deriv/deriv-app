@@ -11,6 +11,7 @@ export const DateOfBirthField = ({ name, portal_id, ...rest }) => (
                 name={name}
                 onBlur={() =>
                     setTouched({
+                        ...touched,
                         date_of_birth: true,
                     })
                 }
