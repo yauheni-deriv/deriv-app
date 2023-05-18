@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import classNames from 'classnames';
 import {
     Autocomplete,
@@ -23,17 +23,7 @@ import { Link } from 'react-router-dom';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from 'Helpers/utils';
 
-const PersonalDetailsForm = ({
-    errors,
-    touched,
-    values,
-    setFieldValue,
-    handleChange,
-    handleBlur,
-    warning_items,
-    setFieldTouched,
-    ...props
-}) => {
+const PersonalDetailsForm = props => {
     const {
         is_virtual,
         is_mf,
@@ -51,12 +41,15 @@ const PersonalDetailsForm = ({
         is_rendered_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
+        warning_items,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
