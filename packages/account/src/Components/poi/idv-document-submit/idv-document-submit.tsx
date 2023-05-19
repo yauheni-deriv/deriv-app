@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
-import { Formik, FormikHelpers } from 'formik';
+import { Form, Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import {
     WS,
@@ -140,32 +140,10 @@ const IdvDocumentSubmit = ({
 
     return (
         <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
-            {({
-                dirty,
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                values,
-            }) => (
-                <div className='proof-of-identity__container proof-of-identity__container--reset'>
+            {({ dirty, isSubmitting, isValid, values }) => (
+                <Form className='proof-of-identity__container proof-of-identity__container--reset'>
                     <FormSubHeader title={localize('Identity verification')} />
-                    <IDVForm
-                        errors={errors}
-                        touched={touched}
-                        values={values}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        hide_hint={false}
-                        selected_country={selected_country}
-                        class_name='idv-layout'
-                    />
+                    <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
 
                     <FormSubHeader title={localize('Details')} />
                     <div
@@ -176,13 +154,6 @@ const IdvDocumentSubmit = ({
                         })}
                     >
                         <PersonalDetailsForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            setFieldTouched={setFieldTouched}
                             is_qualified_for_idv={true}
                             is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
@@ -198,7 +169,6 @@ const IdvDocumentSubmit = ({
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
-                            onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Verify')}
@@ -206,7 +176,7 @@ const IdvDocumentSubmit = ({
                             primary
                         />
                     </FormFooter>
-                </div>
+                </Form>
             )}
         </Formik>
     );
