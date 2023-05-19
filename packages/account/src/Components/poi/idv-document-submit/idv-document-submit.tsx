@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { localize } from '@deriv/translations';
 import {
     WS,
