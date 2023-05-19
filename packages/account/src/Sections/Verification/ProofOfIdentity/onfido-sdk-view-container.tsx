@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
 import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
@@ -44,11 +44,10 @@ const OnfidoSdkViewContainer = ({
     height,
 }: TOnfidoSdkViewContainer) => {
     const [api_error, setAPIError] = React.useState<TAPIError>();
-    const [onfido_service_token, setOnfidoToken] = React.useState('');
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [retry_count, setRetryCount] = React.useState(0);
-    const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(false);
+    const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
     const token_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const [is_confirmed, setIsConfirmed] = React.useState(false);
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
@@ -86,50 +85,53 @@ const OnfidoSdkViewContainer = ({
         [handleViewComplete]
     );
 
-    const initOnfido = React.useCallback(async () => {
-        try {
-            onfido_init.current = await init({
-                containerId: 'onfido',
-                language: {
-                    locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',
-                    phrases: getOnfidoPhrases(),
-                    mobilePhrases: getOnfidoPhrases(),
-                },
-                token: onfido_service_token,
-                useModal: false,
-                useMemoryHistory: true,
-                onComplete,
-                steps: [
-                    {
-                        type: 'document',
-                        options: {
-                            documentTypes: {
-                                passport: onfido_documents.some(doc => /Passport/g.test(doc)),
-                                driving_licence: onfido_documents.some(doc => /Driving Licence/g.test(doc))
-                                    ? {
-                                          country: onfido_country_code,
-                                      }
-                                    : false,
-                                national_identity_card: onfido_documents.some(doc =>
-                                    /National Identity Card/g.test(doc)
-                                )
-                                    ? {
-                                          country: onfido_country_code,
-                                      }
-                                    : false,
-                            },
-                            hideCountrySelection: true,
-                        },
+    const initOnfido = React.useCallback(
+        async (service_token: string) => {
+            if (!service_token) return;
+            try {
+                onfido_init.current = await init({
+                    containerId: 'onfido',
+                    language: {
+                        locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',
+                        phrases: getOnfidoPhrases(),
+                        mobilePhrases: getOnfidoPhrases(),
                     },
-                    'face',
-                ],
-            });
-        } catch (err) {
-            setAPIError(err as TAPIError);
-        } finally {
-            setIsOnfidoDisabled(true);
-        }
-    }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code]);
+                    token: service_token,
+                    useModal: false,
+                    useMemoryHistory: true,
+                    onComplete,
+                    steps: [
+                        {
+                            type: 'document',
+                            options: {
+                                documentTypes: {
+                                    passport: onfido_documents.some(doc => /Passport/g.test(doc)),
+                                    driving_licence: onfido_documents.some(doc => /Driving Licence/g.test(doc))
+                                        ? {
+                                              country: onfido_country_code,
+                                          }
+                                        : false,
+                                    national_identity_card: onfido_documents.some(doc =>
+                                        /National Identity Card/g.test(doc)
+                                    )
+                                        ? {
+                                              country: onfido_country_code,
+                                          }
+                                        : false,
+                                },
+                                hideCountrySelection: true,
+                            },
+                        },
+                        'face',
+                    ],
+                });
+            } catch (err) {
+                setAPIError(err as TAPIError);
+                setIsOnfidoDisabled(true);
+            }
+        },
+        [onComplete, onfido_documents, onfido_country_code]
+    );
 
     const getOnfidoServiceToken = React.useCallback(
         (): Promise<string | { error: TAPIError }> =>
@@ -179,21 +181,21 @@ const OnfidoSdkViewContainer = ({
         }
     };
 
-    const onConfirm = () => {
+    const onConfirm = useCallback(() => {
         setIsConfirmed(true);
         setIsOnfidoDisabled(false);
-    };
+    }, []);
 
     React.useEffect(() => {
         const fetchServiceToken = () => {
+            if (onfido_init.current) return;
             getOnfidoServiceToken().then(response_token => {
                 if (typeof response_token !== 'string' && response_token?.error) {
                     handleError(response_token.error);
                     setStatusLoading(false);
                     setRetryCount(retry_count + 1);
                 } else if (typeof response_token === 'string') {
-                    setOnfidoToken(response_token);
-                    initOnfido().then(() => {
+                    initOnfido(response_token).then(() => {
                         setStatusLoading(false);
                     });
                 }
