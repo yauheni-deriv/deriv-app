@@ -136,7 +136,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, values }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -178,16 +178,7 @@ const PersonalDetails = ({
                                         {is_qualified_for_idv && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
-                                                <IDVForm
-                                                    selected_country={selected_country}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    hide_hint={true}
-                                                />
+                                                <IDVForm selected_country={selected_country} hide_hint={true} />
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
@@ -200,13 +191,6 @@ const PersonalDetails = ({
                                                 })}
                                             >
                                                 <PersonalDetailsForm
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    setFieldTouched={setFieldTouched}
                                                     is_virtual={is_virtual}
                                                     is_svg={is_svg}
                                                     is_mf={is_mf}
