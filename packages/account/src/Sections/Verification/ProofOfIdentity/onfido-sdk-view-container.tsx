@@ -128,6 +128,7 @@ const OnfidoSdkViewContainer = ({
             } catch (err) {
                 setAPIError(err as TAPIError);
                 setIsOnfidoDisabled(true);
+                onfido_init.current = undefined;
             }
         },
         [onComplete, onfido_documents, onfido_country_code]
@@ -194,6 +195,7 @@ const OnfidoSdkViewContainer = ({
                     handleError(response_token.error);
                     setStatusLoading(false);
                     setRetryCount(retry_count + 1);
+                    onfido_init.current = undefined;
                 } else if (typeof response_token === 'string') {
                     initOnfido(response_token).then(() => {
                         setStatusLoading(false);
