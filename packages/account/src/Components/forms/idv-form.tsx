@@ -27,6 +27,7 @@ type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
+    can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TFormProps>;
 
@@ -40,6 +41,7 @@ const IDVForm = ({
     class_name,
     selected_country,
     hide_hint,
+    can_skip_document_verification = false,
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
@@ -63,40 +65,42 @@ const IDVForm = ({
                 ? document_types.filter(d => d !== 'voter_id')
                 : document_types;
 
-            setDocumentList([
-                ...filtered_documents.map(key => {
-                    const { display_name, format } = document_data[key];
-                    const { new_display_name, example_format, sample_image } = getDocumentData(
-                        selected_country.value ?? '',
-                        key
-                    );
-                    const needs_additional_document = !!document_data[key].additional;
+            const new_document_list = filtered_documents.map(key => {
+                const { display_name, format } = document_data[key];
+                const { new_display_name, example_format, sample_image } = getDocumentData(
+                    selected_country.value ?? '',
+                    key
+                );
+                const needs_additional_document = !!document_data[key].additional;
 
-                    if (needs_additional_document) {
-                        return {
-                            id: key,
-                            text: new_display_name || display_name,
-                            additional: {
-                                display_name: document_data[key].additional?.display_name,
-                                format: document_data[key].additional?.format,
-                            },
-                            value: format,
-                            sample_image,
-                            example_format,
-                        };
-                    }
+                if (needs_additional_document) {
                     return {
                         id: key,
                         text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
                         value: format,
                         sample_image,
                         example_format,
                     };
-                }),
-                IDV_NOT_APPLICABLE_OPTION,
-            ]);
+                }
+                return {
+                    id: key,
+                    text: new_display_name || display_name,
+                    value: format,
+                    sample_image,
+                    example_format,
+                };
+            });
+            if (can_skip_document_verification) {
+                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
+            } else {
+                setDocumentList([...new_document_list]);
+            }
         }
-    }, [document_data, selected_country]);
+    }, [document_data, selected_country, can_skip_document_verification]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);
