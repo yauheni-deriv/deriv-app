@@ -47,6 +47,14 @@ const IDVForm = ({
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
+    const default_document = {
+        id: '',
+        text: '',
+        value: '',
+        example_format: '',
+        sample_image: '',
+    };
+
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
             const document_types = Object.keys(document_data);
@@ -91,21 +99,11 @@ const IDVForm = ({
     }, [document_data, selected_country]);
 
     const resetDocumentItemSelected = () => {
-        setFieldValue(
-            'document_type',
-            {
-                id: '',
-                text: '',
-                value: '',
-                example_format: '',
-                sample_image: '',
-            },
-            true
-        );
+        setFieldValue('document_type', default_document, true);
     };
 
     const getDocument = (text: string) => {
-        return document_list.find(d => d.text === text);
+        return document_list.find(d => d.text === text) ?? default_document;
     };
 
     const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
@@ -116,6 +114,18 @@ const IDVForm = ({
             ? formatInput(example_format, current_input ?? e.target.value, '-')
             : e.target.value;
         setFieldValue(document_name, current_input, true);
+    };
+
+    const bindDocumentData = (item: TDocumentList[0]) => {
+        setFieldValue('document_type', item, true);
+        setSelectedDoc(item?.id);
+        if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            setFieldValue('document_number', '', true);
+            setFieldValue('document_additional', '', true);
+        }
+        if (has_visual_sample) {
+            setDocumentImage(item.sample_image ?? '');
+        }
     };
 
     return (
@@ -165,11 +175,7 @@ const IDVForm = ({
                                                                         setSelectedDoc('');
                                                                         resetDocumentItemSelected();
                                                                     } else {
-                                                                        setFieldValue('document_type', item, true);
-                                                                        setSelectedDoc(item.id);
-                                                                        if (has_visual_sample) {
-                                                                            setDocumentImage(item.sample_image ?? '');
-                                                                        }
+                                                                        bindDocumentData(item);
                                                                     }
                                                                 }}
                                                                 required
@@ -191,19 +197,7 @@ const IDVForm = ({
                                                             onChange={e => {
                                                                 handleChange(e);
                                                                 const selected_document = getDocument(e.target.value);
-                                                                if (selected_document) {
-                                                                    setSelectedDoc(selected_document.id);
-                                                                    setFieldValue(
-                                                                        'document_type',
-                                                                        selected_document,
-                                                                        true
-                                                                    );
-                                                                    if (has_visual_sample) {
-                                                                        setDocumentImage(
-                                                                            selected_document.sample_image ?? ''
-                                                                        );
-                                                                    }
-                                                                }
+                                                                bindDocumentData(selected_document);
                                                             }}
                                                             use_text={true}
                                                             required
