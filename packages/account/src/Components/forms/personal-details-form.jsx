@@ -58,9 +58,21 @@ const PersonalDetailsForm = props => {
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
-    const getLastNameLabel = () => {
-        if (is_appstore) return localize('Family name*');
-        return is_svg || is_mf ? localize('Last name*') : localize('Last name');
+    const getNameAndDobLabels = () => {
+        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
+        const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
+        const last_name_label = is_appstore
+            ? localize('Family name*')
+            : is_asterisk_needed
+            ? localize('Last name*')
+            : localize('Last name');
+        const dob_label = is_appstore || is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
+
+        return {
+            first_name_label,
+            last_name_label,
+            dob_label,
+        };
     };
 
     const getFieldHint = field_name => {
@@ -153,7 +165,7 @@ const PersonalDetailsForm = props => {
                         <FormInputField
                             name='first_name'
                             required={is_svg || is_appstore}
-                            label={is_svg || is_appstore || is_mf ? localize('First name*') : localize('First name')}
+                            label={getNameAndDobLabels().first_name_label}
                             hint={getFieldHint(localize('first name'))}
                             disabled={
                                 isFieldImmutable('first_name', editable_fields) ||
@@ -167,7 +179,7 @@ const PersonalDetailsForm = props => {
                         <FormInputField
                             name='last_name'
                             required={is_svg || is_appstore}
-                            label={getLastNameLabel()}
+                            label={getNameAndDobLabels().last_name_label}
                             hint={getFieldHint(localize('last name'))}
                             disabled={
                                 isFieldImmutable('last_name', editable_fields) ||
@@ -184,9 +196,7 @@ const PersonalDetailsForm = props => {
                         <DateOfBirthField
                             name='date_of_birth'
                             required={is_svg || is_appstore}
-                            label={
-                                is_svg || is_appstore || is_mf ? localize('Date of birth*') : localize('Date of birth')
-                            }
+                            label={getNameAndDobLabels().dob_label}
                             hint={getFieldHint(localize('date of birth'))}
                             disabled={
                                 isFieldImmutable('date_of_birth', editable_fields) ||
