@@ -46,6 +46,7 @@ const IdvDocumentSubmit = ({
     getChangeableFields,
 }: TIdvDocumentSubmit) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
+
     const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
         [Property in keyof TPersonalDetailsForm]: string;
     };
@@ -147,24 +148,26 @@ const IdvDocumentSubmit = ({
         <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
             {({ dirty, isSubmitting, isValid, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset'>
-                    <FormSubHeader title={localize('Identity verification')} />
-                    <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
+                    <section className='form-body'>
+                        <FormSubHeader title={localize('Identity verification')} />
+                        <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
 
-                    <FormSubHeader title={localize('Details')} />
-                    <div
-                        className={classNames({
-                            'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                values?.document_type?.id
-                            ),
-                        })}
-                    >
-                        <PersonalDetailsForm
-                            is_qualified_for_idv={true}
-                            is_appstore
-                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
-                        />
-                    </div>
+                        <FormSubHeader title={localize('Details')} />
+                        <div
+                            className={classNames({
+                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
+                                    values?.document_type?.id
+                                ),
+                            })}
+                        >
+                            <PersonalDetailsForm
+                                is_qualified_for_idv={true}
+                                is_appstore
+                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                editable_fields={changeable_fields}
+                            />
+                        </div>
+                    </section>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>

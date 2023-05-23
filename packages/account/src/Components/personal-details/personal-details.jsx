@@ -178,7 +178,11 @@ const PersonalDetails = ({
                                         {is_qualified_for_idv && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
-                                                <IDVForm selected_country={selected_country} hide_hint={true} />
+                                                <IDVForm
+                                                    selected_country={selected_country}
+                                                    hide_hint={true}
+                                                    can_skip_document_verification={true}
+                                                />
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
