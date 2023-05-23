@@ -16,6 +16,8 @@ import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@de
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import PoiNameMismatchExample from 'Assets/ic-poi-name-mismatch-example.svg';
+import PoiDobMismatchExample from 'Assets/ic-poi-dob-mismatch-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
@@ -42,9 +44,9 @@ const PersonalDetailsForm = props => {
         should_close_tooltip,
         setShouldCloseTooltip,
         warning_items,
+        status,
     } = props;
     const autocomplete_value = 'none';
-    const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -57,6 +59,17 @@ const PersonalDetailsForm = props => {
             setShouldCloseTooltip(false);
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
+
+    const imageLoader = () => {
+        switch (status) {
+            case 'POI_NAME_MISMATCH':
+                return <PoiNameMismatchExample />;
+            case 'POI_DOB_MISMATCH':
+                return <PoiDobMismatchExample />;
+            default:
+                return <PoiNameDobExample />;
+        }
+    };
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
@@ -111,7 +124,7 @@ const PersonalDetailsForm = props => {
             )}
             <FormBodySection
                 has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
-                side_note={<PoiNameDobExampleIcon />}
+                side_note={imageLoader()}
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (
