@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { GetSettings } from '@deriv/api-types';
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
 import { filterObjProperties, isEmptyObject, removeEmptyPropertiesFromObject, toMoment, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -13,11 +13,12 @@ import LoadErrorMessage from 'Components/load-error-message';
 import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
 import { connect } from 'Stores/connect';
 import { TCoreStore } from 'Stores/index';
-import { TInputFieldValues } from 'Types';
+import { TIDVErrorStatus, TInputFieldValues } from 'Types';
+import FormSubHeader from 'Components/form-sub-header';
+import IDVForm from 'Components/forms/idv-form';
 
 type TRestState = {
     api_error: string;
-    show_form: boolean;
     errors?: boolean;
     form_initial_values: TInputFieldValues;
     changeable_fields: string[];
@@ -27,111 +28,147 @@ type TIdvFailed = {
     account_settings: GetSettings;
     getChangeableFields: () => string[];
     // handleSubmit: () => void;
-    mismatch_status: 'POI_NAME_DOB_MISMATCH' | 'POI_DOB_MISMATCH' | 'POI_NAME_MISMATCH';
+    mismatch_status: TIDVErrorStatus;
+    residence_list: ResidenceList;
 };
 
-// const PoiNameExampleImage = PoiNameExample;
+type TIDVFailureConfig = {
+    required_fields: string[];
+    side_note_image: React.ReactElement;
+    failure_message: React.ReactElement;
+    inline_note_text: React.ReactNode;
+};
 
 const IdvFailed = ({
-    account_settings,
     getChangeableFields,
+    residence_list,
+    account_settings,
     // handleSubmit,
     mismatch_status = 'POI_NAME_DOB_MISMATCH',
 }: TIdvFailed) => {
-    let init_fields: TInputFieldValues = {};
-    let required_fields: string[] = [];
-    let side_note_image: React.ReactElement, failure_message: React.ReactElement;
-    let inline_note_text: React.ReactNode = '';
-
-    if (mismatch_status === 'POI_NAME_DOB_MISMATCH') {
-        init_fields = { first_name: '', last_name: '', date_of_birth: '' };
-        required_fields = ['first_name', 'last_name', 'date_of_birth'];
-        side_note_image = <PoiNameDobExample />;
-        inline_note_text = (
-            <Localize
-                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                components={[<strong key={0} />]}
-            />
-        );
-        failure_message = (
-            <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
-                    components={[<strong key={0} />]}
-                />
-            </Text>
-        );
-    }
-
-    if (mismatch_status === 'POI_NAME_MISMATCH') {
-        init_fields = { first_name: '', last_name: '' };
-        required_fields = ['first_name', 'last_name'];
-        side_note_image = <PoiNameExample />;
-        inline_note_text = (
-            <Localize
-                i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your identity document.'
-                components={[<strong key={0} />]}
-            />
-        );
-        failure_message = (
-            <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
-                    components={[<strong key={0} />]}
-                />
-            </Text>
-        );
-    }
-
-    if (mismatch_status === 'POI_DOB_MISMATCH') {
-        init_fields = { date_of_birth: '' };
-        required_fields = ['date_of_birth'];
-        side_note_image = <PoiDobExample />;
-        inline_note_text = (
-            <Localize
-                i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your identity document.'
-                components={[<strong key={0} />]}
-            />
-        );
-        failure_message = (
-            <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
-                    components={[<strong key={0} />]}
-                />
-            </Text>
-        );
-    }
-
+    const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig | null>(null);
     const [is_loading, setIsLoading] = React.useState(true);
-    const [rest_state, setRestState] = React.useState<TRestState>({
-        show_form: true,
-        form_initial_values: init_fields,
-        changeable_fields: [],
-        api_error: '',
-    });
+    const [rest_state, setRestState] = React.useState<TRestState>();
+
+    const is_document_upload_required = React.useMemo(
+        () => ['POI_FAILED', 'POI_EXPIRED'].includes(mismatch_status),
+        [mismatch_status]
+    );
 
     React.useEffect(() => {
-        const initializeFormValues = () => {
-            WS.wait('get_settings').then(() => {
-                const form_initial_values = filterObjProperties(account_settings, required_fields);
-                if (form_initial_values.date_of_birth) {
-                    form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format(
-                        'YYYY-MM-DD'
-                    );
-                }
-                setRestState({
-                    ...rest_state,
-                    changeable_fields: getChangeableFields(),
-                    form_initial_values,
-                });
-                setIsLoading(false);
+        let form_data: TInputFieldValues = {};
+        const generateIDVError = () => {
+            switch (mismatch_status) {
+                case 'POI_NAME_DOB_MISMATCH':
+                    return {
+                        required_fields: ['first_name', 'last_name', 'date_of_birth'],
+                        side_note_image: <PoiNameDobExample />,
+                        inline_note_text: (
+                            <Localize
+                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                        failure_message: (
+                            <Localize
+                                i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                    };
+                case 'POI_NAME_MISMATCH':
+                    return {
+                        required_fields: ['first_name', 'last_name'],
+                        side_note_image: <PoiNameExample />,
+                        inline_note_text: (
+                            <Localize
+                                i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your identity document.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                        failure_message: (
+                            <Localize
+                                i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                    };
+                case 'POI_DOB_MISMATCH':
+                    return {
+                        required_fields: ['date_of_birth'],
+                        side_note_image: <PoiDobExample />,
+                        inline_note_text: (
+                            <Localize
+                                i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your identity document.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                        failure_message: (
+                            <Localize
+                                i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                    };
+                case 'POI_EXPIRED':
+                case 'POI_FAILED':
+                    return {
+                        required_fields: ['first_name', 'last_name', 'date_of_birth'],
+                        side_note_image: <PoiNameDobExample />,
+                        inline_note_text: (
+                            <Localize
+                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                        failure_message: (
+                            <Localize
+                                i18n_default_text='{{ banner_message }}'
+                                values={{
+                                    banner_message:
+                                        mismatch_status === 'POI_EXPIRED'
+                                            ? 'Your identity document has expired.'
+                                            : 'We were unable to verify the identity document with the details provided.',
+                                }}
+                            />
+                        ),
+                    };
+                default:
+                    return null;
+            }
+        };
+        const initializeFormValues = async (required_fields: string[]) => {
+            await WS.wait('get_settings');
+            form_data = filterObjProperties(account_settings, required_fields);
+            if (form_data.date_of_birth) {
+                form_data.date_of_birth = toMoment(form_data).format('YYYY-MM-DD');
+            }
+            let initial_form_values = form_data;
+            if (is_document_upload_required) {
+                initial_form_values = {
+                    document_type: {
+                        id: '',
+                        text: '',
+                        value: '',
+                        example_format: '',
+                        sample_image: '',
+                    },
+                    document_number: '',
+                    ...initial_form_values,
+                };
+            }
+            setRestState({
+                form_initial_values: { ...initial_form_values },
+                changeable_fields: [],
+                api_error: '',
             });
+            setIsLoading(false);
         };
 
-        initializeFormValues();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account_settings]);
+        const error_config = generateIDVError();
+        setIdvFailure(error_config);
+        initializeFormValues(error_config?.required_fields ?? []);
+    }, [mismatch_status, account_settings]);
 
     const onSubmit = async (
         values: TInputFieldValues,
@@ -150,7 +187,7 @@ const IdvFailed = ({
         } else {
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
-                setRestState({ ...rest_state, api_error: response.error.message });
+                setRestState(prev_state => ({ ...prev_state, api_error: response.error.message }));
                 return;
             }
             setRestState({ ...rest_state, ...response.get_settings });
@@ -163,7 +200,7 @@ const IdvFailed = ({
         const errors: TInputFieldValues = {};
         const validateValues = validate(errors, values);
 
-        validateValues(val => val, required_fields, localize('This field is required'));
+        validateValues(val => val, idv_failure?.required_fields as string[], localize('This field is required'));
 
         if (values.first_name) {
             errors.first_name = validateName(values.first_name);
@@ -172,24 +209,25 @@ const IdvFailed = ({
             errors.last_name = validateName(values.last_name);
         }
 
-        setRestState({ ...rest_state, errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)) });
+        setRestState(prev_state => ({
+            ...prev_state,
+            errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)),
+        }));
         return removeEmptyPropertiesFromObject(errors);
     };
 
-    const {
-        form_initial_values: { ...form_initial_values },
-        api_error,
-    } = rest_state;
+    if (rest_state?.api_error) return <LoadErrorMessage error_message={rest_state.api_error} />;
 
-    if (api_error) return <LoadErrorMessage error_message={api_error} />;
-
-    if (is_loading) {
+    if (is_loading && Object.keys(rest_state?.form_initial_values ?? {}).length === 0) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
+    const citizen = account_settings?.citizen;
+    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
     return (
         <Formik
-            initialValues={form_initial_values}
+            initialValues={rest_state?.form_initial_values ?? {}}
             enableReinitialize
             onSubmit={onSubmit}
             validate={validateFields}
@@ -205,15 +243,28 @@ const IdvFailed = ({
                             icon='IcCloseCircleRed'
                             icon_height={16}
                             icon_width={16}
-                            message={failure_message}
+                            message={idv_failure?.failure_message as React.ReactElement}
                             is_danger
                         />
-
+                        {is_document_upload_required && (
+                            <React.Fragment>
+                                <Text size='xs' className='proof-of-identity__failed-warning' align='center'>
+                                    <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
+                                </Text>
+                                <FormSubHeader title={localize('Identity verification')} />
+                                <IDVForm
+                                    selected_country={selected_country}
+                                    hide_hint={true}
+                                    can_skip_document_verification={true}
+                                />
+                                <FormSubHeader title={localize('Details')} />
+                            </React.Fragment>
+                        )}
                         <PersonalDetailsForm
-                            editable_fields={rest_state.changeable_fields}
+                            editable_fields={rest_state?.changeable_fields}
                             is_qualified_for_idv
-                            side_note={side_note_image}
-                            inline_note_text={inline_note_text}
+                            side_note={idv_failure?.side_note_image}
+                            inline_note_text={idv_failure?.inline_note_text}
                         />
                         <Button
                             className='proof-of-identity__submit-button'
@@ -234,4 +285,5 @@ const IdvFailed = ({
 export default connect(({ client }: TCoreStore) => ({
     account_settings: client.account_settings,
     getChangeableFields: client.getChangeableFields,
+    residence_list: client.residence_list,
 }))(IdvFailed);
