@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
 import { filterObjProperties, isEmptyObject, removeEmptyPropertiesFromObject, toMoment, WS } from '@deriv/shared';
@@ -10,17 +10,25 @@ import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import LoadErrorMessage from 'Components/load-error-message';
-import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
+import {
+    isAdditionalDocumentValid,
+    isDocumentNumberValid,
+    isDocumentTypeValid,
+    makeSettingsRequest,
+    shouldHideHelperImage,
+    validate,
+    validateName,
+} from 'Helpers/utils';
 import { connect } from 'Stores/connect';
 import { TCoreStore } from 'Stores/index';
-import { TIDVErrorStatus, TInputFieldValues } from 'Types';
+import { TIDVErrorStatus, TIDVForm, TPersonalDetailsForm } from 'Types';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 
 type TRestState = {
     api_error: string;
     errors?: boolean;
-    form_initial_values: TInputFieldValues;
+    form_initial_values: TIdvFailedForm;
     changeable_fields: string[];
 };
 
@@ -35,9 +43,11 @@ type TIdvFailed = {
 type TIDVFailureConfig = {
     required_fields: string[];
     side_note_image: React.ReactElement;
-    failure_message: React.ReactElement;
+    failure_message: React.ReactNode;
     inline_note_text: React.ReactNode;
 };
+
+type TIdvFailedForm = Partial<TIDVForm> & Partial<TPersonalDetailsForm>;
 
 const IdvFailed = ({
     getChangeableFields,
@@ -46,9 +56,19 @@ const IdvFailed = ({
     // handleSubmit,
     mismatch_status = 'POI_NAME_DOB_MISMATCH',
 }: TIdvFailed) => {
-    const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig | null>(null);
+    const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
+        required_fields: [],
+        side_note_image: <PoiNameDobExample />,
+        failure_message: null,
+        inline_note_text: null,
+    });
     const [is_loading, setIsLoading] = React.useState(true);
-    const [rest_state, setRestState] = React.useState<TRestState>();
+    const [rest_state, setRestState] = React.useState<TRestState>({
+        api_error: '',
+        errors: false,
+        form_initial_values: {},
+        changeable_fields: [],
+    });
 
     const is_document_upload_required = React.useMemo(
         () => ['POI_FAILED', 'POI_EXPIRED'].includes(mismatch_status),
@@ -56,7 +76,6 @@ const IdvFailed = ({
     );
 
     React.useEffect(() => {
-        let form_data: TInputFieldValues = {};
         const generateIDVError = () => {
             switch (mismatch_status) {
                 case 'POI_NAME_DOB_MISMATCH':
@@ -110,8 +129,7 @@ const IdvFailed = ({
                             />
                         ),
                     };
-                case 'POI_EXPIRED':
-                case 'POI_FAILED':
+                default:
                     return {
                         required_fields: ['first_name', 'last_name', 'date_of_birth'],
                         side_note_image: <PoiNameDobExample />,
@@ -133,13 +151,12 @@ const IdvFailed = ({
                             />
                         ),
                     };
-                default:
-                    return null;
             }
         };
+
         const initializeFormValues = async (required_fields: string[]) => {
             await WS.wait('get_settings');
-            form_data = filterObjProperties(account_settings, required_fields);
+            const form_data = filterObjProperties(account_settings, required_fields);
             if (form_data.date_of_birth) {
                 form_data.date_of_birth = toMoment(form_data).format('YYYY-MM-DD');
             }
@@ -168,12 +185,9 @@ const IdvFailed = ({
         const error_config = generateIDVError();
         setIdvFailure(error_config);
         initializeFormValues(error_config?.required_fields ?? []);
-    }, [mismatch_status, account_settings]);
+    }, [mismatch_status, account_settings, is_document_upload_required]);
 
-    const onSubmit = async (
-        values: TInputFieldValues,
-        { setStatus, setSubmitting }: FormikHelpers<TInputFieldValues>
-    ) => {
+    const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         setStatus({ error_msg: '' });
         const request = makeSettingsRequest(
             values,
@@ -196,11 +210,23 @@ const IdvFailed = ({
         }
     };
 
-    const validateFields = (values: TInputFieldValues) => {
-        const errors: TInputFieldValues = {};
+    const validateFields = (values: TIdvFailedForm) => {
+        const errors: Record<string, unknown> = {};
+        if (is_document_upload_required) {
+            const { document_type, document_number, document_additional } = values;
+            const needs_additional_document = !!document_type?.additional;
+            errors.document_type = isDocumentTypeValid(document_type as FormikValues);
+            if (!shouldHideHelperImage(document_type?.id as string)) {
+                if (needs_additional_document) {
+                    errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
+                }
+                errors.document_number = isDocumentNumberValid(document_number ?? '', document_type as FormikValues);
+            }
+        }
+
         const validateValues = validate(errors, values);
 
-        validateValues(val => val, idv_failure?.required_fields as string[], localize('This field is required'));
+        validateValues(val => val, idv_failure?.required_fields ?? [], localize('This field is required'));
 
         if (values.first_name) {
             errors.first_name = validateName(values.first_name);
@@ -235,7 +261,7 @@ const IdvFailed = ({
         >
             {({ handleSubmit, isSubmitting, isValid, dirty }) => (
                 <Form className='proof-of-identity__mismatch-container' onSubmit={handleSubmit}>
-                    <FormBody>
+                    <FormBody className='form-body'>
                         <Text size='s' weight='bold' className='proof-of-identity__failed-warning' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
@@ -243,7 +269,11 @@ const IdvFailed = ({
                             icon='IcCloseCircleRed'
                             icon_height={16}
                             icon_width={16}
-                            message={idv_failure?.failure_message as React.ReactElement}
+                            message={
+                                <Text as='p' size='xs'>
+                                    {idv_failure?.failure_message}
+                                </Text>
+                            }
                             is_danger
                         />
                         {is_document_upload_required && (
@@ -255,7 +285,7 @@ const IdvFailed = ({
                                 <IDVForm
                                     selected_country={selected_country}
                                     hide_hint={true}
-                                    can_skip_document_verification={true}
+                                    class_name='idv-layout idv-resubmit'
                                 />
                                 <FormSubHeader title={localize('Details')} />
                             </React.Fragment>
@@ -271,7 +301,7 @@ const IdvFailed = ({
                             type='submit'
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
-                            text={localize('Update profile')}
+                            text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                             large
                             primary
                         />
