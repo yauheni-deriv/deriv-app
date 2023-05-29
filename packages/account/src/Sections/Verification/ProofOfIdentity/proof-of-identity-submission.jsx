@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS } from '@deriv/shared';
+import { formatIDVError, WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
+import IdvFailed from 'Components/poi/idv-status/idv-failed';
 import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
@@ -99,9 +100,12 @@ const POISubmission = ({
                     default:
                         break;
                 }
-            } else {
-                setSubmissionStatus(submission_status_code.selecting);
-            }
+            } else if (idv.last_rejected.length > 0) {
+                    setSubmissionService(service_code.idv);
+                    setSubmissionStatus(submission_status_code.submitting);
+                } else {
+                    setSubmissionStatus(submission_status_code.selecting);
+                }
         }
     }, [
         allow_poi_resubmission,
@@ -127,7 +131,15 @@ const POISubmission = ({
         case submission_status_code.submitting: {
             switch (submission_service) {
                 case service_code.idv:
-                    return (
+                    return idv.last_rejected.length ? (
+                        <IdvFailed
+                            account_settings={account_settings}
+                            getChangeableFields={getChangeableFields}
+                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
+                            residence_list={residence_list}
+                            handleSubmit={handleViewComplete}
+                        />
+                    ) : (
                         <IdvDocumentSubmit
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}

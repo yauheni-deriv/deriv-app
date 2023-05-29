@@ -23,7 +23,7 @@ const Idv = ({
             return (
                 <IdvSubmitComplete
                     is_from_external={is_from_external}
-                    mismatch_status={formatIDVError(last_rejected)}
+                    mismatch_status={formatIDVError(last_rejected, status)}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                 />

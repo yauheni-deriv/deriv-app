@@ -123,7 +123,8 @@ const ProofOfIdentityContainer = ({
         has_require_submission ||
         allow_poi_resubmission ||
         (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
-        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
+        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected') ||
+        idv.last_rejected.length > 0
     ) {
         return (
             <POISubmission
