@@ -168,7 +168,7 @@ const IdvFailed = ({
             await WS.wait('get_settings');
             const form_data = filterObjProperties(account_settings, required_fields);
             if (form_data.date_of_birth) {
-                form_data.date_of_birth = toMoment(form_data).format('YYYY-MM-DD');
+                form_data.date_of_birth = toMoment(form_data.date_of_birth).format('YYYY-MM-DD');
             }
             let initial_form_values = form_data;
             if (is_document_upload_required) {
