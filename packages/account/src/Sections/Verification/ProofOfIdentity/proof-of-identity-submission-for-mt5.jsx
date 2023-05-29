@@ -40,7 +40,15 @@ const POISubmissionForMT5 = ({
                 jurisdiction_selected_shortcode !== 'vanuatu'
             ) {
                 setSubmissionService(service_code.idv);
-                setIdvMismatchStatus(formatIDVError(last_rejected, status));
+                if (
+                    [
+                        identity_status_codes.rejected,
+                        identity_status_codes.suspected,
+                        identity_status_codes.expired,
+                    ].includes(status)
+                ) {
+                    setIdvMismatchStatus(formatIDVError(last_rejected, status));
+                }
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
             } else {

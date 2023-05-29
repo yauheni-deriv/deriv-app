@@ -267,11 +267,6 @@ const IdvFailed = ({
     const citizen = account_settings?.citizen;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const SubmitButtonFooter = ({ is_bypassed, children }: React.PropsWithChildren<{ is_bypassed: boolean }>) => {
-        if (is_bypassed) return children as JSX.Element;
-        return <FormFooter>{children}</FormFooter>;
-    };
-
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
@@ -322,18 +317,31 @@ const IdvFailed = ({
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
                         />
+                        {!is_from_external && (
+                            <Button
+                                className='proof-of-identity__submit-button'
+                                type='submit'
+                                has_effect
+                                is_disabled={!dirty || isSubmitting || !isValid}
+                                text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
+                                large
+                                primary
+                            />
+                        )}
                     </FormBody>
-                    <SubmitButtonFooter is_bypassed={!is_from_external}>
-                        <Button
-                            className='proof-of-identity__submit-button'
-                            type='submit'
-                            has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
-                            text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
-                            large
-                            primary
-                        />
-                    </SubmitButtonFooter>
+                    {is_from_external && (
+                        <FormFooter>
+                            <Button
+                                className='proof-of-identity__submit-button'
+                                type='submit'
+                                has_effect
+                                is_disabled={!dirty || isSubmitting || !isValid}
+                                text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
+                                large
+                                primary
+                            />
+                        </FormFooter>
+                    )}
                 </Form>
             )}
         </Formik>
