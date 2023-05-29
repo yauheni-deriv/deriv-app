@@ -564,11 +564,14 @@
             .onfido-container {
                 padding-top: 1.6rem;
             }
+        }
 
-            .upload-layout {
-                div.dc-themed-scrollbars {
-                    padding: 0 16rem;
-                }
+        .proof-of-identity__mismatch-container {
+            max-width: 70.2rem;
+            margin-inline: auto;
+
+            .dc-themed-scrollbars {
+                padding-inline: 1.6rem;
             }
         }
     }
