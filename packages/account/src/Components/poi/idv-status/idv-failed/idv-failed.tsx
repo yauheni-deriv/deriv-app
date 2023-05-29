@@ -10,6 +10,7 @@ import {
     WS,
     idv_error_statuses,
     TIDVErrorStatus,
+    IDV_NOT_APPLICABLE_OPTION,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import PoiNameExample from 'Assets/ic-poi-name-example.svg';
@@ -43,7 +44,7 @@ type TRestState = {
 type TIdvFailed = {
     account_settings: GetSettings;
     getChangeableFields: () => string[];
-    // handleSubmit: () => void;
+    handleSubmit: () => void;
     is_from_external: boolean;
     mismatch_status: TIDVErrorStatus;
     residence_list: ResidenceList;
@@ -63,7 +64,7 @@ const IdvFailed = ({
     is_from_external,
     residence_list,
     account_settings,
-    // handleSubmit,
+    handleSubmit,
     mismatch_status = 'POI_FAILED',
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
@@ -204,7 +205,9 @@ const IdvFailed = ({
     }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields]);
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
+        setSubmitting(true);
         setStatus({ error_msg: '' });
+        const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
             rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
@@ -218,11 +221,28 @@ const IdvFailed = ({
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
                 setRestState(prev_state => ({ ...prev_state, api_error: response.error.message }));
+                setSubmitting(false);
                 return;
             }
-            setRestState({ ...rest_state, ...response.get_settings });
-            setIsLoading(false);
-            // handleSubmit();
+            const submit_data = {
+                identity_verification_document_add: 1,
+                document_number,
+                document_type: document_type?.id,
+                issuing_country: selected_country.value,
+            };
+
+            if (!submit_data.document_type || submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
+                setSubmitting(false);
+                handleSubmit();
+                return;
+            }
+            WS.send(submit_data).then(resp => {
+                setSubmitting(false);
+                if (resp.error) {
+                    return;
+                }
+                handleSubmit();
+            });
         }
     };
 
@@ -275,12 +295,11 @@ const IdvFailed = ({
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ handleSubmit, isSubmitting, isValid, dirty }) => (
+            {({ isSubmitting, isValid, dirty }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
                     })}
-                    onSubmit={handleSubmit}
                 >
                     <FormBody className='form-body'>
                         <Text size='s' weight='bold' className='proof-of-identity__failed-warning' align='center'>

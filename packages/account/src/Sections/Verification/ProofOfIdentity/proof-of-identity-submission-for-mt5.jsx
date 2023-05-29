@@ -120,6 +120,7 @@ const POISubmissionForMT5 = ({
                         account_settings={account_settings}
                         residence_list={residence_list}
                         is_from_external={is_from_external}
+                        handleSubmit={handlePOIComplete}
                     />
                 ) : (
                     <IdvDocSubmitOnSignup
