@@ -3,7 +3,7 @@ import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
+import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoUpload from './onfido-sdk-view-container';
@@ -169,7 +169,7 @@ const POISubmission = ({
             switch (submission_service) {
                 case service_code.idv:
                     return (
-                        <IdvUploadComplete
+                        <IdvSubmitComplete
                             is_from_external={is_from_external}
                             needs_poa={needs_poa}
                             redirect_button={redirect_button}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { formatIDVError } from '@deriv/shared';
-// import IdvExpired from 'Components/poi/idv-status/idv-expired';
 import IdvFailed from 'Components/poi/idv-status/idv-failed';
 import IdvLimited from 'Components/poi/idv-status/idv-limited';
 import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
