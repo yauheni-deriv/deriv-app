@@ -121,9 +121,9 @@ const ProofOfIdentityContainer = ({
     const should_show_mismatch_form =
         idv.submissions_left > 0 &&
         idv.last_rejected.length &&
-        (idv.status === identity_status_codes.rejected ||
-            idv.status === identity_status_codes.suspected ||
-            idv.status === identity_status_codes.expired);
+        [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
+            idv.status
+        );
 
     if (
         identity_status === identity_status_codes.none ||
