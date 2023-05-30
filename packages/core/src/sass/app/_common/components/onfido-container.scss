@@ -701,6 +701,10 @@
     }
 
     &__mismatch-container {
+        @include mobile {
+            padding-top: 2.4rem;
+        }
+
         .account-form__section-side-note {
             padding: 1.6rem 0;
         }
@@ -718,9 +722,15 @@
             }
             @include mobile {
                 width: 100%;
-                justify-content: start;
                 display: grid;
                 grid-template-columns: auto 1fr;
+            }
+
+            &__icon {
+                @include mobile {
+                    margin-top: 0.8rem;
+                    align-self: baseline;
+                }
             }
         }
 
