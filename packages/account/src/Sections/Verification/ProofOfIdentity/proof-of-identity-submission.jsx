@@ -183,6 +183,7 @@ const POISubmission = ({
                     return (
                         <IdvSubmitComplete
                             is_from_external={is_from_external}
+                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
                             needs_poa={needs_poa}
                             redirect_button={redirect_button}
                         />
