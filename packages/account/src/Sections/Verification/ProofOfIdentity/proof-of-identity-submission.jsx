@@ -102,7 +102,6 @@ const POISubmission = ({
                         break;
                 }
             } else if (
-                submission_service === service_code.idv &&
                 ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(
                     formatIDVError(idv.last_rejected, idv.status)
                 ) &&
