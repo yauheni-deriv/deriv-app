@@ -118,13 +118,20 @@ const ProofOfIdentityContainer = ({
         </Button>
     ) : null;
 
+    const should_show_mismatch_form =
+        idv.submissions_left > 0 &&
+        idv.last_rejected.length &&
+        (idv.status === identity_status_codes.rejected ||
+            idv.status === identity_status_codes.suspected ||
+            idv.status === identity_status_codes.expired);
+
     if (
         identity_status === identity_status_codes.none ||
         has_require_submission ||
         allow_poi_resubmission ||
         (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
         (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected') ||
-        idv.last_rejected.length > 0
+        should_show_mismatch_form
     ) {
         return (
             <POISubmission
@@ -192,7 +199,7 @@ const ProofOfIdentityContainer = ({
             return (
                 <IdvContainer
                     account_settings={account_settings}
-                    // handleRequireSubmission={handleRequireSubmission}
+                    handleRequireSubmission={handleRequireSubmission}
                     getChangeableFields={getChangeableFields}
                     idv={idv}
                     is_from_external={!!is_from_external}

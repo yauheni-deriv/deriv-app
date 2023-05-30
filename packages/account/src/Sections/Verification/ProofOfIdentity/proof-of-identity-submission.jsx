@@ -100,12 +100,12 @@ const POISubmission = ({
                     default:
                         break;
                 }
-            } else if (idv.last_rejected.length > 0) {
-                    setSubmissionService(service_code.idv);
-                    setSubmissionStatus(submission_status_code.submitting);
-                } else {
-                    setSubmissionStatus(submission_status_code.selecting);
-                }
+            } else if (idv.last_rejected.length > 0 && idv.submissions_left > 0) {
+                setSubmissionService(service_code.idv);
+                setSubmissionStatus(submission_status_code.submitting);
+            } else {
+                setSubmissionStatus(submission_status_code.selecting);
+            }
         }
     }, [
         allow_poi_resubmission,
