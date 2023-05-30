@@ -23,16 +23,17 @@ const IdvSubmitComplete = ({
         mismatch_status === idv_error_statuses.poi_dob_mismatch ||
         mismatch_status === idv_error_statuses.poi_name_mismatch;
 
-    const is_expired_error = mismatch_status === idv_error_statuses.poi_expired;
+    const is_expired_or_failed_error =
+        mismatch_status === idv_error_statuses.poi_expired || mismatch_status === idv_error_statuses.poi_failed;
 
     const getHeaderText = () => {
         if (is_mismatch_error) return localize('Your profile is updated');
-        if (is_expired_error) return localize('Your document has been submitted');
+        if (is_expired_or_failed_error) return localize('Your document has been submitted');
         return localize('Your documents were submitted successfully');
     };
 
     const getDescriptionText = () => {
-        if (is_mismatch_error || is_expired_error)
+        if (is_mismatch_error || is_expired_or_failed_error)
             return localize(
                 "We'll review your proof of identity again and will give you an update as soon as possible."
             );
