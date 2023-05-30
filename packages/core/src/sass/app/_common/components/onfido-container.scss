@@ -713,7 +713,15 @@
         .dc-hint-box {
             border-radius: 0.8rem;
             margin: 1.6rem auto 0;
-            width: fit-content;
+            @include desktop {
+                width: fit-content;
+            }
+            @include mobile {
+                width: 100%;
+                justify-content: start;
+                display: grid;
+                grid-template-columns: auto 1fr;
+            }
         }
 
         .account-form__poi-confirm-example {

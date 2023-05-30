@@ -19,7 +19,6 @@ const POISubmissionForMT5 = ({
     onStateChange,
     refreshNotifications,
     citizen_data,
-    has_idv_error,
     residence_list,
     jurisdiction_selected_shortcode,
 }) => {
@@ -126,7 +125,6 @@ const POISubmissionForMT5 = ({
                     <IdvDocSubmitOnSignup
                         citizen_data={citizen_data}
                         onNext={handleIdvSubmit}
-                        has_idv_error={has_idv_error}
                         getChangeableFields={getChangeableFields}
                         account_settings={account_settings}
                     />

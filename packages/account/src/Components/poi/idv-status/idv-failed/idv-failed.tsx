@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
-import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { Button, HintBox, Loading, Text } from '@deriv/components';
+import { GetSettings, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
     isEmptyObject,
@@ -11,6 +11,7 @@ import {
     idv_error_statuses,
     TIDVErrorStatus,
     IDV_NOT_APPLICABLE_OPTION,
+    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import PoiNameExample from 'Assets/ic-poi-name-example.svg';
@@ -236,7 +237,7 @@ const IdvFailed = ({
                 handleSubmit();
                 return;
             }
-            WS.send(submit_data).then(resp => {
+            WS.send(submit_data).then((resp: IdentityVerificationAddDocumentResponse) => {
                 setSubmitting(false);
                 if (resp.error) {
                     return;
@@ -318,7 +319,11 @@ const IdvFailed = ({
                         />
                         {is_document_upload_required && (
                             <React.Fragment>
-                                <Text size='xs' className='proof-of-identity__failed-warning' align='center'>
+                                <Text
+                                    size='xs'
+                                    className='proof-of-identity__failed-warning'
+                                    align={isMobile() ? 'left' : 'center'}
+                                >
                                     <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />
@@ -336,19 +341,21 @@ const IdvFailed = ({
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
                         />
-                        {!is_from_external && (
-                            <Button
-                                className='proof-of-identity__submit-button'
-                                type='submit'
-                                has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
-                                text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
-                                large
-                                primary
-                            />
-                        )}
+                        <DesktopWrapper>
+                            {!is_from_external && (
+                                <Button
+                                    className='proof-of-identity__submit-button'
+                                    type='submit'
+                                    has_effect
+                                    is_disabled={!dirty || isSubmitting || !isValid}
+                                    text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
+                                    large
+                                    primary
+                                />
+                            )}
+                        </DesktopWrapper>
                     </FormBody>
-                    {is_from_external && (
+                    {(is_from_external || isMobile()) && (
                         <FormFooter>
                             <Button
                                 className='proof-of-identity__submit-button'

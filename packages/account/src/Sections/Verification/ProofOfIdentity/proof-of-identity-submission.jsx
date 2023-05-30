@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { formatIDVError, WS } from '@deriv/shared';
+import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvFailed from 'Components/poi/idv-status/idv-failed';
@@ -27,6 +27,7 @@ const POISubmission = ({
     refreshNotifications,
     residence_list,
     setIsCfdPoiCompleted,
+    should_show_mismatch_form,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -100,7 +101,13 @@ const POISubmission = ({
                     default:
                         break;
                 }
-            } else if (idv.last_rejected.length > 0 && idv.submissions_left > 0) {
+            } else if (
+                submission_service === service_code.idv &&
+                ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(
+                    formatIDVError(idv.last_rejected, idv.status)
+                ) &&
+                idv.submissions_left > 0
+            ) {
                 setSubmissionService(service_code.idv);
                 setSubmissionStatus(submission_status_code.submitting);
             } else {
@@ -131,7 +138,7 @@ const POISubmission = ({
         case submission_status_code.submitting: {
             switch (submission_service) {
                 case service_code.idv:
-                    return idv.last_rejected.length ? (
+                    return should_show_mismatch_form ? (
                         <IdvFailed
                             account_settings={account_settings}
                             getChangeableFields={getChangeableFields}

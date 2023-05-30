@@ -120,7 +120,6 @@ const ProofOfIdentityContainer = ({
 
     const should_show_mismatch_form =
         idv.submissions_left > 0 &&
-        idv.last_rejected.length &&
         [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
             idv.status
         );
@@ -153,6 +152,7 @@ const ProofOfIdentityContainer = ({
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                 updateAccountStatus={updateAccountStatus}
+                should_show_mismatch_form={should_show_mismatch_form}
             />
         );
     } else if (

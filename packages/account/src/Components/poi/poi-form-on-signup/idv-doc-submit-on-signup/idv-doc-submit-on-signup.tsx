@@ -27,7 +27,6 @@ type TIdvDocSubmitOnSignup = {
         action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
     ) => void;
     value: FormikValues;
-    has_idv_error?: boolean;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
 };
@@ -37,7 +36,6 @@ export const IdvDocSubmitOnSignup = ({
     onNext,
     account_settings,
     getChangeableFields,
-    has_idv_error,
 }: TIdvDocSubmitOnSignup) => {
     const side_note_image = <PoiNameDobExample />;
     const validateFields = (values: FormikValues) => {
