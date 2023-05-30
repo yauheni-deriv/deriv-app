@@ -724,16 +724,27 @@
             }
         }
 
-        .account-form__poi-confirm-example {
-            border: 1px solid var(--general-active);
-            border-radius: 0.8rem;
-            margin: 3.2rem 0;
-            padding: 1.6rem 1.6rem 0;
-            min-height: 26rem;
+        .account-form {
+            &__poi-confirm-example {
+                border: 1px solid var(--general-active);
+                border-radius: 0.8rem;
+                margin: 3.2rem 0;
+                padding: 1.6rem 1.6rem 0;
+                min-height: 26rem;
+            }
+            @include mobile {
+                &__footer {
+                    padding: 1.6rem 2.4rem;
+                }
+            }
         }
 
         .proof-of-identity__submit-button {
             margin-left: auto;
+            @include mobile {
+                width: 100%;
+                padding: 0 2.4rem;
+            }
         }
     }
 }
