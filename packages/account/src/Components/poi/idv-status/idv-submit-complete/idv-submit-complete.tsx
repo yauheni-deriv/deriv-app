@@ -1,9 +1,9 @@
-import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
-import PoaButton from 'Components/poa/poa-button';
 import React from 'react';
 import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { idv_error_statuses, TIDVErrorStatus } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
+import PoaButton from 'Components/poa/poa-button';
 
 type TIdvSubmitComplete = {
     is_from_external: boolean;
