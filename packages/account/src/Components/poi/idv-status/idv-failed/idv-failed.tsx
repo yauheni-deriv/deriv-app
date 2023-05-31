@@ -53,7 +53,7 @@ type TIdvFailed = {
 
 type TIDVFailureConfig = {
     required_fields: string[];
-    side_note_image: React.ReactElement;
+    side_note_image: JSX.Element;
     failure_message: React.ReactNode;
     inline_note_text: React.ReactNode;
 };
@@ -200,7 +200,7 @@ const IdvFailed = ({
             setRestState({
                 form_initial_values: {},
                 changeable_fields: [],
-                api_error: e.error.message,
+                api_error: e?.error?.message,
             });
         });
     }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields]);
@@ -279,14 +279,14 @@ const IdvFailed = ({
         return removeEmptyPropertiesFromObject(errors);
     };
 
+    const citizen = account_settings?.citizen;
+    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
     if (rest_state?.api_error) return <LoadErrorMessage error_message={rest_state.api_error} />;
 
     if (is_loading && Object.keys(rest_state?.form_initial_values ?? {}).length === 0) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
-
-    const citizen = account_settings?.citizen;
-    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
     return (
         <Formik
@@ -311,7 +311,7 @@ const IdvFailed = ({
                             icon_height={16}
                             icon_width={16}
                             message={
-                                <Text as='p' size='xs'>
+                                <Text as='p' size='xs' data-testid={mismatch_status}>
                                     {idv_failure?.failure_message}
                                 </Text>
                             }
