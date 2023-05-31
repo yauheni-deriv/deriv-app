@@ -53,9 +53,9 @@ type TIdvFailed = {
 
 type TIDVFailureConfig = {
     required_fields: string[];
-    side_note_image: () => JSX.Element;
+    side_note_image: JSX.Element;
     failure_message: React.ReactNode;
-    inline_note_text: () => React.ReactNode;
+    inline_note_text: React.ReactNode;
 };
 
 type TIdvFailedForm = Partial<TIDVForm> & Partial<TPersonalDetailsForm>;
@@ -70,9 +70,9 @@ const IdvFailed = ({
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
-        side_note_image: () => <PoiNameDobExample />,
+        side_note_image: <PoiNameDobExample />,
         failure_message: null,
-        inline_note_text: () => null,
+        inline_note_text: null,
     });
     const [is_loading, setIsLoading] = React.useState(true);
     const [rest_state, setRestState] = React.useState<TRestState>({
@@ -93,8 +93,8 @@ const IdvFailed = ({
                 case idv_error_statuses.poi_name_dob_mismatch:
                     return {
                         required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                        side_note_image: () => <PoiNameDobExample />,
-                        inline_note_text: () => (
+                        side_note_image: <PoiNameDobExample />,
+                        inline_note_text: (
                             <Localize
                                 i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
                                 components={[<strong key={0} />]}
@@ -110,8 +110,8 @@ const IdvFailed = ({
                 case idv_error_statuses.poi_name_mismatch:
                     return {
                         required_fields: ['first_name', 'last_name'],
-                        side_note_image: () => <PoiNameExample />,
-                        inline_note_text: () => (
+                        side_note_image: <PoiNameExample />,
+                        inline_note_text: (
                             <Localize
                                 i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your identity document.'
                                 components={[<strong key={0} />]}
@@ -127,8 +127,8 @@ const IdvFailed = ({
                 case idv_error_statuses.poi_dob_mismatch:
                     return {
                         required_fields: ['date_of_birth'],
-                        side_note_image: () => <PoiDobExample />,
-                        inline_note_text: () => (
+                        side_note_image: <PoiDobExample />,
+                        inline_note_text: (
                             <Localize
                                 i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your identity document.'
                                 components={[<strong key={0} />]}
@@ -144,8 +144,8 @@ const IdvFailed = ({
                 default:
                     return {
                         required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                        side_note_image: () => <PoiNameDobExample />,
-                        inline_note_text: () => (
+                        side_note_image: <PoiNameDobExample />,
+                        inline_note_text: (
                             <Localize
                                 i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
                                 components={[<strong key={0} />]}
@@ -317,7 +317,7 @@ const IdvFailed = ({
                             }
                             is_danger
                         />
-                        {is_document_upload_required ? (
+                        {is_document_upload_required && (
                             <React.Fragment>
                                 <Text
                                     size='xs'
@@ -334,14 +334,12 @@ const IdvFailed = ({
                                 />
                                 <FormSubHeader title={localize('Details')} />
                             </React.Fragment>
-                        ) : (
-                            <React.Fragment />
                         )}
                         <PersonalDetailsForm
                             editable_fields={rest_state?.changeable_fields}
                             is_qualified_for_idv
-                            side_note={idv_failure?.side_note_image()}
-                            inline_note_text={idv_failure?.inline_note_text()}
+                            side_note={idv_failure?.side_note_image}
+                            inline_note_text={idv_failure?.inline_note_text}
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
