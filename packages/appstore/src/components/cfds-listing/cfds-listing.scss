@@ -509,6 +509,20 @@
     position: relative;
     width: 100%;
 
+    .poi-form-on-signup__fields {
+        .dc-autocomplete {
+            margin-bottom: 0;
+        }
+    }
+
+    .account-form__poi-confirm-example {
+        gap: 1.6rem;
+
+        @include mobile {
+            gap: 0;
+        }
+    }
+
     &__body {
         width: 100%;
         .poi-form-on-signup {
