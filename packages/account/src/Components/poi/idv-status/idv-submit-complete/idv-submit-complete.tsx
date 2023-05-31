@@ -40,16 +40,7 @@ const IdvSubmitComplete = ({
         return localize('We’ll review your documents and notify you of its status within 5 minutes.');
     };
 
-    const poa_button = (
-        <React.Fragment>
-            <Text className='text' size='xs' align='center'>
-                {localize("Next, we'll need your proof of address.")}
-            </Text>
-            {!is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />}
-        </React.Fragment>
-    );
-
-    const button = 'from mismatch' || 'from expired' ? <React.Fragment /> : needs_poa ? poa_button : redirect_button;
+    const poa_button = !is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />;
 
     return (
         <div className='proof-of-identity__container'>
@@ -60,7 +51,16 @@ const IdvSubmitComplete = ({
             <Text className='proof-of-identity__text text' size='xs' align='center'>
                 {getDescriptionText()}
             </Text>
-            {button}
+            {needs_poa ? (
+                <React.Fragment>
+                    <Text className='text' size='xs' align='center'>
+                        {localize("Next, we'll need your proof of address.")}
+                    </Text>
+                    {poa_button}
+                </React.Fragment>
+            ) : (
+                <div className='proof-of-identity__redirection'>{redirect_button}</div>
+            )}
         </div>
     );
 };
