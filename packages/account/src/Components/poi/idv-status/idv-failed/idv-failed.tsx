@@ -66,7 +66,7 @@ const IdvFailed = ({
     residence_list,
     account_settings,
     handleSubmit,
-    mismatch_status = 'POI_FAILED',
+    mismatch_status = idv_error_statuses.poi_failed,
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -83,7 +83,7 @@ const IdvFailed = ({
     });
 
     const is_document_upload_required = React.useMemo(
-        () => ['POI_FAILED', 'POI_EXPIRED'].includes(mismatch_status),
+        () => [idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status),
         [mismatch_status]
     );
 
@@ -107,7 +107,7 @@ const IdvFailed = ({
                             />
                         ),
                     };
-                case 'POI_NAME_MISMATCH':
+                case idv_error_statuses.poi_name_mismatch:
                     return {
                         required_fields: ['first_name', 'last_name'],
                         side_note_image: <PoiNameExample />,
@@ -124,7 +124,7 @@ const IdvFailed = ({
                             />
                         ),
                     };
-                case 'POI_DOB_MISMATCH':
+                case idv_error_statuses.poi_dob_mismatch:
                     return {
                         required_fields: ['date_of_birth'],
                         side_note_image: <PoiDobExample />,
