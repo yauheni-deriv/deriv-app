@@ -1,5 +1,5 @@
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
@@ -75,7 +75,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         }
     }, [fetchResidenceList, is_switching]);
 
-    if (is_status_loading || is_switching) {
+    if (is_status_loading || is_switching || isEmptyObject(account_status)) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;
