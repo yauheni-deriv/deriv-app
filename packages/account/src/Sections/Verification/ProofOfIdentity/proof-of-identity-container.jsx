@@ -36,7 +36,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         should_allow_authentication,
         is_virtual,
     } = client;
-    const { app_routing_history, current_language, is_language_changing, routeBackInApp } = common;
+    const { app_routing_history, is_language_changing, routeBackInApp } = common;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -61,7 +61,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         if (is_language_changing) {
             loadResidenceList();
         }
-    }, [current_language, is_language_changing, loadResidenceList]);
+    }, [is_language_changing, loadResidenceList]);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
