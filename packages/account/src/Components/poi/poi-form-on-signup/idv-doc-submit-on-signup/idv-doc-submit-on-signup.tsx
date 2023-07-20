@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { GetSettings } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import {
@@ -11,12 +12,11 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
     shouldHideHelperImage,
-} from 'Helpers/utils';
-import FormSubHeader from 'Components/form-sub-header';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormFooter from 'Components/form-footer';
-import { GetSettings } from '@deriv/api-types';
+} from '../../../../Helpers/utils';
+import FormSubHeader from '../../../form-sub-header';
+import IDVForm from '../../../forms/idv-form';
+import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
+import FormFooter from '../../../form-footer';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
