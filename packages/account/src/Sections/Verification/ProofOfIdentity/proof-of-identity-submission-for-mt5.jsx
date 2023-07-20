@@ -18,6 +18,7 @@ const POISubmissionForMT5 = observer(
         citizen_data,
         has_idv_error,
         jurisdiction_selected_shortcode,
+        residence_list,
     }) => {
         const [submission_status, setSubmissionStatus] = React.useState(); // submitting
         const [submission_service, setSubmissionService] = React.useState();
@@ -110,6 +111,7 @@ const POISubmissionForMT5 = observer(
                             has_idv_error={has_idv_error}
                             getChangeableFields={getChangeableFields}
                             account_settings={account_settings}
+                            residence_list={residence_list}
                         />
                     );
                 case service_code.onfido: {

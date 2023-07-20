@@ -29,6 +29,7 @@ type TIdvDocSubmitOnSignup = {
     has_idv_error?: boolean;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
+    residence_list: any;
 };
 
 export const IdvDocSubmitOnSignup = ({
@@ -36,6 +37,7 @@ export const IdvDocSubmitOnSignup = ({
     onNext,
     account_settings,
     getChangeableFields,
+    residence_list,
 }: TIdvDocSubmitOnSignup) => {
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
@@ -141,6 +143,8 @@ export const IdvDocSubmitOnSignup = ({
                                 is_appstore
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
+                                residence_list={residence_list}
+                                warning_items={undefined}
                             />
                         </div>
                     </section>

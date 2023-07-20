@@ -11,10 +11,11 @@ import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data, jurisdiction_selected_shortcode }) => {
     const [api_error, setAPIError] = React.useState();
+    const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
     const { client } = useStore();
-    const { account_status, is_switching, is_virtual } = client;
+    const { account_status, fetchResidenceList, is_switching, is_virtual } = client;
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -22,11 +23,20 @@ const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data, 
             WS.authorized.getAccountStatus().then(response_account_status => {
                 if (response_account_status.error) {
                     setAPIError(response_account_status.error);
+                    setStatusLoading(false);
+                    return;
                 }
-                setStatusLoading(false);
+                fetchResidenceList().then(response_residence_list => {
+                    if (response_residence_list.error) {
+                        setAPIError(response_residence_list.error);
+                    } else {
+                        setResidenceList(response_residence_list.residence_list);
+                    }
+                    setStatusLoading(false);
+                });
             });
         }
-    }, [is_switching]);
+    }, [fetchResidenceList, is_switching]);
 
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
@@ -56,6 +66,7 @@ const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data, 
             is_idv_disallowed={is_idv_disallowed}
             onfido={onfido}
             onStateChange={onStateChange}
+            residence_list={residence_list}
             citizen_data={citizen_data}
             has_idv_error={has_idv_error}
             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
