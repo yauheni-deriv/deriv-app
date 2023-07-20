@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { PoaButton } from '../../../poa/poa-button/poa-button';
+import PoaButton from '../../../poa/poa-button';
 import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPlatformContext, TPOIStatus } from 'Types';
