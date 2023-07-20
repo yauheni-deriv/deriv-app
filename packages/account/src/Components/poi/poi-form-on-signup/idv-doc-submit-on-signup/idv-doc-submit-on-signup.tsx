@@ -144,7 +144,6 @@ export const IdvDocSubmitOnSignup = ({
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
                                 residence_list={residence_list}
-                                warning_items={undefined}
                             />
                         </div>
                     </section>

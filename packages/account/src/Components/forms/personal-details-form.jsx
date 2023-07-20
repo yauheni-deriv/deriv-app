@@ -30,7 +30,7 @@ const PersonalDetailsForm = ({
     setFieldValue,
     handleChange,
     handleBlur,
-    warning_items,
+    warning_items = {},
     setFieldTouched,
     ...props
 }) => {
