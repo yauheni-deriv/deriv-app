@@ -11,69 +11,89 @@ jest.mock('@deriv/shared', () => ({
     toMoment: jest.fn(),
     validLength: jest.fn(),
 }));
+
 describe('personal-details-config', () => {
-    const mock_props = {
+    const mock_props: Parameters<typeof personal_details_config>[0] = {
         residence_list: [
             {
-                services: {
-                    idv: {
-                        documents_supported: {},
-                        has_visual_sample: 0,
-                        is_country_supported: 0,
-                    },
-                    onfido: {
-                        documents_supported: {
-                            passport: {
-                                display_name: 'Passport',
-                            },
-                        },
-                        is_country_supported: 0,
-                    },
-                },
                 phone_idd: '93',
                 text: 'Afghanistan',
                 value: 'af',
                 tin_format: [],
                 disabled: '1',
+                identity: {
+                    services: {
+                        idv: {
+                            documents_supported: {},
+                            has_visual_sample: 0,
+                            is_country_supported: 0,
+                        },
+                        onfido: {
+                            documents_supported: {
+                                passport: {
+                                    display_name: 'Passport',
+                                },
+                            },
+                            is_country_supported: 0,
+                        },
+                    },
+                },
             },
             {
-                services: {
-                    idv: {
-                        documents_supported: {},
-                        has_visual_sample: 0,
-                        is_country_supported: 0,
-                    },
-                    onfido: {
-                        documents_supported: {
-                            driving_licence: {
-                                display_name: 'Driving Licence',
-                            },
-                            national_identity_card: {
-                                display_name: 'National Identity Card',
-                            },
-                            passport: {
-                                display_name: 'Passport',
-                            },
-                            residence_permit: {
-                                display_name: 'Residence Permit',
-                            },
+                phone_idd: '93',
+                text: 'Indonesia',
+                value: 'af',
+                tin_format: [],
+                disabled: '1',
+                identity: {
+                    services: {
+                        idv: {
+                            documents_supported: {},
+                            has_visual_sample: 0,
+                            is_country_supported: 0,
                         },
-                        is_country_supported: 1,
+                        onfido: {
+                            documents_supported: {
+                                driving_licence: {
+                                    display_name: 'Driving Licence',
+                                },
+                                national_identity_card: {
+                                    display_name: 'National Identity Card',
+                                },
+                                passport: {
+                                    display_name: 'Passport',
+                                },
+                                residence_permit: {
+                                    display_name: 'Residence Permit',
+                                },
+                            },
+                            is_country_supported: 1,
+                        },
                     },
-                    phone_idd: '93',
-                    text: 'Indonesia',
-                    value: 'af',
-                    tin_format: [],
-                    disabled: '1',
                 },
             },
         ],
         account_settings: {
             tax_residence: 'af',
             residence: 'Indonesia',
+            document_type: '',
+            document_number: '',
         },
         real_account_signup_target: 'maltainvest',
-        account_status: { cashier_validation: ['system_maintenance'] },
+        account_status: {
+            cashier_validation: ['system_maintenance'],
+            currency_config: {
+                USD: {
+                    is_deposit_suspended: 0,
+                    is_withdrawal_suspended: 0,
+                },
+            },
+            p2p_status: 'active',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [''],
+        },
+        residence: 'af',
     };
 
     it('should return account tax residence as default value if it is already set', () => {
