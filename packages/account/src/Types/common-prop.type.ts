@@ -1,4 +1,5 @@
 /** Add types that are shared between components */
+import React from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import { Authorize, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
@@ -102,7 +103,7 @@ type TIdentity = {
     };
 };
 
-export type TResidenseList = {
+export type TResidenceList = {
     identity: TIdentity;
     phone_idd: string;
     tin_format: string[];

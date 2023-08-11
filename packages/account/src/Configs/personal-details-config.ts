@@ -1,3 +1,4 @@
+import { GetAccountStatus, GetSettings } from '@deriv/api-types';
 import {
     TSchema,
     generateValidationFunction,
@@ -8,18 +9,16 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
-import { TResidenseList, TUpgradeInfo } from 'Types';
-import { GetAccountStatus, GetSettings } from '@deriv/api-types';
+import { TResidenceList, TUpgradeInfo } from 'Types';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
-    residence_list: TResidenseList[];
+    residence_list: TResidenceList[];
     account_settings: GetSettings & {
         document_type: string;
         document_number: string;
     };
-    is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
 };
@@ -27,7 +26,6 @@ type TPersonalDetailsConfig = {
 export const personal_details_config = ({
     residence_list,
     account_settings,
-    is_appstore,
     real_account_signup_target,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
@@ -189,20 +187,7 @@ export const personal_details_config = ({
         },
     };
 
-    const getConfig = () => {
-        if (is_appstore) {
-            const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            return Object.keys(config).reduce((new_config, key) => {
-                if (allowed_fields.includes(key)) {
-                    new_config[key] = config[key];
-                }
-                return new_config;
-            }, {});
-        }
-        return config;
-    };
-
-    return [getConfig()];
+    return config;
 };
 
 const personalDetailsConfig = <T>(
@@ -214,13 +199,11 @@ const personalDetailsConfig = <T>(
         account_status,
         residence,
     }: TPersonalDetailsConfig,
-    PersonalDetails: T,
-    is_appstore = false
+    PersonalDetails: T
 ) => {
-    const [config] = personal_details_config({
+    const config = personal_details_config({
         residence_list,
         account_settings,
-        is_appstore,
         real_account_signup_target,
         residence,
         account_status,
@@ -228,8 +211,8 @@ const personalDetailsConfig = <T>(
     const disabled_items = account_settings.immutable_fields;
     return {
         header: {
-            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
-            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
+            active_title: localize('Complete your personal details'),
+            title: localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),

@@ -72,14 +72,13 @@ describe('personal-details-config', () => {
             tax_residence: 'af',
             residence: 'Indonesia',
         },
-        is_appstore: false,
         real_account_signup_target: 'maltainvest',
         account_status: { cashier_validation: ['system_maintenance'] },
     };
 
     it('should return account tax residence as default value if it is already set', () => {
         const personal_details = personal_details_config(mock_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual('Afghanistan');
+        expect(personal_details.tax_residence.default_value).toEqual('Afghanistan');
     });
 
     it('should return residence as the default value for MF clients, If the account tax residence is not set', () => {
@@ -91,7 +90,7 @@ describe('personal-details-config', () => {
             },
         };
         const personal_details = personal_details_config(new_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual(new_props.account_settings.residence);
+        expect(personal_details.tax_residence.default_value).toEqual(new_props.account_settings.residence);
     });
 
     it('should not set default value for CR clients, If the account tax residence is not set', () => {
@@ -104,6 +103,6 @@ describe('personal-details-config', () => {
             },
         };
         const personal_details = personal_details_config(new_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual('');
+        expect(personal_details.tax_residence.default_value).toEqual('');
     });
 });
