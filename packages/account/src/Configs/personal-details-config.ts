@@ -1,4 +1,4 @@
-import { GetAccountStatus, GetSettings } from '@deriv/api-types';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import {
     TSchema,
     generateValidationFunction,
@@ -9,12 +9,12 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
-import { TResidenceList, TUpgradeInfo } from 'Types';
+import { TUpgradeInfo } from 'Types';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
-    residence_list: TResidenceList[];
+    residence_list: ResidenceList;
     account_settings: GetSettings & {
         document_type: string;
         document_number: string;

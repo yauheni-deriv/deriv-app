@@ -103,15 +103,6 @@ type TIdentity = {
     };
 };
 
-export type TResidenceList = {
-    identity: TIdentity;
-    phone_idd: string;
-    tin_format: string[];
-    disabled: string;
-    text: string;
-    value: string;
-};
-
 export type TFile = {
     path: string;
     lastModified: number;
