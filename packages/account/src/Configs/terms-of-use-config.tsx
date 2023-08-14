@@ -21,7 +21,7 @@ const termsOfUseConfig = (
     return {
         header: {
             active_title: isDesktop() ? active_title : null,
-            title: localize('Terms of use'),
+            title: active_title,
         },
         body: TermsOfUse,
         form_value: getDefaultFields(real_account_signup_target, terms_of_use_config),
