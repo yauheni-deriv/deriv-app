@@ -3,10 +3,10 @@ import { TInitPreBuildDVRs, TOptions, getPreBuildDVRs } from './declarative-vali
 import fromEntries from 'object.fromentries';
 
 type TConfig = {
-    default_value: string | boolean | number;
+    default_value: string | number;
     supported_in: string[];
     rules?: Array<(TOptions | any)[]>;
-    values?: Record<string, string | boolean>;
+    values?: Record<string, string>;
 };
 export type TSchema = { [key: string]: TConfig };
 
@@ -16,7 +16,7 @@ export type TSchema = { [key: string]: TConfig };
  * @param {object} schema
  */
 export const getDefaultFields = (landing_company: string, schema: TSchema | Record<string, never>) => {
-    const output: { [key: string]: string | number | boolean } = {};
+    const output: { [key: string]: string | number } = {};
     Object.entries(filterByLandingCompany(landing_company, schema)).forEach(([field_name, opts]) => {
         output[field_name] = opts.default_value;
     });
@@ -72,7 +72,7 @@ type TCheckForErrors = {
     value: string;
     rule: string;
     options: TOptions;
-    values: Record<string, string | boolean>;
+    values: Record<string, string>;
 };
 /**
  * Returns true if the rule has error, false otherwise.
@@ -104,6 +104,5 @@ export const getValidationFunction = (rule: string) => {
     /**
      * Generated validation function from the DVRs.
      */
-    return (value: string, options: TOptions, values: Record<string, string | boolean>) =>
-        !!func(value, options, values);
+    return (value: string, options: TOptions, values: Record<string, string>) => !!func(value, options, values);
 };

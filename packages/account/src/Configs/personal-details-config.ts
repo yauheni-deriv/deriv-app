@@ -165,7 +165,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Employment status is required.')]],
         },
         tax_identification_confirm: {
-            default_value: false,
+            default_value: '',
             supported_in: ['maltainvest'],
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
@@ -273,7 +273,7 @@ const transformConfig = (
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
         config?.tax_residence?.rules?.shift();
     }
-    // Remove IDV for non supporting SVG countries
+    // Remove IDV for non-supporting SVG countries
     if (
         !shouldShowIdentityInformation({
             account_status,
