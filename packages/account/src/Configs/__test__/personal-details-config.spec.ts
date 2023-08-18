@@ -42,7 +42,7 @@ describe('personal-details-config', () => {
             {
                 phone_idd: '93',
                 text: 'Indonesia',
-                value: 'af',
+                value: 'is',
                 tin_format: [],
                 disabled: '1',
                 identity: {
@@ -74,7 +74,7 @@ describe('personal-details-config', () => {
             },
         ],
         account_settings: {
-            tax_residence: 'af',
+            tax_residence: 'id',
             residence: 'Indonesia',
             document_type: '',
             document_number: '',
