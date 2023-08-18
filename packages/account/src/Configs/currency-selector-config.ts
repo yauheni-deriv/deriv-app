@@ -1,4 +1,4 @@
-import React from 'react';
+import type { Component } from 'react';
 import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -12,7 +12,7 @@ const currency_selector_config: TSchema = {
 
 const currencySelectorConfig = (
     { real_account_signup_target }: { real_account_signup_target: string },
-    CurrencySelector: React.Component
+    CurrencySelector: Component
 ) => {
     return {
         header: {

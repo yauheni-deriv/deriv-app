@@ -1,4 +1,4 @@
-import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
+import type { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import {
     TSchema,
     generateValidationFunction,

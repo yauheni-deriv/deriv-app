@@ -1,5 +1,5 @@
-import React from 'react';
-import { GetFinancialAssessment } from '@deriv/api-types';
+import type { Component } from 'react';
+import type { GetFinancialAssessment } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -57,7 +57,7 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
 
 const financialDetailsConfig = (
     { real_account_signup_target, financial_assessment }: TFinancialDetailsConfig,
-    FinancialDetails: React.Component
+    FinancialDetails: Component
 ) => {
     const config = financial_details_config({ financial_assessment });
 
