@@ -1,4 +1,4 @@
-import type { Component } from 'react';
+import React from 'react';
 import { getDefaultFields, TSchema } from '@deriv/shared';
 
 const accept_risk_config: TSchema = {
@@ -10,7 +10,7 @@ const accept_risk_config: TSchema = {
 
 const acceptRiskConfig = (
     { real_account_signup_target }: { real_account_signup_target: string },
-    AcceptRiskForm: Component
+    AcceptRiskForm: React.Component
 ) => {
     return {
         header: {},

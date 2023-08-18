@@ -1,4 +1,4 @@
-import type { Component } from 'react';
+import React from 'react';
 import { getDefaultFields, isDesktop, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -15,7 +15,7 @@ const terms_of_use_config: TSchema = {
 
 const termsOfUseConfig = (
     { real_account_signup_target }: { real_account_signup_target: string },
-    TermsOfUse: Component
+    TermsOfUse: React.Component
 ) => {
     const active_title = localize('Terms of use');
     return {

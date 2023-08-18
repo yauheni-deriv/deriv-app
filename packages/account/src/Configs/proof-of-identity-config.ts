@@ -1,10 +1,10 @@
-import type { Component } from 'react';
+import React from 'react';
 import type { GetSettings } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 
 const proofOfIdentityConfig = (
     { account_settings }: { account_settings: GetSettings },
-    ProofOfIdentityForm: Component
+    ProofOfIdentityForm: React.Component
 ) => {
     return {
         header: {

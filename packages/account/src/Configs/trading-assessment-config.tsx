@@ -1,4 +1,4 @@
-import type { Component } from 'react';
+import React from 'react';
 import type { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -317,7 +317,7 @@ const tradingAssessmentConfig = (
         account_settings,
         setSubSectionIndex,
     }: TTradingAssessmentConfig,
-    TradingAssessmentNewUser: Component
+    TradingAssessmentNewUser: React.Component
 ) => {
     const trading_assessment_form_config = getTradingAssessmentFormConfig(financial_assessment);
     return {

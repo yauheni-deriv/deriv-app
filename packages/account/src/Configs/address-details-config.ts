@@ -1,4 +1,4 @@
-import type { Component } from 'react';
+import React from 'react';
 import type { GetSettings } from '@deriv/api-types';
 import {
     generateValidationFunction,
@@ -161,7 +161,7 @@ const address_details_config: ({
 
 const addressDetailsConfig = (
     { upgrade_info, real_account_signup_target, residence, account_settings }: TAddressDetailsConfigProps,
-    AddressDetails: Component
+    AddressDetails: React.Component
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
