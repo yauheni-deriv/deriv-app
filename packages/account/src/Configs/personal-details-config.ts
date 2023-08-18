@@ -165,7 +165,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Employment status is required.')]],
         },
         tax_identification_confirm: {
-            default_value: '',
+            default_value: false,
             supported_in: ['maltainvest'],
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
