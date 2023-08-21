@@ -16,31 +16,7 @@ describe('personal-details-config', () => {
     const mock_props: Parameters<typeof personal_details_config>[0] = {
         residence_list: [
             {
-                phone_idd: '93',
-                text: 'Afghanistan',
-                value: 'af',
-                tin_format: [],
-                disabled: '1',
-                identity: {
-                    services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
-                        onfido: {
-                            documents_supported: {
-                                passport: {
-                                    display_name: 'Passport',
-                                },
-                            },
-                            is_country_supported: 0,
-                        },
-                    },
-                },
-            },
-            {
-                phone_idd: '93',
+                phone_idd: '62',
                 text: 'Indonesia',
                 value: 'is',
                 tin_format: [],
@@ -98,7 +74,7 @@ describe('personal-details-config', () => {
 
     it('should return account tax residence as default value if it is already set', () => {
         const personal_details = personal_details_config(mock_props);
-        expect(personal_details.tax_residence.default_value).toEqual('Afghanistan');
+        expect(personal_details.tax_residence.default_value).toEqual('Indonesia');
     });
 
     it('should return residence as the default value for MF clients, If the account tax residence is not set', () => {
