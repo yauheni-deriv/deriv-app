@@ -1,34 +1,38 @@
-import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Formik } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button, useStateCallback } from '@deriv/components';
+import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
-import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import Card from '../../../Containers/proof-of-ownership/card';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
+
+type TProofOfOwnershipForm = {
+    citizen?: string | null;
+    grouped_payment_method_data: any;
+};
 
 const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
     if (items_count <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({
-    client_email,
-    grouped_payment_method_data,
-    refreshNotifications,
-    updateAccountStatus,
-}) => {
+const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOfOwnershipForm) => {
+    const { client, notifications } = useStore();
+    const { email: client_email, updateAccountStatus } = client;
+    const { refreshNotifications } = notifications;
+
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data);
     const initial_values = {};
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const form_ref = React.useRef();
-    const fileReadErrorMessage = filename => {
+    const fileReadErrorMessage = (filename: string) => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
     const validateFields = values => {
@@ -276,14 +280,6 @@ const ProofOfOwnershipForm = ({
             )}
         </Formik>
     );
-};
-
-ProofOfOwnershipForm.propTypes = {
-    client_email: PropTypes.string,
-    grouped_payment_method_data: PropTypes.object,
-    refreshNotifications: PropTypes.func,
-    updateAccountStatus: PropTypes.func,
-    citizen: PropTypes.string,
-};
+});
 
 export default ProofOfOwnershipForm;
