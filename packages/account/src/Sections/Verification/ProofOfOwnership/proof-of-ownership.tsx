@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { GetAccountStatus } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
+import ProofOfOwnershipForm from './proof-of-ownership-form';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
 import { POO_STATUSES } from 'Constants/poo-identifier';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
