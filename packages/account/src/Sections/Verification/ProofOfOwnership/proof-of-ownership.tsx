@@ -16,7 +16,6 @@ export const ProofOfOwnership = observer(() => {
     const cards = account_status?.authentication?.ownership
         ?.requests as DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
     const [status, setStatus] = useState(POO_STATUSES.NONE);
-    const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
 
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
@@ -50,9 +49,7 @@ export const ProofOfOwnership = observer(() => {
         setStatus(POO_STATUSES.NONE);
     };
     if (cards?.length && status !== POO_STATUSES.REJECTED) {
-        return (
-            <ProofOfOwnershipForm grouped_payment_method_data={grouped_payment_method_data.groups} citizen={citizen} />
-        ); // Proof of ownership is required.
+        return <ProofOfOwnershipForm grouped_payment_method_data={grouped_payment_method_data.groups} />; // Proof of ownership is required.
     }
     if (status === POO_STATUSES.VERIFIED) {
         return <POOVerified />; // Proof of ownership verified

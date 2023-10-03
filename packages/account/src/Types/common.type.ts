@@ -211,3 +211,9 @@ export type TPaymentMethodInfo = {
 };
 
 export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
+
+export type TPaymentMethodUploadData = {
+    files: Blob[];
+    id: number;
+    payment_method_identifier: string;
+} & Pick<TPaymentMethodInfo, 'documents_required' | 'identifier_type' | 'is_generic_pm'>;

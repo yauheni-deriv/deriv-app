@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik } from 'formik';
+import { Formik, FormikErrors, FormikProps } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { Button, useStateCallback } from '@deriv/components';
+import { Button } from '@deriv/components';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -12,11 +12,14 @@ import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import Card from '../../../Containers/proof-of-ownership/card';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
+import { TPaymentMethod, TPaymentMethodInfo, TPaymentMethodUploadData } from 'Types';
 
 type TProofOfOwnershipForm = {
-    citizen?: string | null;
-    grouped_payment_method_data: any;
+    grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
 };
+
+//the type for data needs to be checked again
+type TInitialValues = { data: Partial<TPaymentMethodUploadData>[] };
 
 const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
@@ -29,14 +32,15 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
     const { refreshNotifications } = notifications;
 
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data);
-    const initial_values = {};
-    const [form_state, setFormState] = useStateCallback({ should_show_form: true });
-    const form_ref = React.useRef();
+    const initial_values: TInitialValues = { data: {} };
+    const [form_state, setFormState] = React.useState({ is_btn_loading: false });
+    const form_ref = React.useRef<FormikProps<TInitialValues>>(null);
+
     const fileReadErrorMessage = (filename: string) => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
-    const validateFields = values => {
-        let errors = {};
+    const validateFields = (values: TInitialValues) => {
+        let errors: FormikErrors<TInitialValues> = {};
         errors.data = [...(form_ref?.current?.errors?.data || [])];
         let total_documents_uploaded = 0;
         let has_errors = false;
@@ -141,25 +145,25 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
         return errors;
     };
 
-    const updateErrors = async (index, item_index, sub_index) => {
+    const updateErrors = async (index: number, item_index: number, sub_index: number) => {
         let error_count = 0;
-        const errors = {};
+        const errors: FormikErrors<TInitialValues> = {};
         errors.data = [...(form_ref?.current?.errors?.data || [])];
-        if (typeof errors.data[index] === 'object') {
+        if (typeof errors?.data[index] === 'object') {
             delete errors?.data?.[index]?.[item_index]?.files?.[sub_index];
             const has_other_errors = errors?.data[index]?.[item_index]?.files?.some(error => error !== null);
             if (!has_other_errors) {
                 delete errors?.data[index]?.[item_index];
             }
-            errors.data.forEach(e => {
+            errors?.data?.forEach(e => {
                 error_count += Object.keys(e || {}).length;
             });
             if (error_count === 0) {
                 errors.data = [];
             }
         }
-        await form_ref.current.setErrors(errors);
-        await form_ref.current.validateForm();
+        await form_ref?.current?.setErrors(errors);
+        await form_ref?.current?.validateForm();
     };
     const handleFormSubmit = ({ data: form_values }) => {
         try {
@@ -255,7 +259,11 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                                         )}
                                         <Card
                                             index={index}
-                                            details={grouped_payment_method_data[grouped_payment_method_data_key]}
+                                            details={
+                                                grouped_payment_method_data[
+                                                    grouped_payment_method_data_key as TPaymentMethod
+                                                ]
+                                            }
                                             updateErrors={updateErrors}
                                         />
                                     </div>
