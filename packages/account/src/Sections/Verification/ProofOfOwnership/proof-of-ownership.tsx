@@ -10,9 +10,10 @@ import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'Types';
 
 export const ProofOfOwnership = observer(() => {
-    const { client, ui } = useStore();
-    const { account_status } = client;
-    const { is_dark_mode_on: is_dark_mode } = ui;
+    const { client, notifications, ui } = useStore();
+    const { account_status, email: client_email, updateAccountStatus } = client;
+    const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
+    const { refreshNotifications } = notifications;
     const cards = account_status?.authentication?.ownership
         ?.requests as DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
     const [status, setStatus] = useState(POO_STATUSES.NONE);
@@ -49,7 +50,15 @@ export const ProofOfOwnership = observer(() => {
         setStatus(POO_STATUSES.NONE);
     };
     if (cards?.length && status !== POO_STATUSES.REJECTED) {
-        return <ProofOfOwnershipForm grouped_payment_method_data={grouped_payment_method_data.groups} />; // Proof of ownership is required.
+        return (
+            <ProofOfOwnershipForm
+                client_email={client_email}
+                grouped_payment_method_data={grouped_payment_method_data.groups}
+                is_mobile={is_mobile}
+                refreshNotifications={refreshNotifications}
+                updateAccountStatus={updateAccountStatus}
+            />
+        ); // Proof of ownership is required.
     }
     if (status === POO_STATUSES.VERIFIED) {
         return <POOVerified />; // Proof of ownership verified

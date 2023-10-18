@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { Formik, FormikErrors, FormikProps } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
-import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
@@ -13,34 +12,46 @@ import FormBodySection from '../../../Components/form-body-section';
 import Card from '../../../Containers/proof-of-ownership/card';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
 import { TPaymentMethod, TPaymentMethodInfo, TPaymentMethodUploadData } from 'Types';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TProofOfOwnershipForm = {
+    client_email: TCoreStores['client']['email'];
     grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
+    is_mobile: TCoreStores['ui']['is_mobile'];
+    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
+    updateAccountStatus: TCoreStores['client']['updateAccountStatus'];
 };
 
-//the type for data needs to be checked again
-type TInitialValues = { data: Partial<TPaymentMethodUploadData>[] };
+//need to check types
+// type TInitialValues = { data?: DeepPartial<TPaymentMethodUploadData>[][] };
+// type TErrors = { data?: { payment_method_identifier?: string; files?: File[] }[] };
 
-const getScrollOffset = (items_count = 0) => {
-    if (isMobile()) return '200px';
-    if (items_count <= 2) return '0px';
-    return '80px';
-};
-const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOfOwnershipForm) => {
-    const { client, notifications } = useStore();
-    const { email: client_email, updateAccountStatus } = client;
-    const { refreshNotifications } = notifications;
-
+const ProofOfOwnershipForm = ({
+    client_email,
+    grouped_payment_method_data,
+    is_mobile,
+    refreshNotifications,
+    updateAccountStatus,
+}: TProofOfOwnershipForm) => {
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data);
-    const initial_values: TInitialValues = { data: {} };
+    const initial_values = {};
     const [form_state, setFormState] = React.useState({ is_btn_loading: false });
-    const form_ref = React.useRef<FormikProps<TInitialValues>>(null);
+    const form_ref = React.useRef(null);
+
+    const getScrollOffset = React.useCallback(
+        (items_count = 0) => {
+            if (is_mobile) return '200px';
+            if (items_count <= 2) return '0px';
+            return '80px';
+        },
+        [is_mobile]
+    );
 
     const fileReadErrorMessage = (filename: string) => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
-    const validateFields = (values: TInitialValues) => {
-        let errors: FormikErrors<TInitialValues> = {};
+    const validateFields = values => {
+        let errors = {};
         errors.data = [...(form_ref?.current?.errors?.data || [])];
         let total_documents_uploaded = 0;
         let has_errors = false;
@@ -288,6 +299,6 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
             )}
         </Formik>
     );
-});
+};
 
 export default ProofOfOwnershipForm;
