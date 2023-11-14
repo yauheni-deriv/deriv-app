@@ -2,7 +2,8 @@ export const populateVerificationStatus = account_status => {
     const { attempts, document, identity, needs_verification } = account_status.authentication;
 
     const identity_status = identity.status;
-    const document_status = document.status;
+    // const document_status = document.status;
+    const document_status = 'pending';
 
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
     const allow_poi_resubmission = account_status.status.some(status => status === 'allow_poi_resubmission');
@@ -15,7 +16,8 @@ export const populateVerificationStatus = account_status => {
     const has_poi = !(identity && identity.status === 'none');
     const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission;
     const needs_poa = Boolean(needs_verification.length) && needs_verification.includes('document');
-    const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
+    // const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
+    const needs_poi = false;
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;
