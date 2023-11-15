@@ -1,10 +1,9 @@
-import { Button } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import React from 'react';
+import { useHistory } from 'react-router';
+import { Button } from '@deriv/components';
 import { getPlatformRedirect, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-
-import { useHistory } from 'react-router';
+import { Localize } from '@deriv/translations';
 
 const RedirectButton = observer(() => {
     const history = useHistory();

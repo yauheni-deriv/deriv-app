@@ -2,8 +2,8 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import PoaButton from '../../../poa/poa-button';
-import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
+import GoToPoaButton from 'Components/action-buttons/go-to-poa-button';
+import { ContinueTradingButton } from 'Components/action-buttons/continue-trading-button/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPlatformContext, TPOIStatus } from 'Types';
 import classNames from 'classnames';
@@ -61,7 +61,7 @@ export const UploadComplete = ({
                         {localize('You must also submit a proof of address.')}
                     </Text>
                 </div>
-                <PoaButton />
+                <GoToPoaButton />
             </React.Fragment>
             {!is_from_external && redirect_button}
         </IconMessageContent>

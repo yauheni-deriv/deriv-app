@@ -1,13 +1,9 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
-import { Button, Loading } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import NeedsReview from '../../../Components/poa/status/needs-review';
 import ProofOfAddressForm from './proof-of-address-form';
-import Submitted from '../../../Components/poa/status/submitted';
-import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import { getPOAStatusMessages } from 'Sections/Verification/ProofOfAddress/proof-of-address-utils';
@@ -24,7 +20,7 @@ type TAuthenticationStatus = Record<
     | 'poa_address_mismatch'
     | 'resubmit_poa',
     boolean
-> & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
+> & { document_status: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
 const ProofOfAddressContainer = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -37,17 +33,15 @@ const ProofOfAddressContainer = observer(() => {
         has_poi: false,
         resubmit_poa: false,
         has_submitted_poa: false,
-        document_status: undefined,
+        document_status: AUTH_STATUS_CODES.NONE,
         is_age_verified: false,
         poa_address_mismatch: false,
     });
 
     const { client, notifications, common } = useStore();
     const { app_routing_history } = common;
-    const { landing_company_shortcode, has_restricted_mt5_account, is_switching } = client;
+    const { has_restricted_mt5_account, is_switching } = client;
     const { refreshNotifications } = notifications;
-
-    const is_mx_mlt = landing_company_shortcode === 'iom' || landing_company_shortcode === 'malta';
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -108,9 +102,12 @@ const ProofOfAddressContainer = observer(() => {
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
+    // const is_submitted = has_submitted_poa && !poa_address_mismatch;
+    const is_submitted = false;
+
     const status_content = React.useMemo(
-        () => getPOAStatusMessages(document_status, needs_poi, should_show_redirect_btn),
-        [document_status, needs_poi]
+        () => getPOAStatusMessages(document_status, { needs_poi, is_submitted }, should_show_redirect_btn),
+        [document_status, needs_poi, is_submitted, should_show_redirect_btn]
     );
 
     const is_resubmission_required =
@@ -118,35 +115,29 @@ const ProofOfAddressContainer = observer(() => {
         allow_poa_resubmission ||
         (has_restricted_mt5_account &&
             document_status &&
-            [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].includes(
-                document_status
+            [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
+                status => status === document_status
             )) ||
         poa_address_mismatch;
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (
-        !allow_document_upload ||
-        (!is_age_verified && !allow_poa_resubmission && document_status === AUTH_STATUS_CODES.NONE && is_mx_mlt)
-    )
-        return (
-            <VerificationStatus
-                status_title={status_content.title}
-                status_description={status_content.description}
-                icon={status_content.icon}
-            />
-        );
-    // if (has_submitted_poa && !poa_address_mismatch)
-    //     return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
+    const should_show_poa_form =
+        is_age_verified &&
+        allow_document_upload &&
+        (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required);
 
-    if (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required) {
-        return <ProofOfAddressForm is_resubmit={is_resubmission_required} onSubmit={onSubmit} />;
-    }
-
-    const buttonOnclick = [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].includes(
-        document_status
+    const buttonOnclick = [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
+        status => status === document_status
     )
         ? handleResubmit
         : undefined;
+
+    if (is_loading) {
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    }
+
+    if (should_show_poa_form) {
+        return <ProofOfAddressForm is_resubmit={is_resubmission_required} onSubmit={onSubmit} />;
+    }
 
     return (
         <VerificationStatus

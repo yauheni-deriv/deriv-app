@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
+import { ContinueTradingButton } from 'Components/action-buttons/continue-trading-button/continue-trading-button';
 import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
-import PoaButton from '../../../poa/poa-button/poa-button';
+import GoToPoaButton from 'Components/action-buttons/go-to-poa-button/go-to-poa-button';
 
 type TIdvVerified = {
     needs_poa: boolean;
@@ -37,7 +37,7 @@ const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<T
                         </Text>
                     )}
                     {!is_from_external && (
-                        <PoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
+                        <GoToPoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
                     )}
                 </React.Fragment>
             ) : (

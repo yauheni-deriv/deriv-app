@@ -4,14 +4,14 @@ import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
-type TPoaButton = {
+type TGoToPoaButton = {
     custom_text?: JSX.Element;
     class_name?: string;
 };
 
 const DEFAULT_BTN_TEXT = <Localize i18n_default_text='Submit proof of address' />;
 
-const PoaButton = ({ custom_text = DEFAULT_BTN_TEXT, class_name }: TPoaButton) => (
+const GoToPoaButton = ({ custom_text = DEFAULT_BTN_TEXT, class_name }: TGoToPoaButton) => (
     <ButtonLink className={classNames('account-management__button', class_name)} to={routes.proof_of_address}>
         <Text className='dc-btn__text' as='p' weight='bold' data-testid='poa_button_text'>
             {custom_text}
@@ -19,4 +19,4 @@ const PoaButton = ({ custom_text = DEFAULT_BTN_TEXT, class_name }: TPoaButton) =
     </ButtonLink>
 );
 
-export default PoaButton;
+export default GoToPoaButton;

@@ -5,7 +5,7 @@ import { idv_error_statuses, TIDVErrorStatus } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
-import PoaButton from 'Components/poa/poa-button';
+import GoToPoaButton from 'Components/action-buttons/go-to-poa-button';
 
 type TIdvSubmitComplete = {
     is_from_external: boolean;
@@ -47,7 +47,7 @@ const IdvSubmitComplete = observer(
         };
 
         const poa_button = !is_from_external && (
-            <PoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
+            <GoToPoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
         );
 
         return (

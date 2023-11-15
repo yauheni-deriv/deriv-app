@@ -11,10 +11,12 @@ type TContinueTradingButtonProps = { className?: string };
  * @param className - Styles to be applied to the button
  * @returns React Element
  */
-export const ContinueTradingButton = ({ className }: TContinueTradingButtonProps) => (
+const ContinueTradingButton = ({ className }: TContinueTradingButtonProps) => (
     <ButtonLink className={classNames('account-management__button', className)} to='/'>
         <Text className='dc-btn__text' as='p' weight='bold' data-testid='continue_btn_text'>
             <Localize i18n_default_text='Continue trading' />
         </Text>
     </ButtonLink>
 );
+
+export default ContinueTradingButton;
