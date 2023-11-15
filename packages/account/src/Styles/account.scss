@@ -17,9 +17,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .dc-vertical-tab {
         &__content {
             height: $MIN_HEIGHT_FLOATING;
-            &-container {
-                max-width: 68rem;
-            }
         }
 
         &__header--active {
