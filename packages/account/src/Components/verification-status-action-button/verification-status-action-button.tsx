@@ -24,7 +24,7 @@ const VerificationStatusActionButton = ({ button_text, onClick, to }: TVerificat
                     </Text>
                 </ButtonLink>
             ) : (
-                <Button onClick={onClick} has_effect primary className={''}>
+                <Button type='button' onClick={onClick} has_effect primary className={''}>
                     <Text size='xs' weight='bold' as='p' color='general' className={style.action_button__text}>
                         {button_text}
                     </Text>
