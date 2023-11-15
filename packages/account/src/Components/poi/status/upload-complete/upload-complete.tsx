@@ -2,10 +2,10 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import GoToPoaButton from 'Components/action-buttons/go-to-poa-button';
-import { ContinueTradingButton } from 'Components/action-buttons/continue-trading-button/continue-trading-button';
+import PoaButton from '../../../poa/poa-button';
+import ContinueTradingButton from '../../../poa/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
-import { TPlatformContext, TPOIStatus } from 'Types';
+import { TPOIStatus } from 'Types';
 import classNames from 'classnames';
 
 export const UploadComplete = ({
@@ -14,7 +14,7 @@ export const UploadComplete = ({
     is_from_external,
     is_manual_upload = false,
 }: TPOIStatus) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const message = localize('Your documents were submitted successfully');
     const description = is_manual_upload
         ? localize('We’ll review your documents and notify you of its status within 1 - 3 working days.')
@@ -61,7 +61,7 @@ export const UploadComplete = ({
                         {localize('You must also submit a proof of address.')}
                     </Text>
                 </div>
-                <GoToPoaButton />
+                <PoaButton />
             </React.Fragment>
             {!is_from_external && redirect_button}
         </IconMessageContent>

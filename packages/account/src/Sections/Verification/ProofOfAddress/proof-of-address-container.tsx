@@ -81,6 +81,14 @@ const ProofOfAddressContainer = observer(() => {
         setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
     };
 
+    const onClickRedirect = () => {
+        const url = platforms[from_platform.ref as keyof typeof platforms]?.url;
+        if (url) {
+            window.location.href = url;
+            window.sessionStorage.removeItem('config.platform');
+        }
+    };
+
     const onSubmit = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
@@ -102,8 +110,7 @@ const ProofOfAddressContainer = observer(() => {
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
-    // const is_submitted = has_submitted_poa && !poa_address_mismatch;
-    const is_submitted = false;
+    const is_submitted = has_submitted_poa && !poa_address_mismatch;
 
     const status_content = React.useMemo(
         () => getPOAStatusMessages(document_status, { needs_poi, is_submitted }, should_show_redirect_btn),
@@ -125,11 +132,17 @@ const ProofOfAddressContainer = observer(() => {
         allow_document_upload &&
         (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required);
 
-    const buttonOnclick = [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
-        status => status === document_status
-    )
-        ? handleResubmit
-        : undefined;
+    let buttonOnclick;
+    if (
+        [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
+            status => status === document_status
+        )
+    ) {
+        buttonOnclick = handleResubmit;
+    }
+    if (should_show_redirect_btn) {
+        buttonOnclick = onClickRedirect;
+    }
 
     if (is_loading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -141,10 +154,10 @@ const ProofOfAddressContainer = observer(() => {
 
     return (
         <VerificationStatus
+            action_button={status_content.action_button?.(buttonOnclick, from_platform.name)}
+            icon={status_content.icon}
             status_title={status_content.title}
             status_description={status_content.description}
-            icon={status_content.icon}
-            action_button={status_content.action_button?.(buttonOnclick)}
         />
     );
 });

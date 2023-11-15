@@ -1,1 +1,3 @@
-export { default as VerificationStatus } from './verification-status';
+import VerificationStatusActionButton from './verification-status-action-button';
+
+export default VerificationStatusActionButton;

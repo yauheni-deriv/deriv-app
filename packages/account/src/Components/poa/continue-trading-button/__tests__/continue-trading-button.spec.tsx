@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
-import { ContinueTradingButton } from '../continue-trading-button';
+import ContinueTradingButton from '../continue-trading-button';
 
 describe('<ContinueTradingButton/>', () => {
     const history = createBrowserHistory();

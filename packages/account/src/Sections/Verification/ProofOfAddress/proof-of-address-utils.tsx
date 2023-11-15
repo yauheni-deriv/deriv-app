@@ -1,12 +1,11 @@
 import React from 'react';
 import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ContinueTradingButton, RedirectButton, ResubmitButton } from '../../../Components/action-buttons';
-import { PoiButton } from '../../../Components/poi/poi-button/poi-button';
+import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
 
 type TAuthStatus = {
-    needs_poi: boolean;
-    is_submitted: boolean;
+    needs_poi?: boolean;
+    is_submitted?: boolean;
 };
 
 export const getPOAStatusMessages = (
@@ -16,19 +15,65 @@ export const getPOAStatusMessages = (
 ) => {
     const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
 
-    const pendingButton = () => {
+    const pendingButton = (onClick?: () => void, platform_name?: string) => {
         if (!auth_status?.needs_poi) {
-            if (should_show_redirect_btn) return <RedirectButton />;
-            if (!is_redirected_from_platform) return <ContinueTradingButton />;
+            if (should_show_redirect_btn)
+                return (
+                    <VerificationStatusActionButton
+                        button_text={
+                            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />
+                        }
+                        onClick={onClick}
+                    />
+                );
+            if (!is_redirected_from_platform) {
+                return (
+                    <VerificationStatusActionButton
+                        to='/'
+                        button_text={<Localize i18n_default_text='Continue trading' />}
+                    />
+                );
+            }
         }
-        if (auth_status?.needs_poi) return <PoiButton />;
+        if (auth_status?.needs_poi) {
+            return (
+                <VerificationStatusActionButton
+                    to='/account/proof-of-identity'
+                    button_text={<Localize i18n_default_text='Proof of identity' />}
+                />
+            );
+        }
         return null;
     };
 
-    const verifiedButton = () => {
-        if (auth_status?.needs_poi) return <PoiButton />;
-        if (should_show_redirect_btn) return <RedirectButton />;
-        if (!is_redirected_from_platform) return <ContinueTradingButton />;
+    const resubmitButton = (onClick?: () => void) => (
+        <VerificationStatusActionButton button_text={<Localize i18n_default_text={'Resubmit'} />} onClick={onClick} />
+    );
+
+    const verifiedButton = (onClick?: () => void, platform_name?: string) => {
+        if (auth_status?.needs_poi) {
+            return (
+                <VerificationStatusActionButton
+                    to='/account/proof-of-identity'
+                    button_text={<Localize i18n_default_text='Proof of identity' />}
+                />
+            );
+        }
+        if (should_show_redirect_btn)
+            return (
+                <VerificationStatusActionButton
+                    button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
+                    onClick={onClick}
+                />
+            );
+        if (!is_redirected_from_platform) {
+            return (
+                <VerificationStatusActionButton
+                    to='/'
+                    button_text={<Localize i18n_default_text='Continue trading' />}
+                />
+            );
+        }
         return null;
     };
 
@@ -90,12 +135,15 @@ export const getPOAStatusMessages = (
         verified: 'IcPoaVerified',
     };
 
-    const action_buttons: Record<typeof status, null | ((onClick?: () => void) => JSX.Element | null)> = {
-        expired: ResubmitButton,
+    const action_buttons: Record<
+        typeof status,
+        null | ((onClick?: () => void, platform_name?: string) => JSX.Element | null)
+    > = {
+        expired: resubmitButton,
         none: null,
         pending: pendingButton,
-        rejected: ResubmitButton,
-        suspected: ResubmitButton,
+        rejected: resubmitButton,
+        suspected: resubmitButton,
         verified: verifiedButton,
     };
 
