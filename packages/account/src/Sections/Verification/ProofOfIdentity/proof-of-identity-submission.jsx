@@ -1,15 +1,21 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
+import { formatIDVError, WS, idv_error_statuses, platforms, getPlatformRedirect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvFailed from 'Components/poi/idv-status/idv-failed';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
-import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
-import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
+import {
+    identity_status_codes,
+    submission_status_code,
+    service_code,
+    getIDVStatusMessages,
+    getUploadCompleteStatusMessages,
+} from './proof-of-identity-utils';
 import { POIContext } from '../../../Helpers/poi-context';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { useHistory } from 'react-router';
 
 const POISubmission = observer(
     ({
@@ -37,10 +43,17 @@ const POISubmission = observer(
             setSelectedCountry,
         } = React.useContext(POIContext);
 
-        const { client, notifications } = useStore();
+        const history = useHistory();
 
-        const { account_settings, getChangeableFields } = client;
+        const { client, common, notifications } = useStore();
+
+        const { account_settings, getChangeableFields, is_already_attempted } = client;
+        const { app_routing_history, routeBackInApp } = common;
         const { refreshNotifications } = notifications;
+
+        const from_platform = getPlatformRedirect(app_routing_history);
+
+        const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
         const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
@@ -82,6 +95,43 @@ const POISubmission = observer(
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
         const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
+        const idv_status_content = React.useMemo(
+            () =>
+                getIDVStatusMessages(
+                    idv.status,
+                    { needs_poa, is_already_attempted, mismatch_status },
+                    !!redirect_button,
+                    is_from_external
+                ),
+            [idv.status, needs_poa, redirect_button, is_from_external, mismatch_status, is_already_attempted]
+        );
+
+        const manual_upload_complete_status_content = React.useMemo(
+            () =>
+                getUploadCompleteStatusMessages(
+                    'pending',
+                    { needs_poa, is_manual_upload: true },
+                    !!redirect_button,
+                    is_from_external
+                ),
+            [needs_poa, redirect_button, is_from_external]
+        );
+
+        const onfido_upload_complete_status_content = React.useMemo(
+            () => getUploadCompleteStatusMessages('pending', { needs_poa }, !!redirect_button, is_from_external),
+            [needs_poa, redirect_button, is_from_external]
+        );
+
+        const onClickRedirectButton = () => {
+            const platform = platforms[from_platform.ref];
+            const { is_hard_redirect = false, url = '' } = platform ?? {};
+            if (is_hard_redirect) {
+                window.location.href = url;
+                window.sessionStorage.removeItem('config.platform');
+            } else {
+                routeBackTo(from_platform.route);
+            }
+        };
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
@@ -207,37 +257,25 @@ const POISubmission = observer(
                 }
             }
             case submission_status_code.complete: {
-                switch (submission_service) {
-                    case service_code.idv:
-                        return (
-                            <IdvSubmitComplete
-                                is_from_external={is_from_external}
-                                mismatch_status={mismatch_status}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                            />
-                        );
-                    // This will be replaced in the next Manual Upload Project
-                    case service_code.manual:
-                        return (
-                            <UploadComplete
-                                is_from_external={is_from_external}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                                is_manual_upload
-                            />
-                        );
-                    case service_code.onfido:
-                        return (
-                            <UploadComplete
-                                is_from_external={is_from_external}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                            />
-                        );
-                    default:
-                        return null;
+                let content = {};
+                if (submission_service === service_code.idv) {
+                    content = idv_status_content;
                 }
+                if (submission_service === service_code.manual) {
+                    content = manual_upload_complete_status_content;
+                }
+                if (submission_service === service_code.onfido) {
+                    content = onfido_upload_complete_status_content;
+                }
+
+                return (
+                    <VerificationStatus
+                        status_title={content.title}
+                        status_description={content.description}
+                        icon={content.icon}
+                        action_button={content.action_button?.(onClickRedirectButton, from_platform.name)}
+                    />
+                );
             }
             default:
                 return null;

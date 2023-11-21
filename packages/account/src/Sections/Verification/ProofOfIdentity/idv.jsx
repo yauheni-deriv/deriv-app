@@ -1,39 +1,67 @@
 import React from 'react';
-import { formatIDVError } from '@deriv/shared';
-import IdvLimited from 'Components/poi/idv-status/idv-limited';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
-import IdvVerified from 'Components/poi/idv-status/idv-verified';
-import { identity_status_codes } from './proof-of-identity-utils';
+import { formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
+import { getIDVStatusMessages, identity_status_codes } from './proof-of-identity-utils';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
 
-const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
+const Idv = ({
+    handleRequireSubmission,
+    idv,
+    is_from_external,
+    needs_poa,
+    redirect_button,
+    routeBackTo,
+    app_routing_history,
+    is_already_attempted,
+}) => {
     const { status, submissions_left, last_rejected } = idv;
+    const from_platform = getPlatformRedirect(app_routing_history);
 
-    switch (status) {
-        case identity_status_codes.pending:
-            return (
-                <IdvSubmitComplete
-                    is_from_external={is_from_external}
-                    mismatch_status={formatIDVError(last_rejected, status)}
-                    needs_poa={needs_poa}
-                    redirect_button={redirect_button}
-                />
-            );
-        case identity_status_codes.rejected:
-        case identity_status_codes.suspected:
-        case identity_status_codes.expired:
-            if (Number(submissions_left) < 1) return <IdvLimited handleRequireSubmission={handleRequireSubmission} />;
-            return null;
-        case identity_status_codes.verified:
-            return (
-                <IdvVerified
-                    is_from_external={is_from_external}
-                    needs_poa={needs_poa}
-                    redirect_button={redirect_button}
-                />
-            );
-        default:
-            return null;
+    const status_content = React.useMemo(
+        () =>
+            getIDVStatusMessages(
+                status,
+                { needs_poa, is_already_attempted, mismatch_status: formatIDVError(last_rejected, status) },
+                !!redirect_button,
+                is_from_external
+            ),
+        [status, needs_poa, redirect_button, is_from_external, last_rejected, is_already_attempted]
+    );
+
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.ref];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+            window.sessionStorage.removeItem('config.platform');
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
+    let onClick;
+
+    if (identity_status_codes.verified) {
+        onClick = handleRequireSubmission;
+    } else {
+        onClick = onClickRedirectButton;
     }
+
+    if (
+        [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].some(
+            item => item === status
+        ) &&
+        Number(submissions_left) >= 1
+    ) {
+        return null;
+    }
+    return (
+        <VerificationStatus
+            status_title={status_content.title}
+            status_description={status_content.description}
+            icon={status_content.icon}
+            action_button={status_content.action_button?.(onClick, from_platform.name)}
+        />
+    );
 };
 
 export default Idv;

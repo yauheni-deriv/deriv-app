@@ -31,13 +31,7 @@ jest.mock('Sections/Verification/ProofOfIdentity/onfido.jsx', () => jest.fn(() =
 jest.mock('Sections/Verification/ProofOfIdentity/proof-of-identity-submission.jsx', () =>
     jest.fn(() => 'mockedProofOfIdentitySubmission')
 );
-jest.mock('Components/poi/status/unsupported', () => jest.fn(() => 'mockedUnsupported'));
-jest.mock('Components/poi/status/not-required', () => jest.fn(() => 'mockedNotRequired'));
 jest.mock('Components/error-component', () => jest.fn(() => 'mockedErrorMessage'));
-jest.mock('Components/poi/status/upload-complete', () => jest.fn(() => 'mockedUploadComplete'));
-jest.mock('Components/poi/status/verified', () => jest.fn(() => 'mockedVerified'));
-jest.mock('Components/poi/status/limited', () => jest.fn(() => 'mockedLimited'));
-jest.mock('Components/poi/status/expired', () => jest.fn(() => 'mockedExpired'));
 
 const mock_props = {
     onStateChange: jest.fn(),

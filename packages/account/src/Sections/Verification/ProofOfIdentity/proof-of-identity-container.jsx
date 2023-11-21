@@ -1,22 +1,23 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
-import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { getPlatformRedirect, platforms, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import {
+    getPOIStatusMessages,
+    getUploadCompleteStatusMessages,
+    identity_status_codes,
+    service_code,
+} from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import Expired from 'Components/poi/status/expired';
 import IdvContainer from './idv.jsx';
-import Limited from 'Components/poi/status/limited';
 import { Localize } from '@deriv/translations';
-import NotRequired from 'Components/poi/status/not-required';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Unsupported from 'Components/poi/status/unsupported';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
@@ -25,18 +26,29 @@ const ProofOfIdentityContainer = observer(
         const [has_require_submission, setHasRequireSubmission] = React.useState(false);
         const [residence_list, setResidenceList] = React.useState([]);
         const [is_status_loading, setStatusLoading] = React.useState(true);
+        const [authentication_status, setAuthenticationStatus] = React.useState({
+            allow_poi_resubmission: false,
+            needs_poa: false,
+            is_age_verified: false,
+            idv: {},
+            identity_last_attempt: {},
+            identity_status: identity_status_codes.none,
+            is_idv_disallowed: false,
+            manual: {},
+            onfido: {},
+        });
 
         const { client, common, notifications } = useStore();
 
         const {
             account_settings,
-            account_status,
             fetchResidenceList,
             is_switching,
             is_high_risk,
             is_withdrawal_lock,
             should_allow_authentication,
             is_virtual,
+            is_already_attempted,
         } = client;
         const { app_routing_history, routeBackInApp, is_language_changing } = common;
         const { refreshNotifications } = notifications;
@@ -81,23 +93,37 @@ const ProofOfIdentityContainer = observer(
                         return;
                     }
                     loadResidenceList();
-                    setStatusLoading(false);
+                    if (response_account_status.get_account_status) {
+                        const {
+                            idv,
+                            allow_poi_resubmission,
+                            identity_last_attempt,
+                            identity_status,
+                            is_age_verified,
+                            is_idv_disallowed,
+                            manual,
+                            needs_poa,
+                            onfido,
+                        } = populateVerificationStatus(response_account_status.get_account_status);
+
+                        setAuthenticationStatus(authentication_status => ({
+                            ...authentication_status,
+                            idv,
+                            allow_poi_resubmission,
+                            identity_last_attempt,
+                            identity_status,
+                            is_age_verified,
+                            is_idv_disallowed,
+                            manual,
+                            needs_poa,
+                            onfido,
+                        }));
+                        setStatusLoading(false);
+                    }
                 });
             }
         }, [loadResidenceList, is_switching]);
 
-        if (api_error) {
-            return <ErrorMessage error_message={api_error?.message || api_error} />;
-        } else if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
-            /**
-             * Display loader while waiting for the account status and residence list to be populated
-             */
-            return <Loading is_fullscreen={false} />;
-        } else if (is_virtual) {
-            return <DemoMessage />;
-        }
-
-        const verification_status = populateVerificationStatus(account_status);
         const {
             idv,
             allow_poi_resubmission,
@@ -108,12 +134,23 @@ const ProofOfIdentityContainer = observer(
             manual,
             needs_poa,
             onfido,
-        } = verification_status;
+        } = authentication_status;
         const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
-        if (!should_allow_authentication && !is_age_verified) {
-            return <NotRequired />;
-        }
+        const status_content = React.useMemo(
+            () => getPOIStatusMessages(identity_status, { needs_poa }, should_show_redirect_btn, is_from_external),
+            [identity_status, needs_poa, should_show_redirect_btn, is_from_external]
+        );
+        const upload_complete_status_content = React.useMemo(
+            () =>
+                getUploadCompleteStatusMessages(
+                    'pending',
+                    { needs_poa, is_manual_upload: manual?.status === 'pending' },
+                    should_show_redirect_btn,
+                    is_from_external
+                ),
+            [needs_poa, should_show_redirect_btn, is_from_external]
+        );
 
         const onClickRedirectButton = () => {
             const platform = platforms[from_platform.ref];
@@ -140,6 +177,27 @@ const ProofOfIdentityContainer = observer(
             [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
                 idv.status
             );
+
+        if (api_error) {
+            return <ErrorMessage error_message={api_error?.message || api_error} />;
+        } else if (is_status_loading || is_switching || residence_list.length === 0) {
+            /**
+             * Display loader while waiting for the account status and residence list to be populated
+             */
+            return <Loading is_fullscreen={false} />;
+        } else if (is_virtual) {
+            return <DemoMessage />;
+        }
+
+        if (!should_allow_authentication && !is_age_verified && identity_status === identity_status_codes.none) {
+            return (
+                <VerificationStatus
+                    status_title={status_content.title}
+                    status_description={status_content.description}
+                    icon={status_content.icon}
+                />
+            );
+        }
 
         if (
             identity_status === identity_status_codes.none ||
@@ -175,40 +233,30 @@ const ProofOfIdentityContainer = observer(
             // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
             (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status)
         ) {
-            switch (identity_status) {
-                case identity_status_codes.pending:
-                    return (
-                        <UploadComplete
-                            is_from_external={!!is_from_external}
-                            needs_poa={needs_poa}
-                            redirect_button={redirect_button}
-                            is_manual_upload={manual?.status === 'pending'}
-                        />
-                    );
-                case identity_status_codes.verified:
-                    return (
-                        <Verified
-                            is_from_external={!!is_from_external}
-                            needs_poa={needs_poa}
-                            redirect_button={redirect_button}
-                        />
-                    );
-                case identity_status_codes.expired:
-                    return (
-                        <Expired
-                            is_from_external={!!is_from_external}
-                            redirect_button={redirect_button}
-                            handleRequireSubmission={handleRequireSubmission}
-                        />
-                    );
-                case identity_status_codes.rejected:
-                case identity_status_codes.suspected:
-                    return <Limited handleRequireSubmission={handleRequireSubmission} />;
-                default:
-                    break;
+            let onClick;
+            let content = status_content;
+            if (
+                identity_status === identity_status_codes.verified ||
+                identity_status === identity_status_codes.pending
+            ) {
+                onClick = onClickRedirectButton;
             }
-        }
+            if (identity_status === identity_status_codes.expired) {
+                onClick = handleRequireSubmission;
+            }
+            if (identity_status === identity_status_codes.pending) {
+                content = upload_complete_status_content;
+            }
 
+            return (
+                <VerificationStatus
+                    status_title={content.title}
+                    status_description={content.description}
+                    icon={content.icon}
+                    action_button={content.action_button?.(onClick, from_platform.name)}
+                />
+            );
+        }
         switch (identity_last_attempt.service) {
             case service_code.idv:
                 return (
@@ -221,6 +269,9 @@ const ProofOfIdentityContainer = observer(
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                         residence_list={residence_list}
+                        routeBackTo={routeBackTo}
+                        app_routing_history={app_routing_history}
+                        is_already_attempted={is_already_attempted}
                     />
                 );
             case service_code.onfido:
@@ -235,6 +286,8 @@ const ProofOfIdentityContainer = observer(
                         redirect_button={redirect_button}
                         country_code={country_code}
                         handleViewComplete={handleManualSubmit}
+                        routeBackTo={routeBackTo}
+                        app_routing_history={app_routing_history}
                     />
                 );
             case service_code.manual:
@@ -249,6 +302,8 @@ const ProofOfIdentityContainer = observer(
                         handleRequireSubmission={handleRequireSubmission}
                         handleViewComplete={handleManualSubmit}
                         onfido={onfido}
+                        routeBackTo={routeBackTo}
+                        app_routing_history={app_routing_history}
                     />
                 );
             default:

@@ -16,15 +16,15 @@ type TVerificationStatusActionButton = { button_text: JSX.Element } & (TButtonLi
 
 const VerificationStatusActionButton = ({ button_text, onClick, to }: TVerificationStatusActionButton) => {
     return (
-        <div className={style.action_button}>
+        <div className={''}>
             {to ? (
-                <ButtonLink className={''} to={to}>
-                    <Text className={style.action_button__text} as='p' weight='bold'>
+                <ButtonLink className={style.action_button} to={to}>
+                    <Text size='xs' className={style.action_button__text} as='p' weight='bold'>
                         {button_text}
                     </Text>
                 </ButtonLink>
             ) : (
-                <Button type='button' onClick={onClick} has_effect primary className={''}>
+                <Button type='button' onClick={onClick} has_effect primary className={style.action_button}>
                     <Text size='xs' weight='bold' as='p' color='general' className={style.action_button__text}>
                         {button_text}
                     </Text>
