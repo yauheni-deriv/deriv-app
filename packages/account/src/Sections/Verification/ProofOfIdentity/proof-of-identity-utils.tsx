@@ -9,6 +9,7 @@ import {
     TIDVErrorStatus,
 } from '@deriv/shared';
 import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
+import { TAuthStatusCode } from 'Types';
 
 export const identity_status_codes = {
     none: 'none',
@@ -36,7 +37,7 @@ type TAuthStatus = {
 };
 
 export const getPOIStatusMessages = (
-    status: typeof identity_status_codes[keyof typeof identity_status_codes],
+    status: TAuthStatusCode,
     auth_status?: TAuthStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
@@ -44,7 +45,7 @@ export const getPOIStatusMessages = (
     const resubmitButton = (onClick?: () => void, platform_name?: string) => (
         <React.Fragment>
             <VerificationStatusActionButton
-                button_text={<Localize i18n_default_text={'Upload Document'} />}
+                button_text={<Localize i18n_default_text='Upload Document' />}
                 onClick={onClick}
             />
             {!is_from_external && should_show_redirect_btn && (
@@ -78,24 +79,22 @@ export const getPOIStatusMessages = (
     };
 
     const titles: Record<typeof status, React.ReactElement | string> = {
-        none: <Localize i18n_default_text={'Proof of identity verification not required'} />,
-        pending: <Localize i18n_default_text={''} />,
-        rejected: <Localize i18n_default_text={"You've reached the limit for uploading your documents."} />,
-        verified: <Localize i18n_default_text={'Your proof of identity is verified'} />,
-        expired: <Localize i18n_default_text={'New proof of identity document needed'} />,
-        suspected: <Localize i18n_default_text={"You've reached the limit for uploading your documents."} />,
+        none: <Localize i18n_default_text='Proof of identity verification not required' />,
+        pending: <Localize i18n_default_text='' />,
+        rejected: <Localize i18n_default_text="You've reached the limit for uploading your documents." />,
+        verified: <Localize i18n_default_text='Your proof of identity is verified' />,
+        expired: <Localize i18n_default_text='New proof of identity document needed' />,
+        suspected: <Localize i18n_default_text="You've reached the limit for uploading your documents." />,
     };
 
     const descriptions: Record<typeof status, React.ReactElement | null> = {
         none: (
             <Localize
-                i18n_default_text={
-                    'Your account does not need identity verification at this time.<0/>We will inform you if identity verification is required in the future.'
-                }
+                i18n_default_text='Your account does not need identity verification at this time.<0/>We will inform you if identity verification is required in the future.'
                 components={[<br key={0} />]}
             />
         ),
-        pending: <Localize i18n_default_text={''} />,
+        pending: <Localize i18n_default_text='' />,
         rejected: (
             <Localize
                 i18n_default_text='Please contact us via <0>live chat</0>.'
@@ -105,7 +104,7 @@ export const getPOIStatusMessages = (
             />
         ),
         verified: auth_status?.needs_poa ? (
-            <Localize i18n_default_text={'To continue trading, you must also submit a proof of address.'} />
+            <Localize i18n_default_text='To continue trading, you must also submit a proof of address.' />
         ) : null,
         expired: null,
         suspected: (
@@ -153,7 +152,7 @@ type TAuthIDVStatus = TAuthStatus & {
 };
 
 export const getIDVStatusMessages = (
-    status: typeof identity_status_codes[keyof typeof identity_status_codes],
+    status: TAuthStatusCode,
     auth_status?: TAuthIDVStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean,
@@ -161,7 +160,7 @@ export const getIDVStatusMessages = (
 ) => {
     const rejectedButton = (onClick?: () => void) => (
         <VerificationStatusActionButton
-            button_text={<Localize i18n_default_text={'Upload identity document'} />}
+            button_text={<Localize i18n_default_text='Upload identity document' />}
             onClick={onClick}
         />
     );
@@ -226,14 +225,14 @@ export const getIDVStatusMessages = (
     const titles: Record<typeof status, React.ReactElement | null | string> = {
         none: null,
         pending: getPendingHeaderText(),
-        rejected: <Localize i18n_default_text={'ID verification failed'} />,
+        rejected: <Localize i18n_default_text='ID verification failed' />,
         verified: auth_status?.needs_poa ? (
             <Localize i18n_default_text='Your ID is verified. You will also need to submit proof of your address.' />
         ) : (
             <Localize i18n_default_text='ID verification passed' />
         ),
-        expired: <Localize i18n_default_text={'ID verification failed'} />,
-        suspected: <Localize i18n_default_text={'ID verification failed'} />,
+        expired: <Localize i18n_default_text='ID verification failed' />,
+        suspected: <Localize i18n_default_text='ID verification failed' />,
     };
 
     const getPendingDescriptionText = () => {
@@ -260,29 +259,23 @@ export const getIDVStatusMessages = (
         pending: getPendingDescriptionText(),
         rejected: (
             <Localize
-                i18n_default_text={
-                    'We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
-                }
+                i18n_default_text='We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
                 components={[<br key={0} />]}
             />
         ),
         verified:
             auth_status?.needs_poa && !is_mobile ? (
-                <Localize i18n_default_text={"Next, we'll need your proof of address."} />
+                <Localize i18n_default_text="Next, we'll need your proof of address." />
             ) : null,
         expired: (
             <Localize
-                i18n_default_text={
-                    'We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
-                }
+                i18n_default_text='We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
                 components={[<br key={0} />]}
             />
         ),
         suspected: (
             <Localize
-                i18n_default_text={
-                    'We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
-                }
+                i18n_default_text='We were unable to verify your ID with the details you provided.<0/>Please upload your identity document.'
                 components={[<br key={0} />]}
             />
         ),
@@ -373,7 +366,7 @@ export const getUploadCompleteStatusMessages = (
     const titles: Record<typeof status, React.ReactElement | null | string> = {
         expired: null,
         none: null,
-        pending: <Localize i18n_default_text={'Your documents were submitted successfully'} />,
+        pending: <Localize i18n_default_text='Your documents were submitted successfully' />,
         rejected: null,
         suspected: null,
         verified: null,
@@ -385,19 +378,13 @@ export const getUploadCompleteStatusMessages = (
         pending: (
             <div>
                 {auth_status?.is_manual_upload ? (
-                    <Localize
-                        i18n_default_text={
-                            'We’ll review your documents and notify you of its status within 1 - 3 working days.'
-                        }
-                    />
+                    <Localize i18n_default_text='We’ll review your documents and notify you of its status within 1 - 3 working days.' />
                 ) : (
-                    <Localize
-                        i18n_default_text={'We’ll review your documents and notify you of its status within 5 minutes.'}
-                    />
+                    <Localize i18n_default_text='We’ll review your documents and notify you of its status within 5 minutes.' />
                 )}
                 {auth_status?.needs_poa && (
                     <Localize
-                        i18n_default_text={'<0/>You must also submit a proof of address.'}
+                        i18n_default_text='<0/>You must also submit a proof of address.'
                         components={[<br key={0} />]}
                     />
                 )}

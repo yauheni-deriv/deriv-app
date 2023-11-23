@@ -5,28 +5,24 @@ import VerificationStatusActionButton from 'Components/verification-status-actio
 
 export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof POO_STATUSES]) => {
     const resubmitButton = (onClick?: () => void) => (
-        <VerificationStatusActionButton button_text={<Localize i18n_default_text={'Try again'} />} onClick={onClick} />
+        <VerificationStatusActionButton button_text={<Localize i18n_default_text='Try again' />} onClick={onClick} />
     );
 
     const titles: Record<typeof status, React.ReactElement> = {
-        none: <Localize i18n_default_text={'"Your proof of ownership isn\'t required."'} />,
-        pending: <Localize i18n_default_text={'We’ve received your proof of ownership.'} />,
-        rejected: <Localize i18n_default_text={'Proof of ownership verification failed'} />,
-        verified: <Localize i18n_default_text={'Proof of ownership verification passed.'} />,
+        none: <Localize i18n_default_text="Your proof of ownership isn\'t required." />,
+        pending: <Localize i18n_default_text='We’ve received your proof of ownership.' />,
+        rejected: <Localize i18n_default_text='Proof of ownership verification failed' />,
+        verified: <Localize i18n_default_text='Proof of ownership verification passed.' />,
     };
 
     const descriptions: Record<typeof status, React.ReactElement | null> = {
         none: (
-            <Localize
-                i18n_default_text={
-                    'You are not required to submit proof of ownership at this time. We will inform you if proof of ownership is required in the future.'
-                }
-            />
+            <Localize i18n_default_text='You are not required to submit proof of ownership at this time. We will inform you if proof of ownership is required in the future.' />
         ),
         pending: (
-            <Localize i18n_default_text={'We’ll review your documents and notify you of its status within 3 days.'} />
+            <Localize i18n_default_text='We’ll review your documents and notify you of its status within 3 days.' />
         ),
-        rejected: <Localize i18n_default_text={'We were unable to verify your proof of ownership.'} />,
+        rejected: <Localize i18n_default_text='We were unable to verify your proof of ownership.' />,
         verified: null,
     };
 

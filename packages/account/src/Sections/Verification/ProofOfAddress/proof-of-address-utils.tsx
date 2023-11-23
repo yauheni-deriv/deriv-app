@@ -3,6 +3,28 @@ import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P } from 
 import { Localize } from '@deriv/translations';
 import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
 
+export const getFilesDescriptions = () => ({
+    title: (
+        <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
+    ),
+    descriptions: [
+        {
+            key: 'utility_bill',
+            value: <Localize i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
+        },
+        {
+            key: 'financial_legal_government_document',
+            value: (
+                <Localize i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.' />
+            ),
+        },
+        {
+            key: 'home_rental_agreement',
+            value: <Localize i18n_default_text='Home rental agreement: valid and current agreement.' />,
+        },
+    ],
+});
+
 type TAuthStatus = {
     needs_poi?: boolean;
     is_submitted?: boolean;
@@ -47,7 +69,7 @@ export const getPOAStatusMessages = (
     };
 
     const resubmitButton = (onClick?: () => void) => (
-        <VerificationStatusActionButton button_text={<Localize i18n_default_text={'Resubmit'} />} onClick={onClick} />
+        <VerificationStatusActionButton button_text={<Localize i18n_default_text='Resubmit' />} onClick={onClick} />
     );
 
     const verifiedButton = (onClick?: () => void, platform_name?: string) => {
@@ -78,51 +100,41 @@ export const getPOAStatusMessages = (
     };
 
     const titles: Record<typeof status, React.ReactElement> = {
-        expired: <Localize i18n_default_text={'New proof of address is needed'} />,
-        none: <Localize i18n_default_text={'Proof of address verification not required'} />,
+        expired: <Localize i18n_default_text='New proof of address is needed' />,
+        none: <Localize i18n_default_text='Proof of address verification not required' />,
         pending: auth_status?.is_submitted ? (
-            <Localize i18n_default_text={'Your documents were submitted successfully'} />
+            <Localize i18n_default_text='Your documents were submitted successfully' />
         ) : (
-            <Localize i18n_default_text={'Your proof of address was submitted successfully'} />
+            <Localize i18n_default_text='Your proof of address was submitted successfully' />
         ),
-        rejected: <Localize i18n_default_text={'We could not verify your proof of address'} />,
-        suspected: <Localize i18n_default_text={'We could not verify your proof of address'} />,
-        verified: <Localize i18n_default_text={'Your proof of address is verified'} />,
+        rejected: <Localize i18n_default_text='We could not verify your proof of address' />,
+        suspected: <Localize i18n_default_text='We could not verify your proof of address' />,
+        verified: <Localize i18n_default_text='Your proof of address is verified' />,
     };
 
     const descriptions: Record<typeof status, React.ReactElement | null> = {
-        expired: (
-            <Localize i18n_default_text={'Your documents for proof of address is expired. Please submit again.'} />
-        ),
+        expired: <Localize i18n_default_text='Your documents for proof of address is expired. Please submit again.' />,
         none: (
-            <Localize
-                i18n_default_text={
-                    'Your account does not need address verification at this time. We will inform you if address verification is required in the future.'
-                }
-            />
+            <Localize i18n_default_text='Your account does not need address verification at this time. We will inform you if address verification is required in the future.' />
         ),
         pending: (
             <div>
                 {auth_status?.is_submitted ? (
-                    <Localize
-                        i18n_default_text={
-                            'We’ll review your documents and notify you of its status within 1 to 3 days.'
-                        }
-                    />
+                    <Localize i18n_default_text='We’ll review your documents and notify you of its status within 1 to 3 days.' />
                 ) : (
-                    <Localize i18n_default_text={'Your document is being reviewed, please check back in 1-3 days.'} />
+                    <Localize i18n_default_text='Your document is being reviewed, please check back in 1-3 days.' />
                 )}
                 {auth_status?.needs_poi && (
                     <>
-                        <br /> <Localize i18n_default_text={'You must also submit a proof of identity.'} />
+                        <br /> <Localize i18n_default_text='You must also submit a proof of identity.' />
                     </>
                 )}
             </div>
         ),
-        rejected: <Localize i18n_default_text={'Please check your email for details.'} />,
-        suspected: <Localize i18n_default_text={'Please check your email for details.'} />,
+        rejected: <Localize i18n_default_text='Please check your email for details.' />,
+        suspected: <Localize i18n_default_text='Please check your email for details.' />,
         verified: auth_status?.needs_poi ? (
-            <Localize i18n_default_text={'To continue trading, you must also submit a proof of identity.'} />
+            <Localize i18n_default_text='To continue trading, you must also submit a proof of identity.' />
         ) : null,
     };
 

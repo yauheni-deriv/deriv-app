@@ -1,12 +1,8 @@
 import React from 'react';
 import RejectedReasons from 'Components/poi/status/rejected-reasons';
 import Unsupported from 'Components/poi/status/unsupported';
-import {
-    getPOIStatusMessages,
-    getUploadCompleteStatusMessages,
-    identity_status_codes,
-} from './proof-of-identity-utils';
-import { getPlatformRedirect, platforms } from '@deriv/shared';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-utils';
+import { AUTH_STATUS_CODES, getPlatformRedirect, platforms } from '@deriv/shared';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 
 const Onfido = ({
@@ -47,21 +43,21 @@ const Onfido = ({
     );
 
     let onClick, content;
-    if (status === identity_status_codes.verified || status === identity_status_codes.pending) {
+    if (status === AUTH_STATUS_CODES.VERIFIED || status === AUTH_STATUS_CODES.PENDING) {
         onClick = onClickRedirectButton;
-    } else if (status === identity_status_codes.expired) {
+    } else if (status === AUTH_STATUS_CODES.EXPIRED) {
         onClick = handleRequireSubmission;
     }
-    if (status === identity_status_codes.pending) {
+    if (status === AUTH_STATUS_CODES.PENDING) {
         content = upload_complete_status_content;
     }
-    if (content === identity_status_codes.verified || content === identity_status_codes.expired) {
+    if (content === AUTH_STATUS_CODES.VERIFIED || content === AUTH_STATUS_CODES.EXPIRED) {
         content = status_content;
     }
 
     switch (status) {
-        case identity_status_codes.rejected:
-        case identity_status_codes.suspected:
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
             if (Number(submissions_left) < 1) {
                 return (
                     <Unsupported
@@ -80,9 +76,9 @@ const Onfido = ({
                     handleRequireSubmission={handleRequireSubmission}
                 />
             );
-        case identity_status_codes.pending:
-        case identity_status_codes.verified:
-        case identity_status_codes.expired:
+        case AUTH_STATUS_CODES.PENDING:
+        case AUTH_STATUS_CODES.VERIFIED:
+        case AUTH_STATUS_CODES.EXPIRED:
             return (
                 <VerificationStatus
                     status_title={content.title}

@@ -2,11 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
-import { getPlatformRedirect, isMobile, platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, getPlatformRedirect, isMobile, platforms } from '@deriv/shared';
 import {
     getPOIStatusMessages,
     getUploadCompleteStatusMessages,
-    identity_status_codes,
 } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
@@ -14,6 +13,7 @@ import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
 import { FormikValues } from 'formik';
 import VerificationStatus from '../../../verification-status/verification-status';
 import { TStores } from '@deriv/stores/types';
+import { TAuthStatusCode } from 'Types';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -29,7 +29,7 @@ type TUnsupported = {
     country_code: string;
     handlePOIforMT5Complete: () => void;
     manual?: {
-        status: typeof identity_status_codes[keyof typeof identity_status_codes];
+        status: TAuthStatusCode;
     };
     redirect_button: React.ReactElement;
     needs_poa: boolean;
@@ -96,20 +96,18 @@ const Unsupported = ({
             action_button: null,
         };
         let onClick;
-        if (manual?.status === identity_status_codes.verified || manual?.status === identity_status_codes.pending) {
+        if (manual?.status === AUTH_STATUS_CODES.VERIFIED || manual?.status === AUTH_STATUS_CODES.PENDING) {
             onClick = onClickRedirectButton;
-        } else if (manual?.status === identity_status_codes.expired) {
+        } else if (manual?.status === AUTH_STATUS_CODES.EXPIRED) {
             onClick = handleRequireSubmission;
         }
 
-        if (manual?.status === identity_status_codes.pending) {
+        if (manual?.status === AUTH_STATUS_CODES.PENDING) {
             content = upload_complete_status_content;
         } else if (
-            manual?.status === identity_status_codes.verified ||
-            manual?.status === identity_status_codes.expired ||
-            ([identity_status_codes.rejected, identity_status_codes.suspected].some(
-                status => status === manual.status
-            ) &&
+            manual?.status === AUTH_STATUS_CODES.VERIFIED ||
+            manual?.status === AUTH_STATUS_CODES.EXPIRED ||
+            ([AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED].some(status => status === manual.status) &&
                 !allow_poi_resubmission)
         ) {
             content = status_content;
