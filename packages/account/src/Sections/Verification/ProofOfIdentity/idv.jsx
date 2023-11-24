@@ -56,11 +56,12 @@ const Idv = ({
     }
     return (
         <VerificationStatus
-            status_title={status_content.title}
-            status_description={status_content.description}
             icon={status_content.icon}
-            action_button={status_content.action_button?.(onClick, from_platform.name)}
-        />
+            status_description={status_content.description}
+            status_title={status_content.title}
+        >
+            {status_content.action_button?.(onClick, from_platform.name)}
+        </VerificationStatus>
     );
 };
 

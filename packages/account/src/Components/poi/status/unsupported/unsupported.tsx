@@ -115,11 +115,12 @@ const Unsupported = ({
 
         return (
             <VerificationStatus
-                status_title={content.title}
-                status_description={content.description}
                 icon={content.icon}
-                action_button={content.action_button?.(onClick, from_platform.name)}
-            />
+                status_description={content.description}
+                status_title={content.title}
+            >
+                {content.action_button?.(onClick, from_platform.name)}
+            </VerificationStatus>
         );
     }
 

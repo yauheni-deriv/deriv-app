@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS } from '@deriv/shared';
 import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
 import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
@@ -49,7 +49,13 @@ const DetailComponent = ({
     const [response_error, setError] = React.useState('');
 
     const manual_upload_complete_status_content = React.useMemo(
-        () => getUploadCompleteStatusMessages('pending', { needs_poa: false, is_manual_upload: true }, false, true),
+        () =>
+            getUploadCompleteStatusMessages(
+                AUTH_STATUS_CODES.PENDING,
+                { needs_poa: false, is_manual_upload: true },
+                false,
+                true
+            ),
         []
     );
 
@@ -125,9 +131,9 @@ const DetailComponent = ({
         case STATUS.IS_COMPLETED:
             return (
                 <VerificationStatus
-                    status_title={manual_upload_complete_status_content.title}
-                    status_description={manual_upload_complete_status_content.description}
                     icon={manual_upload_complete_status_content.icon}
+                    status_description={manual_upload_complete_status_content.description}
+                    status_title={manual_upload_complete_status_content.title}
                 />
             );
         case STATUS.IS_FAILED:

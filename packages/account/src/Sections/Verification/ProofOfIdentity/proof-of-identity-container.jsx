@@ -192,9 +192,9 @@ const ProofOfIdentityContainer = observer(
         if (!should_allow_authentication && !is_age_verified && identity_status === identity_status_codes.none) {
             return (
                 <VerificationStatus
-                    status_title={status_content.title}
-                    status_description={status_content.description}
                     icon={status_content.icon}
+                    status_description={status_content.description}
+                    status_title={status_content.title}
                 />
             );
         }
@@ -250,11 +250,12 @@ const ProofOfIdentityContainer = observer(
 
             return (
                 <VerificationStatus
-                    status_title={content.title}
-                    status_description={content.description}
                     icon={content.icon}
-                    action_button={content.action_button?.(onClick, from_platform.name)}
-                />
+                    status_description={content.description}
+                    status_title={content.title}
+                >
+                    {content.action_button?.(onClick, from_platform.name)}
+                </VerificationStatus>
             );
         }
         switch (identity_last_attempt.service) {

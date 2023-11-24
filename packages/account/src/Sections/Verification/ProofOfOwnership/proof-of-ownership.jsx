@@ -68,11 +68,12 @@ export const ProofOfOwnership = observer(() => {
     }
     return (
         <VerificationStatus
-            action_button={status_content.action_button?.(onTryAgain)}
             icon={status_content.icon}
-            status_title={status_content.title}
             status_description={status_content.description}
-        />
+            status_title={status_content.title}
+        >
+            {status_content.action_button?.(onTryAgain)}
+        </VerificationStatus>
     );
 });
 
