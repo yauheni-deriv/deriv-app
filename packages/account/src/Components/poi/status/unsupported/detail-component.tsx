@@ -9,7 +9,7 @@ import CardDetails from './card-details';
 import { SELFIE_DOCUMENT, getDocumentIndex } from './constants';
 import { FormikValues } from 'formik';
 import VerificationStatus from '../../../verification-status/verification-status';
-import { getUploadCompleteStatusMessages } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+import { getUploadCompleteStatusMessages } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
 const STATUS = {
     IS_UPLOADING: 'IS_UPLOADING',

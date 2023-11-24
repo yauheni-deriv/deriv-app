@@ -6,13 +6,13 @@ type TVerificationStatus = {
     children?: React.ReactElement | null;
     icon: string;
     status_description?: React.ReactElement | null;
-    status_title: React.ReactElement | string | null;
+    status_title: React.ReactElement | null;
 };
 
 const VerificationStatus = ({ children, icon, status_description, status_title }: TVerificationStatus) => {
     return (
         <div className={styles.container}>
-            <Icon icon={icon ?? ''} size={128} />
+            <Icon icon={icon} size={128} />
             <Text as='div' color='general' weight='bold' size='s' align='center' className={styles.statusTitle}>
                 {status_title}
             </Text>
