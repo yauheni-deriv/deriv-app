@@ -69,9 +69,23 @@ export const getPOIStatusMessages = (
         return null;
     };
 
-    const titles: Record<typeof status, React.ReactElement | string> = {
+    const live_chat_link = (
+        <Localize
+            i18n_default_text='Please contact us via <0>live chat</0>.'
+            components={[
+                <span
+                    key={0}
+                    className='link link--orange'
+                    onClick={() => window.LC_API.open_chat_window()}
+                    onKeyDown={e => e.key === 'Enter' && window.LC_API.open_chat_window()}
+                />,
+            ]}
+        />
+    );
+
+    const titles: Record<typeof status, React.ReactElement | null> = {
         none: <Localize i18n_default_text='Proof of identity verification not required' />,
-        pending: <Localize i18n_default_text='' />,
+        pending: null,
         rejected: <Localize i18n_default_text="You've reached the limit for uploading your documents." />,
         verified: <Localize i18n_default_text='Your proof of identity is verified' />,
         expired: <Localize i18n_default_text='New proof of identity document needed' />,
@@ -86,26 +100,12 @@ export const getPOIStatusMessages = (
             />
         ),
         pending: <Localize i18n_default_text='' />,
-        rejected: (
-            <Localize
-                i18n_default_text='Please contact us via <0>live chat</0>.'
-                components={[
-                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                ]}
-            />
-        ),
+        rejected: live_chat_link,
         verified: auth_status?.needs_poa ? (
             <Localize i18n_default_text='To continue trading, you must also submit a proof of address.' />
         ) : null,
         expired: null,
-        suspected: (
-            <Localize
-                i18n_default_text='Please contact us via <0>live chat</0>.'
-                components={[
-                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                ]}
-            />
-        ),
+        suspected: live_chat_link,
     };
 
     const icons: Record<typeof status, string> = {
@@ -213,7 +213,7 @@ export const getIDVStatusMessages = (
         return <Localize i18n_default_text='Your documents were submitted successfully' />;
     };
 
-    const titles: Record<typeof status, React.ReactElement | null | string> = {
+    const titles: Record<typeof status, React.ReactElement | null> = {
         none: null,
         pending: getPendingHeaderText(),
         rejected: <Localize i18n_default_text='ID verification failed' />,
@@ -354,7 +354,7 @@ export const getUploadCompleteStatusMessages = (
         return null;
     };
 
-    const titles: Record<typeof status, React.ReactElement | null | string> = {
+    const titles: Record<typeof status, React.ReactElement | null> = {
         expired: null,
         none: null,
         pending: <Localize i18n_default_text='Your documents were submitted successfully' />,
