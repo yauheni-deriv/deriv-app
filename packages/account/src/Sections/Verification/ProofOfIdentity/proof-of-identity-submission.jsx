@@ -1,5 +1,12 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses, platforms, getPlatformRedirect } from '@deriv/shared';
+import {
+    AUTH_STATUS_CODES,
+    formatIDVError,
+    getPlatformRedirect,
+    idv_error_statuses,
+    platforms,
+    WS,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
@@ -7,11 +14,10 @@ import IdvFailed from 'Components/poi/idv-status/idv-failed';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import {
-    identity_status_codes,
-    submission_status_code,
-    service_code,
     getIDVStatusMessages,
     getUploadCompleteStatusMessages,
+    service_code,
+    submission_status_code,
 } from './proof-of-identity-utils';
 import { POIContext } from '../../../Helpers/poi-context';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
@@ -76,7 +82,7 @@ const POISubmission = observer(
 
         const handleViewComplete = () => {
             if (onStateChange && typeof onStateChange === 'function') {
-                onStateChange(identity_status_codes.pending);
+                onStateChange(AUTH_STATUS_CODES.PENDING);
             }
             setSubmissionStatus(submission_status_code.complete);
 

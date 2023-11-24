@@ -1,14 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
-import { getPlatformRedirect, platforms, WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, getPlatformRedirect, platforms, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import {
-    getPOIStatusMessages,
-    getUploadCompleteStatusMessages,
-    identity_status_codes,
-    service_code,
-} from './proof-of-identity-utils';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import IdvContainer from './idv.jsx';
@@ -32,7 +27,7 @@ const ProofOfIdentityContainer = observer(
             is_age_verified: false,
             idv: {},
             identity_last_attempt: {},
-            identity_status: identity_status_codes.none,
+            identity_status: AUTH_STATUS_CODES.NONE,
             is_idv_disallowed: false,
             manual: {},
             onfido: {},
@@ -173,10 +168,8 @@ const ProofOfIdentityContainer = observer(
         );
 
         const should_show_mismatch_form =
-            idv.submissions_left > 0 &&
-            [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
-                idv.status
-            );
+            idv?.submissions_left > 0 &&
+            [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.EXPIRED].includes(idv.status);
 
         if (api_error) {
             return <ErrorMessage error_message={api_error?.message || api_error} />;
@@ -189,7 +182,7 @@ const ProofOfIdentityContainer = observer(
             return <DemoMessage />;
         }
 
-        if (!should_allow_authentication && !is_age_verified && identity_status === identity_status_codes.none) {
+        if (!should_allow_authentication && !is_age_verified && identity_status === AUTH_STATUS_CODES.NONE) {
             return (
                 <VerificationStatus
                     icon={status_content.icon}
@@ -200,7 +193,7 @@ const ProofOfIdentityContainer = observer(
         }
 
         if (
-            identity_status === identity_status_codes.none ||
+            identity_status === AUTH_STATUS_CODES.NONE ||
             has_require_submission ||
             allow_poi_resubmission ||
             should_show_mismatch_form
@@ -231,20 +224,17 @@ const ProofOfIdentityContainer = observer(
         } else if (
             !identity_last_attempt ||
             // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
-            (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status)
+            (identity_status === AUTH_STATUS_CODES.VERIFIED && identity_status !== identity_last_attempt.status)
         ) {
             let onClick;
             let content = status_content;
-            if (
-                identity_status === identity_status_codes.verified ||
-                identity_status === identity_status_codes.pending
-            ) {
+            if (identity_status === AUTH_STATUS_CODES.VERIFIED || identity_status === AUTH_STATUS_CODES.PENDING) {
                 onClick = onClickRedirectButton;
             }
-            if (identity_status === identity_status_codes.expired) {
+            if (identity_status === AUTH_STATUS_CODES.EXPIRED) {
                 onClick = handleRequireSubmission;
             }
-            if (identity_status === identity_status_codes.pending) {
+            if (identity_status === AUTH_STATUS_CODES.PENDING) {
                 content = upload_complete_status_content;
             }
 

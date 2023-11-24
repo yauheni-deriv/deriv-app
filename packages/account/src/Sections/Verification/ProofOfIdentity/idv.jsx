@@ -1,6 +1,6 @@
 import React from 'react';
-import { formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
-import { getIDVStatusMessages, identity_status_codes } from './proof-of-identity-utils';
+import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
+import { getIDVStatusMessages } from './proof-of-identity-utils';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 
 const Idv = ({
@@ -40,14 +40,14 @@ const Idv = ({
 
     let onClick;
 
-    if (identity_status_codes.verified) {
+    if (AUTH_STATUS_CODES.VERIFIED) {
         onClick = handleRequireSubmission;
     } else {
         onClick = onClickRedirectButton;
     }
 
     if (
-        [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].some(
+        [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.EXPIRED].some(
             item => item === status
         ) &&
         Number(submissions_left) >= 1

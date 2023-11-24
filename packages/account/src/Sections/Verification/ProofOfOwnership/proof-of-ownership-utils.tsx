@@ -9,7 +9,7 @@ export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof PO
     );
 
     const titles: Record<typeof status, React.ReactElement> = {
-        none: <Localize i18n_default_text="Your proof of ownership isn\'t required." />,
+        none: <Localize i18n_default_text="Your proof of ownership isn't required." />,
         pending: <Localize i18n_default_text='We’ve received your proof of ownership.' />,
         rejected: <Localize i18n_default_text='Proof of ownership verification failed' />,
         verified: <Localize i18n_default_text='Proof of ownership verification passed.' />,

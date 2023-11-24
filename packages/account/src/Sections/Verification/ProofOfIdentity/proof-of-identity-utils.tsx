@@ -11,15 +11,6 @@ import {
 import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
 import { TAuthStatusCode } from 'Types';
 
-export const identity_status_codes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    expired: 'expired',
-    suspected: 'suspected',
-} as const;
-
 export const submission_status_code = {
     selecting: 'selecting',
     submitting: 'submitting',

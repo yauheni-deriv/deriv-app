@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
-import { identity_status_codes, service_code } from '../proof-of-identity-utils';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { service_code } from '../proof-of-identity-utils';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -31,6 +33,7 @@ jest.mock('Sections/Verification/ProofOfIdentity/onfido.jsx', () => jest.fn(() =
 jest.mock('Sections/Verification/ProofOfIdentity/proof-of-identity-submission.jsx', () =>
     jest.fn(() => 'mockedProofOfIdentitySubmission')
 );
+jest.mock('Components/poi/status/unsupported', () => jest.fn(() => 'mockedUnsupported'));
 jest.mock('Components/error-component', () => jest.fn(() => 'mockedErrorMessage'));
 
 const mock_props = {
@@ -167,9 +170,11 @@ describe('ProofOfIdentityContainer', () => {
 
     const renderComponent = ({ props = mock_props, store_config = store }) => {
         return render(
-            <StoreProvider store={store_config}>
-                <ProofOfIdentityContainer {...props} />
-            </StoreProvider>
+            <BrowserRouter>
+                <StoreProvider store={store_config}>
+                    <ProofOfIdentityContainer {...props} />
+                </StoreProvider>
+            </BrowserRouter>
         );
     };
 
@@ -212,15 +217,19 @@ describe('ProofOfIdentityContainer', () => {
     });
 
     it('should render messages that POA is not required', async () => {
+        populateVerificationStatus.mockReturnValue({
+            identity_status: AUTH_STATUS_CODES.NONE,
+        });
+
         renderComponent({});
         await waitFor(() => {
-            expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
+            expect(screen.getByText('Proof of identity verification not required')).toBeInTheDocument();
         });
     });
 
     it('should render POI submission section when status is none', async () => {
         populateVerificationStatus.mockReturnValue({
-            identity_status: identity_status_codes.none,
+            identity_status: AUTH_STATUS_CODES.NONE,
             is_age_verified: true,
             idv: { submissions_left: 3 },
         });
@@ -234,7 +243,7 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             allow_poi_resubmission: true,
             is_age_verified: true,
-            identity_status: identity_status_codes.verified,
+            identity_status: AUTH_STATUS_CODES.VERIFIED,
             idv: { submissions_left: 3 },
         });
 
@@ -248,12 +257,12 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: null,
             is_age_verified: true,
-            identity_status: identity_status_codes.pending,
+            identity_status: AUTH_STATUS_CODES.PENDING,
             idv: { submissions_left: 3 },
         });
         renderComponent({});
         await waitFor(() => {
-            expect(screen.getByText('mockedUploadComplete')).toBeInTheDocument();
+            expect(screen.getByText('Your documents were submitted successfully')).toBeInTheDocument();
         });
     });
 
@@ -261,13 +270,13 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: null,
             is_age_verified: true,
-            identity_status: identity_status_codes.verified,
+            identity_status: AUTH_STATUS_CODES.VERIFIED,
             idv: { submissions_left: 3 },
         });
 
         renderComponent({});
         await waitFor(() => {
-            expect(screen.getByText('mockedVerified')).toBeInTheDocument();
+            expect(screen.getByText('Your proof of identity is verified')).toBeInTheDocument();
         });
     });
 
@@ -275,12 +284,12 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: null,
             is_age_verified: true,
-            identity_status: identity_status_codes.expired,
+            identity_status: AUTH_STATUS_CODES.EXPIRED,
             idv: { submissions_left: 3 },
         });
         renderComponent({});
         await waitFor(() => {
-            expect(screen.getByText('mockedExpired')).toBeInTheDocument();
+            expect(screen.getByText('New proof of identity document needed')).toBeInTheDocument();
         });
     });
 
@@ -288,13 +297,13 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: null,
             is_age_verified: true,
-            identity_status: identity_status_codes.rejected,
+            identity_status: AUTH_STATUS_CODES.REJECTED,
             idv: { submissions_left: 3 },
         });
 
         renderComponent({});
         await waitFor(() => {
-            expect(screen.getByText('mockedLimited')).toBeInTheDocument();
+            expect(screen.getByText("You've reached the limit for uploading your documents.")).toBeInTheDocument();
         });
     });
 
@@ -302,7 +311,7 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: { service: service_code.onfido },
             is_age_verified: true,
-            identity_status: identity_status_codes.rejected,
+            identity_status: AUTH_STATUS_CODES.REJECTED,
             idv: { submissions_left: 3 },
         });
 
@@ -316,7 +325,7 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: { service: service_code.idv },
             is_age_verified: true,
-            identity_status: identity_status_codes.rejected,
+            identity_status: AUTH_STATUS_CODES.REJECTED,
             idv: { submissions_left: 3 },
         });
 
@@ -330,7 +339,7 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: { service: service_code.manual },
             is_age_verified: true,
-            identity_status: identity_status_codes.rejected,
+            identity_status: AUTH_STATUS_CODES.REJECTED,
             idv: { submissions_left: 3 },
         });
 
