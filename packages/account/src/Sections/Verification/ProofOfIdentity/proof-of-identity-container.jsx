@@ -139,8 +139,8 @@ const ProofOfIdentityContainer = observer(
         const upload_complete_status_content = React.useMemo(
             () =>
                 getUploadCompleteStatusMessages(
-                    'pending',
-                    { needs_poa, is_manual_upload: manual?.status === 'pending' },
+                    AUTH_STATUS_CODES.PENDING,
+                    { needs_poa, is_manual_upload: manual?.status === AUTH_STATUS_CODES.PENDING },
                     should_show_redirect_btn,
                     is_from_external
                 ),
@@ -226,17 +226,16 @@ const ProofOfIdentityContainer = observer(
             // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
             (identity_status === AUTH_STATUS_CODES.VERIFIED && identity_status !== identity_last_attempt.status)
         ) {
-            let onClick;
-            let content = status_content;
-            if (identity_status === AUTH_STATUS_CODES.VERIFIED || identity_status === AUTH_STATUS_CODES.PENDING) {
-                onClick = onClickRedirectButton;
-            }
-            if (identity_status === AUTH_STATUS_CODES.EXPIRED) {
-                onClick = handleRequireSubmission;
-            }
-            if (identity_status === AUTH_STATUS_CODES.PENDING) {
-                content = upload_complete_status_content;
-            }
+            const onClick = () => {
+                if (identity_status === AUTH_STATUS_CODES.VERIFIED || identity_status === AUTH_STATUS_CODES.PENDING) {
+                    return onClickRedirectButton;
+                }
+                if (identity_status === AUTH_STATUS_CODES.EXPIRED) {
+                    return handleRequireSubmission;
+                }
+            };
+            const content =
+                identity_status === AUTH_STATUS_CODES.PENDING ? upload_complete_status_content : status_content;
 
             return (
                 <VerificationStatus
@@ -244,7 +243,7 @@ const ProofOfIdentityContainer = observer(
                     status_description={content.description}
                     status_title={content.title}
                 >
-                    {content.action_button?.(onClick, from_platform.name)}
+                    {content.action_button?.(onClick(), from_platform.name)}
                 </VerificationStatus>
             );
         }

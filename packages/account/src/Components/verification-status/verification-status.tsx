@@ -13,7 +13,7 @@ const VerificationStatus = ({ children, icon, status_description, status_title }
     return (
         <div className={styles.container}>
             <Icon icon={icon} size={128} />
-            <Text as='div' color='general' weight='bold' size='s' align='center' className={styles.statusTitle}>
+            <Text as='div' color='general' weight='bold' align='center' className={styles.statusTitle}>
                 {status_title}
             </Text>
             {status_description && (

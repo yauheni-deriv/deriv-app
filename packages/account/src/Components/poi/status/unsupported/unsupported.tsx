@@ -90,18 +90,11 @@ const Unsupported = ({
 
     if (manual) {
         let content: typeof status_content | typeof upload_complete_status_content = {
-            title: '',
+            title: null,
             icon: '',
             description: null,
             action_button: null,
         };
-        let onClick;
-        if (manual?.status === AUTH_STATUS_CODES.VERIFIED || manual?.status === AUTH_STATUS_CODES.PENDING) {
-            onClick = onClickRedirectButton;
-        } else if (manual?.status === AUTH_STATUS_CODES.EXPIRED) {
-            onClick = handleRequireSubmission;
-        }
-
         if (manual?.status === AUTH_STATUS_CODES.PENDING) {
             content = upload_complete_status_content;
         } else if (
@@ -112,6 +105,13 @@ const Unsupported = ({
         ) {
             content = status_content;
         }
+        const onClick = () => {
+            if (manual?.status === AUTH_STATUS_CODES.VERIFIED || manual?.status === AUTH_STATUS_CODES.PENDING) {
+                return onClickRedirectButton;
+            } else if (manual?.status === AUTH_STATUS_CODES.EXPIRED) {
+                return handleRequireSubmission;
+            }
+        };
 
         return (
             <VerificationStatus
@@ -119,7 +119,7 @@ const Unsupported = ({
                 status_description={content.description}
                 status_title={content.title}
             >
-                {content.action_button?.(onClick, from_platform.name)}
+                {content.action_button?.(onClick(), from_platform.name)}
             </VerificationStatus>
         );
     }

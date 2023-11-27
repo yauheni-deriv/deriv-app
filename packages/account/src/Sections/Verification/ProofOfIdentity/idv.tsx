@@ -1,7 +1,20 @@
 import React from 'react';
+import { GetAccountStatus } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
-import { getIDVStatusMessages } from './proof-of-identity-utils';
+import { TStores } from '@deriv/stores/types';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { getIDVStatusMessages } from './proof-of-identity-utils';
+
+type TIdv = {
+    handleRequireSubmission: () => void;
+    idv: DeepRequired<GetAccountStatus>['authentication']['identity']['services']['idv'];
+    is_from_external: boolean;
+    needs_poa: boolean;
+    redirect_button: boolean | React.ReactElement;
+    routeBackTo: (route: string) => void;
+    app_routing_history: TStores['common']['app_routing_history'];
+    is_already_attempted: TStores['client']['is_already_attempted'];
+};
 
 const Idv = ({
     handleRequireSubmission,
@@ -12,7 +25,7 @@ const Idv = ({
     routeBackTo,
     app_routing_history,
     is_already_attempted,
-}) => {
+}: TIdv) => {
     const { status, submissions_left, last_rejected } = idv;
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -28,7 +41,7 @@ const Idv = ({
     );
 
     const onClickRedirectButton = () => {
-        const platform = platforms[from_platform.ref];
+        const platform = platforms[from_platform.ref as keyof typeof platforms];
         const { is_hard_redirect = false, url = '' } = platform ?? {};
         if (is_hard_redirect) {
             window.location.href = url;
@@ -38,13 +51,7 @@ const Idv = ({
         }
     };
 
-    let onClick;
-
-    if (AUTH_STATUS_CODES.VERIFIED) {
-        onClick = handleRequireSubmission;
-    } else {
-        onClick = onClickRedirectButton;
-    }
+    const onClick = () => (AUTH_STATUS_CODES.VERIFIED ? handleRequireSubmission : onClickRedirectButton);
 
     if (
         [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.EXPIRED].some(
@@ -54,13 +61,14 @@ const Idv = ({
     ) {
         return null;
     }
+
     return (
         <VerificationStatus
             icon={status_content.icon}
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(onClick, from_platform.name)}
+            {status_content.action_button?.(onClick(), from_platform.name)}
         </VerificationStatus>
     );
 };

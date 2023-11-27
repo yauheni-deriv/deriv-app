@@ -132,17 +132,18 @@ const ProofOfAddressContainer = observer(() => {
         allow_document_upload &&
         (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required);
 
-    let buttonOnclick;
-    if (
-        [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
-            status => status === document_status
-        )
-    ) {
-        buttonOnclick = handleResubmit;
-    }
-    if (should_show_redirect_btn) {
-        buttonOnclick = onClickRedirect;
-    }
+    const buttonOnclick = () => {
+        if (
+            [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].some(
+                status => status === document_status
+            )
+        ) {
+            return handleResubmit;
+        }
+        if (should_show_redirect_btn) {
+            return onClickRedirect;
+        }
+    };
 
     if (is_loading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -158,7 +159,7 @@ const ProofOfAddressContainer = observer(() => {
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(buttonOnclick, from_platform.name)}
+            {status_content.action_button?.(buttonOnclick(), from_platform.name)}
         </VerificationStatus>
     );
 });

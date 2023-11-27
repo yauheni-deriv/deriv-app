@@ -16,7 +16,7 @@ type TVerificationStatusActionButton = { button_text: JSX.Element } & (TButtonLi
 
 const VerificationStatusActionButton = ({ button_text, onClick, to }: TVerificationStatusActionButton) => {
     return (
-        <div className={''}>
+        <React.Fragment>
             {to ? (
                 <ButtonLink className={style.actionButton} to={to}>
                     <Text size='xs' className={style.actionButton__text} as='p' weight='bold'>
@@ -25,12 +25,12 @@ const VerificationStatusActionButton = ({ button_text, onClick, to }: TVerificat
                 </ButtonLink>
             ) : (
                 <Button type='button' onClick={onClick} has_effect primary className={style.actionButton}>
-                    <Text size='xs' weight='bold' as='p' color='general' className={style.actionButton__text}>
+                    <Text size='xs' weight='bold' as='p' color='general' className={style.actionButton_text}>
                         {button_text}
                     </Text>
                 </Button>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 export default VerificationStatusActionButton;

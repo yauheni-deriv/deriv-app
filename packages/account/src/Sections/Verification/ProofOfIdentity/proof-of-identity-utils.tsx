@@ -138,7 +138,7 @@ export const getPOIStatusMessages = (
 };
 
 type TAuthIDVStatus = TAuthStatus & {
-    mismatch_status?: TIDVErrorStatus;
+    mismatch_status?: TIDVErrorStatus | null;
     is_already_attempted?: boolean;
 };
 
