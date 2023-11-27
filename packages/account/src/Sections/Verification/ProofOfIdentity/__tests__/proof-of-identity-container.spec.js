@@ -28,7 +28,7 @@ jest.mock('../../Helpers/verification.js', () => ({
 }));
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
-jest.mock('Sections/Verification/ProofOfIdentity/idv.jsx', () => jest.fn(() => 'mockedIDV'));
+jest.mock('Sections/Verification/ProofOfIdentity/idv', () => jest.fn(() => 'mockedIDV'));
 jest.mock('Sections/Verification/ProofOfIdentity/onfido.jsx', () => jest.fn(() => 'mockedOnfido'));
 jest.mock('Sections/Verification/ProofOfIdentity/proof-of-identity-submission.jsx', () =>
     jest.fn(() => 'mockedProofOfIdentitySubmission')

@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import IdvContainer from './idv.jsx';
+import IdvContainer from './idv';
 import { Localize } from '@deriv/translations';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
