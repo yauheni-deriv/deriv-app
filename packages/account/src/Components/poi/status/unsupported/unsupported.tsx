@@ -6,7 +6,7 @@ import { AUTH_STATUS_CODES, getPlatformRedirect, isMobile, platforms } from '@de
 import {
     getPOIStatusMessages,
     getUploadCompleteStatusMessages,
-} from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+} from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-configs';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
@@ -79,12 +79,17 @@ const Unsupported = ({
     };
 
     const status_content = React.useMemo(
-        () => getPOIStatusMessages(manual?.status ?? 'none', { needs_poa }, !!redirect_button),
+        () => getPOIStatusMessages(manual?.status ?? AUTH_STATUS_CODES.NONE, { needs_poa }, !!redirect_button),
         [manual?.status, needs_poa, redirect_button]
     );
 
     const upload_complete_status_content = React.useMemo(
-        () => getUploadCompleteStatusMessages('pending', { needs_poa, is_manual_upload: true }, !!redirect_button),
+        () =>
+            getUploadCompleteStatusMessages(
+                AUTH_STATUS_CODES.PENDING,
+                { needs_poa, is_manual_upload: true },
+                !!redirect_button
+            ),
         [needs_poa, redirect_button]
     );
 

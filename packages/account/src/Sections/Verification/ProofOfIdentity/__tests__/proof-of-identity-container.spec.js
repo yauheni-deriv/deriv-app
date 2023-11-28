@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
-import { service_code } from '../proof-of-identity-utils';
+import { service_code } from '../proof-of-identity-configs';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { AUTH_STATUS_CODES } from '@deriv/shared';
 import { BrowserRouter } from 'react-router-dom';

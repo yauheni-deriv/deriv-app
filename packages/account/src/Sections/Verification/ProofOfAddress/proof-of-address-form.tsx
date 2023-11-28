@@ -15,7 +15,7 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { useFileUploader } from '@deriv/hooks';
-import { getFilesDescriptions } from './proof-of-address-utils';
+import { getFilesDescriptions } from './proof-of-address-configs';
 
 const FilesDescription = observer(() => {
     const {

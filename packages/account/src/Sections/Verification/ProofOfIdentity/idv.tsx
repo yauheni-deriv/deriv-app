@@ -3,7 +3,7 @@ import { GetAccountStatus } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
-import { getIDVStatusMessages } from './proof-of-identity-utils';
+import { getIDVStatusMessages } from './proof-of-identity-configs';
 
 type TIdv = {
     handleRequireSubmission: () => void;

@@ -1,7 +1,7 @@
 import React from 'react';
 import RejectedReasons from 'Components/poi/status/rejected-reasons';
 import Unsupported from 'Components/poi/status/unsupported';
-import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-utils';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 import { AUTH_STATUS_CODES, getPlatformRedirect, platforms } from '@deriv/shared';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 

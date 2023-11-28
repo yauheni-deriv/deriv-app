@@ -18,7 +18,7 @@ import {
     getUploadCompleteStatusMessages,
     service_code,
     submission_status_code,
-} from './proof-of-identity-utils';
+} from './proof-of-identity-configs';
 import { POIContext } from '../../../Helpers/poi-context';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import { useHistory } from 'react-router';

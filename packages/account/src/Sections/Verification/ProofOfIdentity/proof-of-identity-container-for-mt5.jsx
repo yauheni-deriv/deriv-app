@@ -6,7 +6,7 @@ import { useStore, observer } from '@deriv/stores';
 import ErrorMessage from '../../../Components/error-component';
 import IconWithMessage from '../../../Components/icon-with-message';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
-import { service_code } from './proof-of-identity-utils';
+import { service_code } from './proof-of-identity-configs';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data }) => {

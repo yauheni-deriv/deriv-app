@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import ProofOfAddressForm from './proof-of-address-form';
 import { populateVerificationStatus } from '../Helpers/verification.js';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
-import { getPOAStatusMessages } from 'Sections/Verification/ProofOfAddress/proof-of-address-utils';
+import { getPOAStatusMessages } from 'Sections/Verification/ProofOfAddress/proof-of-address-configs';
 
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'

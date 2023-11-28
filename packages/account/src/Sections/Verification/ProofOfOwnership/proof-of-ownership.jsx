@@ -6,7 +6,7 @@ import { POO_STATUSES } from './constants/constants';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import getPaymentMethodsConfig from './payment-method-config.js';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
-import { getPOOStatusMessages } from './proof-of-ownership-utils';
+import { getPOOStatusMessages } from './proof-of-ownership-configs';
 
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();

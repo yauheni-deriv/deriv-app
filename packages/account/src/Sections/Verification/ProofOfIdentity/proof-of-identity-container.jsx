@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
 import { AUTH_STATUS_CODES, getPlatformRedirect, platforms, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-utils';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-configs';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import IdvContainer from './idv';
