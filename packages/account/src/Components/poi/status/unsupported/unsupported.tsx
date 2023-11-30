@@ -1,19 +1,19 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { AUTH_STATUS_CODES, getPlatformRedirect, platforms } from '@deriv/shared';
+import classNames from 'classnames';
+import { FormikValues } from 'formik';
+import { Timeline } from '@deriv/components';
+import { AUTH_STATUS_CODES, getPlatformRedirect, isMobile, platforms } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
+import { localize } from '@deriv/translations';
 import {
     getPOIStatusMessages,
     getUploadCompleteStatusMessages,
 } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-configs';
+import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
-import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
-import { FormikValues } from 'formik';
 import VerificationStatus from '../../../verification-status/verification-status';
-import { TStores } from '@deriv/stores/types';
-import { TAuthStatusCode } from 'Types';
-import FormFooter from '../../../form-footer';
+import { TAuthStatusCode } from '../../../../Types/common.type';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -33,7 +33,6 @@ type TUnsupported = {
     };
     redirect_button: React.ReactElement;
     needs_poa: boolean;
-    handleBack: () => void;
     handleRequireSubmission: () => void;
     handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
@@ -50,7 +49,6 @@ const Unsupported = ({
     manual,
     redirect_button,
     needs_poa,
-    handleBack,
     handleRequireSubmission,
     allow_poi_resubmission,
     handleViewComplete,
@@ -58,7 +56,7 @@ const Unsupported = ({
     routeBackTo,
     app_routing_history = [],
     ...props
-}: TUnsupported) => {
+}: Partial<TUnsupported>) => {
     const [detail, setDetail] = React.useState<number | null>(null);
 
     const toggleDetail = (index: number) => setDetail(index);
@@ -152,17 +150,19 @@ const Unsupported = ({
     }
 
     return (
-        <div className='manual-poi'>
-            <Text as='h2' color='prominent' size='xs'>
-                <Localize i18n_default_text='Please upload one of the following documents:' />
-            </Text>
-            <Documents documents={documents} toggleDetail={toggleDetail} />
-            <FormFooter className='proof-of-identity__footer'>
-                <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                    <Localize i18n_default_text='Back' />
-                </Button>
-            </FormFooter>
-        </div>
+        <Timeline
+            className={classNames('manual-poi', {
+                'manual-poi--mobile': isMobile(),
+            })}
+            disabled_items={[2]}
+        >
+            <Timeline.Item item_title={localize('Please upload one of the following documents:')}>
+                <Documents documents={documents} toggleDetail={toggleDetail} />
+            </Timeline.Item>
+            <Timeline.Item item_title={localize('Upload your selfie')}>
+                <div />
+            </Timeline.Item>
+        </Timeline>
     );
 };
 export default Unsupported;
