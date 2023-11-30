@@ -1,8 +1,8 @@
 import React from 'react';
+import { AUTH_STATUS_CODES, formatOnfidoError, getPlatformRedirect, platforms } from '@deriv/shared';
 import RejectedReasons from 'Components/poi/status/rejected-reasons';
 import Unsupported from 'Components/poi/status/unsupported';
 import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
-import { AUTH_STATUS_CODES, getPlatformRedirect, platforms } from '@deriv/shared';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 
 const Onfido = ({
@@ -58,6 +58,8 @@ const Onfido = ({
     switch (status) {
         case AUTH_STATUS_CODES.REJECTED:
         case AUTH_STATUS_CODES.SUSPECTED:
+        case AUTH_STATUS_CODES.EXPIRED: {
+            const submission_errors = formatOnfidoError(status, rejected_reasons);
             if (Number(submissions_left) < 1) {
                 return (
                     <Unsupported
@@ -72,13 +74,13 @@ const Onfido = ({
             }
             return (
                 <RejectedReasons
-                    rejected_reasons={rejected_reasons}
+                    rejected_reasons={submission_errors}
                     handleRequireSubmission={handleRequireSubmission}
                 />
             );
+        }
         case AUTH_STATUS_CODES.PENDING:
         case AUTH_STATUS_CODES.VERIFIED:
-        case AUTH_STATUS_CODES.EXPIRED:
             return (
                 <VerificationStatus
                     icon={content.icon}

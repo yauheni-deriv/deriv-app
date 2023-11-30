@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    AUTH_STATUS_CODES,
-    formatIDVError,
-    getPlatformRedirect,
-    idv_error_statuses,
-    platforms,
-    WS,
-} from '@deriv/shared';
+import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, IDV_ERROR_STATUS, platforms, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
@@ -183,10 +176,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![
-                    idv_error_statuses.poi_expired,
-                    idv_error_statuses.poi_failed,
-                    idv_error_statuses.poi_high_risk,
+                [
+                    IDV_ERROR_STATUS.DobMismatch.code,
+                    IDV_ERROR_STATUS.NameMismatch.code,
+                    IDV_ERROR_STATUS.NameDobMismatch.code,
+                    IDV_ERROR_STATUS.HighRisk.code,
                 ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
@@ -242,7 +236,6 @@ const POISubmission = observer(
                         const country_code = selected_country.value;
                         const doc_obj = selected_country.identity.services.onfido.documents_supported;
                         const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
-
                         return (
                             <OnfidoSdkViewContainer
                                 country_code={country_code}
