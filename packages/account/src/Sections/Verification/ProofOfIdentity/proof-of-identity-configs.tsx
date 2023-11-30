@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import {
     AUTH_STATUS_CODES,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
     isNavigationFromDerivGO,
     isNavigationFromP2P,
     routes,
@@ -197,13 +197,13 @@ export const getIDVStatusMessages = (
     };
 
     const is_expired_or_failed_error =
-        auth_status?.mismatch_status === idv_error_statuses.poi_expired ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_failed;
+        auth_status?.mismatch_status === IDV_ERROR_STATUS.Expired.code ||
+        auth_status?.mismatch_status === IDV_ERROR_STATUS.Failed.code;
 
     const is_mismatch_error =
-        auth_status?.mismatch_status === idv_error_statuses.poi_name_dob_mismatch ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_dob_mismatch ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_name_mismatch;
+        auth_status?.mismatch_status === IDV_ERROR_STATUS.NameDobMismatch.code ||
+        auth_status?.mismatch_status === IDV_ERROR_STATUS.DobMismatch.code ||
+        auth_status?.mismatch_status === IDV_ERROR_STATUS.NameMismatch.code;
 
     const getPendingHeaderText = () => {
         if (auth_status?.is_already_attempted) {
