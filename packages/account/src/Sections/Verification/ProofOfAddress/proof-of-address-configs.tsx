@@ -125,9 +125,9 @@ export const getPOAStatusMessages = (
                     <Localize i18n_default_text='Your document is being reviewed, please check back in 1-3 days.' />
                 )}
                 {auth_status?.needs_poi && (
-                    <>
+                    <React.Fragment>
                         <br /> <Localize i18n_default_text='You must also submit a proof of identity.' />
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         ),

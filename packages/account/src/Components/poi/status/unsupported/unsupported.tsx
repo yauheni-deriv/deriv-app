@@ -74,7 +74,7 @@ const Unsupported = ({
             window.location.href = url;
             window.sessionStorage.removeItem('config.platform');
         } else {
-            routeBackTo(from_platform.route);
+            routeBackTo?.(from_platform.route);
         }
     };
 
