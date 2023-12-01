@@ -40,6 +40,10 @@ type TActionButtonProps = {
     should_show_redirect_btn?: boolean;
 };
 
+type TAuthUploadCompleteStatus = TAuthStatus & {
+    is_manual_upload?: boolean;
+};
+
 const createRejectedButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (
     <VerificationStatusActionButton
         button_text={<Localize i18n_default_text='Upload identity document' />}
@@ -332,10 +336,6 @@ export const getIDVStatusMessages = (
     };
 };
 
-type TAuthUploadCompleteStatus = TAuthStatus & {
-    is_manual_upload?: boolean;
-};
-
 export const getUploadCompleteStatusMessages = (
     status: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES],
     auth_status?: TAuthUploadCompleteStatus,
@@ -344,7 +344,7 @@ export const getUploadCompleteStatusMessages = (
 ) => {
     const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
 
-    const pendingButton = (onClick?: () => void, platform_name?: string) => {
+    const pendingButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => {
         if (!auth_status?.needs_poa) {
             if (!is_from_external && should_show_redirect_btn)
                 return (
@@ -358,7 +358,7 @@ export const getUploadCompleteStatusMessages = (
             if (!is_redirected_from_platform) {
                 return (
                     <VerificationStatusActionButton
-                        to='/'
+                        to={routes.root}
                         button_text={<Localize i18n_default_text='Continue trading' />}
                     />
                 );
@@ -428,7 +428,7 @@ export const getUploadCompleteStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: () => void, platform_name?: string) => JSX.Element | null)
+        null | ((onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => JSX.Element | null)
     > = {
         expired: null,
         none: null,
