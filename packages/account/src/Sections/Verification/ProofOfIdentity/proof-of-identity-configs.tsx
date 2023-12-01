@@ -173,7 +173,10 @@ export const getIDVStatusMessages = (
             );
         }
         return (
-            <VerificationStatusActionButton to='/' button_text={<Localize i18n_default_text='Continue trading' />} />
+            <VerificationStatusActionButton
+                to={routes.root}
+                button_text={<Localize i18n_default_text='Continue trading' />}
+            />
         );
     };
 

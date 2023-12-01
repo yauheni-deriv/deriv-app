@@ -1,5 +1,5 @@
 import React from 'react';
-import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P } from '@deriv/shared';
+import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
 
@@ -51,7 +51,7 @@ export const getPOAStatusMessages = (
             if (!is_redirected_from_platform) {
                 return (
                     <VerificationStatusActionButton
-                        to='/'
+                        to={routes.root}
                         button_text={<Localize i18n_default_text='Continue trading' />}
                     />
                 );
@@ -60,7 +60,7 @@ export const getPOAStatusMessages = (
         if (auth_status?.needs_poi) {
             return (
                 <VerificationStatusActionButton
-                    to='/account/proof-of-identity'
+                    to={routes.proof_of_identity}
                     button_text={<Localize i18n_default_text='Proof of identity' />}
                 />
             );
@@ -76,7 +76,7 @@ export const getPOAStatusMessages = (
         if (auth_status?.needs_poi) {
             return (
                 <VerificationStatusActionButton
-                    to='/account/proof-of-identity'
+                    to={routes.proof_of_identity}
                     button_text={<Localize i18n_default_text='Proof of identity' />}
                 />
             );
@@ -91,7 +91,7 @@ export const getPOAStatusMessages = (
         if (!is_redirected_from_platform) {
             return (
                 <VerificationStatusActionButton
-                    to='/'
+                    to={routes.root}
                     button_text={<Localize i18n_default_text='Continue trading' />}
                 />
             );
