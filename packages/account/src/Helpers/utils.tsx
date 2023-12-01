@@ -265,7 +265,7 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
     };
 };
 
-type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 export const verifyFields = (status: TIDVErrorStatus) => {
     switch (status) {
         case idv_error_statuses.poi_dob_mismatch:
