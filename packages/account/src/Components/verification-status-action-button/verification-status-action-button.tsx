@@ -19,12 +19,12 @@ const VerificationStatusActionButton = ({ button_text, onClick, to }: TVerificat
         <React.Fragment>
             {to ? (
                 <ButtonLink className={style.actionButton} to={to}>
-                    <Text size='xs' className={style.actionButton__text} as='p' weight='bold'>
+                    <Text size='xs' as='p' weight='bold' color='colored-background'>
                         {button_text}
                     </Text>
                 </ButtonLink>
             ) : (
-                <Button type='button' onClick={onClick} has_effect primary className={style.actionButton}>
+                <Button type='button' onClick={onClick} has_effect primary color='colored-background'>
                     <Text size='xs' weight='bold' as='p' className={style.actionButton_text}>
                         {button_text}
                     </Text>

@@ -115,7 +115,10 @@ export const getPOAStatusMessages = (
     const descriptions: Record<typeof status, React.ReactElement | null> = {
         expired: <Localize i18n_default_text='Your documents for proof of address is expired. Please submit again.' />,
         none: (
-            <Localize i18n_default_text='Your account does not need address verification at this time. We will inform you if address verification is required in the future.' />
+            <Localize
+                i18n_default_text='Your account does not need address verification at this time.<0/>We will inform you if address verification is required in the future.'
+                components={[<br key={0} />]}
+            />
         ),
         pending: (
             <div>
