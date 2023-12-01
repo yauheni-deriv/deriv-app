@@ -32,14 +32,13 @@ const Onfido = ({
         }
     };
 
-    const status_content = React.useMemo(
-        () => getPOIStatusMessages(status, { needs_poa }, !!redirect_button, is_from_external),
-        [status, needs_poa, redirect_button, is_from_external]
-    );
+    const status_content = getPOIStatusMessages(status, { needs_poa }, !!redirect_button, is_from_external);
 
-    const upload_complete_status_content = React.useMemo(
-        () => getUploadCompleteStatusMessages('pending', { needs_poa }, !!redirect_button, is_from_external),
-        [needs_poa, redirect_button, is_from_external]
+    const upload_complete_status_content = getUploadCompleteStatusMessages(
+        AUTH_STATUS_CODES.PENDING,
+        { needs_poa },
+        !!redirect_button,
+        is_from_external
     );
 
     let onClick, content;

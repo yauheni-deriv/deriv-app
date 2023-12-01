@@ -102,31 +102,26 @@ const POISubmission = observer(
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
         const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
-        const idv_status_content = React.useMemo(
-            () =>
-                getIDVStatusMessages(
-                    idv.status,
-                    { needs_poa, is_already_attempted, mismatch_status },
-                    !!redirect_button,
-                    is_from_external
-                ),
-            [idv.status, needs_poa, redirect_button, is_from_external, mismatch_status, is_already_attempted]
+
+        const idv_status_content = getIDVStatusMessages(
+            idv.status,
+            { needs_poa, is_already_attempted, mismatch_status },
+            !!redirect_button,
+            is_from_external
         );
 
-        const manual_upload_complete_status_content = React.useMemo(
-            () =>
-                getUploadCompleteStatusMessages(
-                    'pending',
-                    { needs_poa, is_manual_upload: true },
-                    !!redirect_button,
-                    is_from_external
-                ),
-            [needs_poa, redirect_button, is_from_external]
+        const manual_upload_complete_status_content = getUploadCompleteStatusMessages(
+            AUTH_STATUS_CODES.PENDING,
+            { needs_poa, is_manual_upload: true },
+            !!redirect_button,
+            is_from_external
         );
 
-        const onfido_upload_complete_status_content = React.useMemo(
-            () => getUploadCompleteStatusMessages('pending', { needs_poa }, !!redirect_button, is_from_external),
-            [needs_poa, redirect_button, is_from_external]
+        const onfido_upload_complete_status_content = getUploadCompleteStatusMessages(
+            AUTH_STATUS_CODES.PENDING,
+            { needs_poa },
+            !!redirect_button,
+            is_from_external
         );
 
         const onClickRedirectButton = () => {

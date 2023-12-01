@@ -51,7 +51,7 @@ export const ProofOfOwnership = observer(() => {
         setStatus(POO_STATUSES.none);
     };
 
-    const status_content = React.useMemo(() => getPOOStatusMessages(status), [status]);
+    const status_content = getPOOStatusMessages(status);
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 

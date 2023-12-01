@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { POO_STATUSES } from './constants/constants';
-import VerificationStatusActionButton from 'Components/verification-status-action-button';
+import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
 
 export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof POO_STATUSES]) => {
     const resubmitButton = (onClick?: () => void) => (

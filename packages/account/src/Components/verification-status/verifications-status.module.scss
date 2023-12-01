@@ -2,6 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @include mobile {
+        margin: 1.6rem;
+    }
 }
 
 .statusTitle {

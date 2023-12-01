@@ -1,7 +1,7 @@
 import React from 'react';
 import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
+import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 
 export const getFilesDescriptions = () => ({
     title: (
@@ -115,7 +115,10 @@ export const getPOAStatusMessages = (
     const descriptions: Record<typeof status, React.ReactElement | null> = {
         expired: <Localize i18n_default_text='Your documents for proof of address is expired. Please submit again.' />,
         none: (
-            <Localize i18n_default_text='Your account does not need address verification at this time. We will inform you if address verification is required in the future.' />
+            <Localize
+                i18n_default_text='Your account does not need address verification at this time.<0/>We will inform you if address verification is required in the future.'
+                components={[<br key={0} />]}
+            />
         ),
         pending: (
             <div>

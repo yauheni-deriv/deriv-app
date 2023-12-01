@@ -8,7 +8,7 @@ import {
     idv_error_statuses,
     TIDVErrorStatus,
 } from '@deriv/shared';
-import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
+import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 import { TAuthStatusCode } from '../../../Types/common.type';
 
 export const submission_status_code = {

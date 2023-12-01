@@ -112,10 +112,7 @@ const ProofOfAddressContainer = observer(() => {
 
     const is_submitted = has_submitted_poa && !poa_address_mismatch;
 
-    const status_content = React.useMemo(
-        () => getPOAStatusMessages(document_status, { needs_poi, is_submitted }, should_show_redirect_btn),
-        [document_status, needs_poi, is_submitted, should_show_redirect_btn]
-    );
+    const status_content = getPOAStatusMessages(document_status, { needs_poi, is_submitted }, should_show_redirect_btn);
 
     const is_resubmission_required =
         resubmit_poa ||
