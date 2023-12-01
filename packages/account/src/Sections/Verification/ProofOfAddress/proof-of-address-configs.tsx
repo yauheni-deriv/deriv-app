@@ -1,7 +1,7 @@
 import React from 'react';
 import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
+import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 
 export const getFilesDescriptions = () => ({
     title: (

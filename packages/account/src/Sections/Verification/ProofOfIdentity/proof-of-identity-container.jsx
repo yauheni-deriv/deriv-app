@@ -132,19 +132,17 @@ const ProofOfIdentityContainer = observer(
         } = authentication_status;
         const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
-        const status_content = React.useMemo(
-            () => getPOIStatusMessages(identity_status, { needs_poa }, should_show_redirect_btn, is_from_external),
-            [identity_status, needs_poa, should_show_redirect_btn, is_from_external]
+        const status_content = getPOIStatusMessages(
+            identity_status,
+            { needs_poa },
+            should_show_redirect_btn,
+            is_from_external
         );
-        const upload_complete_status_content = React.useMemo(
-            () =>
-                getUploadCompleteStatusMessages(
-                    AUTH_STATUS_CODES.PENDING,
-                    { needs_poa, is_manual_upload: manual?.status === AUTH_STATUS_CODES.PENDING },
-                    should_show_redirect_btn,
-                    is_from_external
-                ),
-            [needs_poa, should_show_redirect_btn, is_from_external]
+        const upload_complete_status_content = getUploadCompleteStatusMessages(
+            AUTH_STATUS_CODES.PENDING,
+            { needs_poa, is_manual_upload: manual?.status === AUTH_STATUS_CODES.PENDING },
+            should_show_redirect_btn,
+            is_from_external
         );
 
         const onClickRedirectButton = () => {

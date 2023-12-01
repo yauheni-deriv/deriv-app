@@ -78,19 +78,16 @@ const Unsupported = ({
         }
     };
 
-    const status_content = React.useMemo(
-        () => getPOIStatusMessages(manual?.status ?? AUTH_STATUS_CODES.NONE, { needs_poa }, !!redirect_button),
-        [manual?.status, needs_poa, redirect_button]
+    const status_content = getPOIStatusMessages(
+        manual?.status ?? AUTH_STATUS_CODES.NONE,
+        { needs_poa },
+        !!redirect_button
     );
 
-    const upload_complete_status_content = React.useMemo(
-        () =>
-            getUploadCompleteStatusMessages(
-                AUTH_STATUS_CODES.PENDING,
-                { needs_poa, is_manual_upload: true },
-                !!redirect_button
-            ),
-        [needs_poa, redirect_button]
+    const upload_complete_status_content = getUploadCompleteStatusMessages(
+        AUTH_STATUS_CODES.PENDING,
+        { needs_poa, is_manual_upload: true },
+        !!redirect_button
     );
 
     if (manual) {

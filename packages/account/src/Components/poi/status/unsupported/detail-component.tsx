@@ -48,15 +48,11 @@ const DetailComponent = ({
     const [status, setStatus] = React.useState('');
     const [response_error, setError] = React.useState('');
 
-    const manual_upload_complete_status_content = React.useMemo(
-        () =>
-            getUploadCompleteStatusMessages(
-                AUTH_STATUS_CODES.PENDING,
-                { needs_poa: false, is_manual_upload: true },
-                false,
-                true
-            ),
-        []
+    const manual_upload_complete_status_content = getUploadCompleteStatusMessages(
+        AUTH_STATUS_CODES.PENDING,
+        { needs_poa: false, is_manual_upload: true },
+        false,
+        true
     );
 
     let is_any_failed = false;

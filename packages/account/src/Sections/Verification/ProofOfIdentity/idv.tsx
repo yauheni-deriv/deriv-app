@@ -29,15 +29,11 @@ const Idv = ({
     const { status, submissions_left, last_rejected } = idv;
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    const status_content = React.useMemo(
-        () =>
-            getIDVStatusMessages(
-                status,
-                { needs_poa, is_already_attempted, mismatch_status: formatIDVError(last_rejected, status) },
-                !!redirect_button,
-                is_from_external
-            ),
-        [status, needs_poa, redirect_button, is_from_external, last_rejected, is_already_attempted]
+    const status_content = getIDVStatusMessages(
+        status,
+        { needs_poa, is_already_attempted, mismatch_status: formatIDVError(last_rejected, status) },
+        !!redirect_button,
+        is_from_external
     );
 
     const onClickRedirectButton = () => {
