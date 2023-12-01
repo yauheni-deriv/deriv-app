@@ -6,10 +6,10 @@ import {
     isNavigationFromP2P,
     routes,
     idv_error_statuses,
+    TIDVErrorStatus,
 } from '@deriv/shared';
 import VerificationStatusActionButton from '../../../Components/verification-status-action-button';
 import { TAuthStatusCode } from '../../../Types/common.type';
-import { TIDVErrorStatus } from '../../../Helpers/utils';
 
 export const submission_status_code = {
     selecting: 'selecting',
@@ -27,13 +27,88 @@ type TAuthStatus = {
     needs_poa?: boolean;
 };
 
+type TAuthIDVStatus = TAuthStatus & {
+    mismatch_status?: TIDVErrorStatus | null;
+    is_already_attempted?: boolean;
+};
+
+type TActionButtonProps = {
+    onClick?: React.MouseEventHandler<HTMLElement>;
+    platform_name?: string;
+    auth_status?: TAuthIDVStatus;
+    is_from_external?: boolean;
+    should_show_redirect_btn?: boolean;
+};
+
+const createRejectedButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (
+    <VerificationStatusActionButton
+        button_text={<Localize i18n_default_text='Upload identity document' />}
+        onClick={onClick}
+    />
+);
+
+const createVerifiedButton = ({
+    onClick,
+    platform_name,
+    auth_status,
+    is_from_external,
+    should_show_redirect_btn,
+}: TActionButtonProps) => {
+    if (auth_status?.needs_poa && !is_from_external) {
+        return (
+            <VerificationStatusActionButton
+                to={routes.proof_of_address}
+                button_text={<Localize i18n_default_text='Submit proof of address' />}
+            />
+        );
+    } else if (should_show_redirect_btn) {
+        return (
+            <VerificationStatusActionButton
+                button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
+                onClick={onClick}
+            />
+        );
+    }
+    return (
+        <VerificationStatusActionButton
+            to={routes.root}
+            button_text={<Localize i18n_default_text='Continue trading' />}
+        />
+    );
+};
+
+const createPendingButton = ({
+    onClick,
+    auth_status,
+    is_from_external,
+    platform_name,
+    should_show_redirect_btn,
+}: TActionButtonProps) => {
+    if (auth_status?.needs_poa && !is_from_external) {
+        return (
+            <VerificationStatusActionButton
+                to={routes.proof_of_address}
+                button_text={<Localize i18n_default_text='Submit proof of address' />}
+            />
+        );
+    } else if (should_show_redirect_btn) {
+        return (
+            <VerificationStatusActionButton
+                button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
+                onClick={onClick}
+            />
+        );
+    }
+    return null;
+};
+
 export const getPOIStatusMessages = (
     status: TAuthStatusCode,
     auth_status?: TAuthStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
 ) => {
-    const resubmitButton = (onClick?: () => void, platform_name?: string) => (
+    const resubmitButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => (
         <React.Fragment>
             <VerificationStatusActionButton
                 button_text={<Localize i18n_default_text='Upload Document' />}
@@ -48,7 +123,7 @@ export const getPOIStatusMessages = (
         </React.Fragment>
     );
 
-    const verifiedButton = (onClick?: () => void, platform_name?: string) => {
+    const verifiedButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => {
         if (is_from_external) return null;
         if (auth_status?.needs_poa) {
             return (
@@ -119,7 +194,7 @@ export const getPOIStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: () => void, platform_name?: string) => JSX.Element | null)
+        null | ((onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => JSX.Element | null)
     > = {
         none: null,
         pending: null,
@@ -137,11 +212,6 @@ export const getPOIStatusMessages = (
     };
 };
 
-type TAuthIDVStatus = TAuthStatus & {
-    mismatch_status?: TIDVErrorStatus | null;
-    is_already_attempted?: boolean;
-};
-
 export const getIDVStatusMessages = (
     status: TAuthStatusCode,
     auth_status?: TAuthIDVStatus,
@@ -149,64 +219,22 @@ export const getIDVStatusMessages = (
     is_from_external?: boolean,
     is_mobile?: boolean
 ) => {
-    const rejectedButton = (onClick?: () => void) => (
-        <VerificationStatusActionButton
-            button_text={<Localize i18n_default_text='Upload identity document' />}
-            onClick={onClick}
-        />
+    const rejectedButton = (props: Pick<TActionButtonProps, 'onClick'>) => createRejectedButton({ ...props });
+    const verifiedButton = (props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) =>
+        createVerifiedButton({ ...props, auth_status, is_from_external, should_show_redirect_btn });
+
+    const pendingButton = (props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) =>
+        createPendingButton({ ...props, auth_status, is_from_external, should_show_redirect_btn });
+
+    const is_expired_or_failed_error = [idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].some(
+        status => auth_status?.mismatch_status === status
     );
 
-    const verifiedButton = (onClick?: () => void, platform_name?: string) => {
-        if (auth_status?.needs_poa && !is_from_external) {
-            return (
-                <VerificationStatusActionButton
-                    to={routes.proof_of_address}
-                    button_text={<Localize i18n_default_text='Submit proof of address' />}
-                />
-            );
-        } else if (should_show_redirect_btn) {
-            return (
-                <VerificationStatusActionButton
-                    button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
-                    onClick={onClick}
-                />
-            );
-        }
-        return (
-            <VerificationStatusActionButton
-                to={routes.root}
-                button_text={<Localize i18n_default_text='Continue trading' />}
-            />
-        );
-    };
-
-    const pendingButton = (onClick?: () => void, platform_name?: string) => {
-        if (auth_status?.needs_poa && !is_from_external) {
-            return (
-                <VerificationStatusActionButton
-                    to={routes.proof_of_address}
-                    button_text={<Localize i18n_default_text='Submit proof of address' />}
-                />
-            );
-        } else if (should_show_redirect_btn) {
-            return (
-                <VerificationStatusActionButton
-                    button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
-                    onClick={onClick}
-                />
-            );
-        }
-        return null;
-    };
-
-    const is_expired_or_failed_error =
-        auth_status?.mismatch_status === idv_error_statuses.poi_expired ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_failed;
-
-    const is_mismatch_error =
-        auth_status?.mismatch_status === idv_error_statuses.poi_name_dob_mismatch ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_dob_mismatch ||
-        auth_status?.mismatch_status === idv_error_statuses.poi_name_mismatch;
+    const is_mismatch_error = [
+        idv_error_statuses.poi_name_dob_mismatch,
+        idv_error_statuses.poi_dob_mismatch,
+        idv_error_statuses.poi_name_mismatch,
+    ].some(status => auth_status?.mismatch_status === status);
 
     const getPendingHeaderText = () => {
         if (auth_status?.is_already_attempted) {
@@ -286,7 +314,7 @@ export const getIDVStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: () => void, platform_name?: string) => JSX.Element | null)
+        null | ((props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => JSX.Element | null)
     > = {
         none: null,
         pending: pendingButton,

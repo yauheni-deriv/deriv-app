@@ -68,7 +68,7 @@ const Idv = ({
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(onClick(), from_platform.name)}
+            {status_content.action_button?.(onClick, from_platform.name)}
         </VerificationStatus>
     );
 };

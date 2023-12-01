@@ -8,7 +8,7 @@ type TButtonLink = {
 };
 
 type TButton = {
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLElement>;
     to?: never;
 };
 
