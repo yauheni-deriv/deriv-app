@@ -72,7 +72,7 @@ export const ProofOfOwnership = observer(() => {
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(onTryAgain)}
+            {status_content.action_button?.({ onClick: onTryAgain })}
         </VerificationStatus>
     );
 });

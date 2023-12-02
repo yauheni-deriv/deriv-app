@@ -112,7 +112,7 @@ export const getPOIStatusMessages = (
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
 ) => {
-    const resubmitButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => (
+    const resubmitButton = ({ onClick, platform_name }: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => (
         <React.Fragment>
             <VerificationStatusActionButton
                 button_text={<Localize i18n_default_text='Upload Document' />}
@@ -127,7 +127,7 @@ export const getPOIStatusMessages = (
         </React.Fragment>
     );
 
-    const verifiedButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => {
+    const verifiedButton = ({ onClick, platform_name }: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => {
         if (is_from_external) return null;
         if (auth_status?.needs_poa) {
             return (
@@ -198,7 +198,7 @@ export const getPOIStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => JSX.Element | null)
+        null | ((props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => JSX.Element | null)
     > = {
         none: null,
         pending: null,
@@ -344,7 +344,7 @@ export const getUploadCompleteStatusMessages = (
 ) => {
     const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
 
-    const pendingButton = (onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => {
+    const pendingButton = ({ onClick, platform_name }: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => {
         if (!auth_status?.needs_poa) {
             if (!is_from_external && should_show_redirect_btn)
                 return (
@@ -428,7 +428,7 @@ export const getUploadCompleteStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: React.MouseEventHandler<HTMLElement>, platform_name?: string) => JSX.Element | null)
+        null | ((props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => JSX.Element | null)
     > = {
         expired: null,
         none: null,

@@ -86,7 +86,7 @@ const Onfido = ({
                     status_description={content.description}
                     status_title={content.title}
                 >
-                    {content.action_button?.(onClick, from_platform.name)}
+                    {content.action_button?.({ onClick, platform_name: from_platform.name })}
                 </VerificationStatus>
             );
         default:

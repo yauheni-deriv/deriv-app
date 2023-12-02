@@ -47,7 +47,7 @@ const Idv = ({
         }
     };
 
-    const onClick = () => (AUTH_STATUS_CODES.VERIFIED ? handleRequireSubmission : onClickRedirectButton);
+    const onClick = AUTH_STATUS_CODES.VERIFIED ? handleRequireSubmission : onClickRedirectButton;
 
     if (
         [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.EXPIRED].some(
@@ -64,7 +64,7 @@ const Idv = ({
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(onClick, from_platform.name)}
+            {status_content.action_button?.({ onClick, platform_name: from_platform.name })}
         </VerificationStatus>
     );
 };

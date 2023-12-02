@@ -4,7 +4,7 @@ import { POO_STATUSES } from './constants/constants';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
 
 export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof POO_STATUSES]) => {
-    const resubmitButton = (onClick?: () => void) => (
+    const resubmitButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (
         <VerificationStatusActionButton button_text={<Localize i18n_default_text='Try again' />} onClick={onClick} />
     );
 
@@ -33,7 +33,10 @@ export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof PO
         verified: 'IcPooVerified',
     };
 
-    const action_buttons: Record<typeof status, null | ((onClick?: () => void) => JSX.Element | null)> = {
+    const action_buttons: Record<
+        typeof status,
+        null | ((props: { onClick?: React.MouseEventHandler<HTMLElement> }) => JSX.Element | null)
+    > = {
         none: null,
         pending: null,
         rejected: resubmitButton,

@@ -241,7 +241,7 @@ const ProofOfIdentityContainer = observer(
                     status_description={content.description}
                     status_title={content.title}
                 >
-                    {content.action_button?.(onClick(), from_platform.name)}
+                    {content.action_button?.({ onClick: onClick(), platform_name: from_platform.name })}
                 </VerificationStatus>
             );
         }
