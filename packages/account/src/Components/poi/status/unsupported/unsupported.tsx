@@ -108,12 +108,13 @@ const Unsupported = ({
             content = status_content;
         }
 
-        let onClickHandler;
-        if (manual?.status === AUTH_STATUS_CODES.VERIFIED || manual?.status === AUTH_STATUS_CODES.PENDING) {
-            onClickHandler = onClickRedirectButton;
-        } else if (manual?.status === AUTH_STATUS_CODES.EXPIRED) {
-            onClickHandler = handleRequireSubmission;
-        }
+        const onClickHandler = () => {
+            if (manual?.status === AUTH_STATUS_CODES.VERIFIED || manual?.status === AUTH_STATUS_CODES.PENDING) {
+                return onClickRedirectButton;
+            } else if (manual?.status === AUTH_STATUS_CODES.EXPIRED) {
+                return handleRequireSubmission;
+            }
+        };
 
         return (
             <VerificationStatus
@@ -121,7 +122,7 @@ const Unsupported = ({
                 status_description={content.description}
                 status_title={content.title}
             >
-                {content.action_button?.({ onClick: onClickHandler, platform_name: from_platform.name })}
+                {content.action_button?.({ onClick: onClickHandler(), platform_name: from_platform.name })}
             </VerificationStatus>
         );
     }
