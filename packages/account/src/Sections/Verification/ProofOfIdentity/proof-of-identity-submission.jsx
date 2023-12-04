@@ -281,7 +281,7 @@ const POISubmission = observer(
                         status_description={content.description}
                         status_title={content.title}
                     >
-                        {content.action_button?.(onClickRedirectButton, from_platform.name)}
+                        {content.action_button?.({ onClick: onClickRedirectButton, platform_name: from_platform.name })}
                     </VerificationStatus>
                 );
             }

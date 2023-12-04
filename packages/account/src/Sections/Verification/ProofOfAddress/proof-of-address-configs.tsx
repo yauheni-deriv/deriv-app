@@ -30,57 +30,22 @@ type TAuthStatus = {
     is_submitted?: boolean;
 };
 
-export const getPOAStatusMessages = (
-    status: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES],
-    auth_status?: TAuthStatus,
-    should_show_redirect_btn?: boolean
-) => {
-    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
+type TActionButtonProps = {
+    onClick?: React.MouseEventHandler<HTMLElement>;
+    platform_name?: string;
+    auth_status?: TAuthStatus;
+    should_show_redirect_btn?: boolean;
+    is_redirected_from_platform: boolean;
+};
 
-    const pendingButton = (onClick?: () => void, platform_name?: string) => {
-        if (!auth_status?.needs_poi) {
-            if (should_show_redirect_btn)
-                return (
-                    <VerificationStatusActionButton
-                        button_text={
-                            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />
-                        }
-                        onClick={onClick}
-                    />
-                );
-            if (!is_redirected_from_platform) {
-                return (
-                    <VerificationStatusActionButton
-                        to={routes.root}
-                        button_text={<Localize i18n_default_text='Continue trading' />}
-                    />
-                );
-            }
-        }
-        if (auth_status?.needs_poi) {
-            return (
-                <VerificationStatusActionButton
-                    to={routes.proof_of_identity}
-                    button_text={<Localize i18n_default_text='Proof of identity' />}
-                />
-            );
-        }
-        return null;
-    };
-
-    const resubmitButton = (onClick?: () => void) => (
-        <VerificationStatusActionButton button_text={<Localize i18n_default_text='Resubmit' />} onClick={onClick} />
-    );
-
-    const verifiedButton = (onClick?: () => void, platform_name?: string) => {
-        if (auth_status?.needs_poi) {
-            return (
-                <VerificationStatusActionButton
-                    to={routes.proof_of_identity}
-                    button_text={<Localize i18n_default_text='Proof of identity' />}
-                />
-            );
-        }
+const createPendingButton = ({
+    auth_status,
+    should_show_redirect_btn,
+    is_redirected_from_platform,
+    platform_name,
+    onClick,
+}: TActionButtonProps) => {
+    if (!auth_status?.needs_poi) {
         if (should_show_redirect_btn)
             return (
                 <VerificationStatusActionButton
@@ -96,8 +61,72 @@ export const getPOAStatusMessages = (
                 />
             );
         }
-        return null;
-    };
+    }
+    if (auth_status?.needs_poi) {
+        return (
+            <VerificationStatusActionButton
+                to={routes.proof_of_identity}
+                button_text={<Localize i18n_default_text='Proof of identity' />}
+            />
+        );
+    }
+    return null;
+};
+
+const createVerifiedButton = ({
+    auth_status,
+    should_show_redirect_btn,
+    is_redirected_from_platform,
+    platform_name,
+    onClick,
+}: TActionButtonProps) => {
+    if (auth_status?.needs_poi) {
+        return (
+            <VerificationStatusActionButton
+                to={routes.proof_of_identity}
+                button_text={<Localize i18n_default_text='Proof of identity' />}
+            />
+        );
+    }
+    if (should_show_redirect_btn)
+        return (
+            <VerificationStatusActionButton
+                button_text={<Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name }} />}
+                onClick={onClick}
+            />
+        );
+    if (!is_redirected_from_platform) {
+        return (
+            <VerificationStatusActionButton
+                to={routes.root}
+                button_text={<Localize i18n_default_text='Continue trading' />}
+            />
+        );
+    }
+    return null;
+};
+
+export const getPOAStatusMessages = (
+    status: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES],
+    auth_status?: TAuthStatus,
+    should_show_redirect_btn?: boolean
+) => {
+    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
+
+    const pendingButton = (props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) =>
+        createPendingButton({
+            ...props,
+            auth_status,
+            should_show_redirect_btn,
+            is_redirected_from_platform,
+        });
+
+    const resubmitButton = ({ onClick }: Pick<TActionButtonProps, 'onClick'>) => (
+        <VerificationStatusActionButton button_text={<Localize i18n_default_text='Resubmit' />} onClick={onClick} />
+    );
+
+    const verifiedButton = (props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) =>
+        createVerifiedButton({ ...props, auth_status, should_show_redirect_btn, is_redirected_from_platform });
 
     const titles: Record<typeof status, React.ReactElement> = {
         expired: <Localize i18n_default_text='New proof of address is needed' />,
@@ -152,7 +181,7 @@ export const getPOAStatusMessages = (
 
     const action_buttons: Record<
         typeof status,
-        null | ((onClick?: () => void, platform_name?: string) => JSX.Element | null)
+        null | ((props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) => JSX.Element | null)
     > = {
         expired: resubmitButton,
         none: null,

@@ -13,7 +13,7 @@ import {
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
-import { TServerError } from '../Types';
+import { TIDVErrorStatus, TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
 
 export const documentAdditionalError = (
@@ -265,7 +265,6 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
     };
 };
 
-export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 export const verifyFields = (status: TIDVErrorStatus) => {
     switch (status) {
         case idv_error_statuses.poi_dob_mismatch:

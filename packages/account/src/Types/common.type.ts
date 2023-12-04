@@ -2,7 +2,7 @@
 import React from 'react';
 import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
-import { AUTH_STATUS_CODES, Platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, Platforms, idv_error_statuses } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -164,3 +164,5 @@ export type TServerError = {
 };
 
 export type TAuthStatusCode = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];

@@ -156,7 +156,7 @@ const ProofOfAddressContainer = observer(() => {
             status_description={status_content.description}
             status_title={status_content.title}
         >
-            {status_content.action_button?.(buttonOnclick(), from_platform.name)}
+            {status_content.action_button?.({ onClick: buttonOnclick(), platform_name: from_platform.name })}
         </VerificationStatus>
     );
 });
