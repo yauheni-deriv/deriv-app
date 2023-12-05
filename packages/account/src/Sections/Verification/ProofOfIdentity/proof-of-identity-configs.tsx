@@ -5,10 +5,11 @@ import {
     isNavigationFromDerivGO,
     isNavigationFromP2P,
     routes,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
+    TIDVErrorStatus,
 } from '@deriv/shared';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
-import { TAuthStatusCode, TIDVErrorStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
 export const submission_status_code = {
     selecting: 'selecting',
@@ -229,14 +230,14 @@ export const getIDVStatusMessages = (
     const pendingButton = (props: Pick<TActionButtonProps, 'onClick' | 'platform_name'>) =>
         createPendingButton({ ...props, auth_status, is_from_external, should_show_redirect_btn });
 
-    const is_expired_or_failed_error = [idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].some(
+    const is_expired_or_failed_error = [IDV_ERROR_STATUS.Expired.code, IDV_ERROR_STATUS.Failed.code].some(
         status => auth_status?.mismatch_status === status
     );
 
     const is_mismatch_error = [
-        idv_error_statuses.poi_name_dob_mismatch,
-        idv_error_statuses.poi_dob_mismatch,
-        idv_error_statuses.poi_name_mismatch,
+        IDV_ERROR_STATUS.NameDobMismatch.code,
+        IDV_ERROR_STATUS.DobMismatch.code,
+        IDV_ERROR_STATUS.NameMismatch.code,
     ].some(status => auth_status?.mismatch_status === status);
 
     const getPendingHeaderText = () => {

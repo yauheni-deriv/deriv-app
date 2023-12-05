@@ -1,5 +1,5 @@
 import React from 'react';
-import { AUTH_STATUS_CODES, formatOnfidoError, getPlatformRedirect, platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, isMobile, formatOnfidoError, getPlatformRedirect, platforms } from '@deriv/shared';
 import RejectedReasons from 'Components/poi/status/rejected-reasons';
 import Unsupported from 'Components/poi/status/unsupported';
 import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
@@ -83,6 +83,7 @@ const Onfido = ({
             return (
                 <VerificationStatus
                     icon={content.icon}
+                    is_mobile={isMobile()}
                     status_description={content.description}
                     status_title={content.title}
                 >

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { AUTH_STATUS_CODES, WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, isMobile, WS } from '@deriv/shared';
 import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
 import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
@@ -128,6 +128,7 @@ const DetailComponent = ({
             return (
                 <VerificationStatus
                     icon={manual_upload_complete_status_content.icon}
+                    is_mobile={isMobile()}
                     status_description={manual_upload_complete_status_content.description}
                     status_title={manual_upload_complete_status_content.title}
                 />

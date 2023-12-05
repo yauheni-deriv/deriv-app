@@ -33,7 +33,7 @@ const ProofOfIdentityContainer = observer(
             onfido: {},
         });
 
-        const { client, common, notifications } = useStore();
+        const { client, common, notifications, ui } = useStore();
 
         const {
             account_settings,
@@ -47,6 +47,7 @@ const ProofOfIdentityContainer = observer(
         } = client;
         const { app_routing_history, routeBackInApp, is_language_changing } = common;
         const { refreshNotifications } = notifications;
+        const { is_mobile } = ui;
 
         const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -184,6 +185,7 @@ const ProofOfIdentityContainer = observer(
             return (
                 <VerificationStatus
                     icon={status_content.icon}
+                    is_mobile={is_mobile}
                     status_description={status_content.description}
                     status_title={status_content.title}
                 />
@@ -238,6 +240,7 @@ const ProofOfIdentityContainer = observer(
             return (
                 <VerificationStatus
                     icon={content.icon}
+                    is_mobile={is_mobile}
                     status_description={content.description}
                     status_title={content.title}
                 >

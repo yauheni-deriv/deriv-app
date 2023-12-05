@@ -44,11 +44,13 @@ const POISubmission = observer(
 
         const history = useHistory();
 
-        const { client, common, notifications } = useStore();
+        const { client, common, notifications, ui } = useStore();
 
         const { account_settings, getChangeableFields, account_status, is_already_attempted } = client;
         const { app_routing_history, routeBackInApp } = common;
         const { refreshNotifications } = notifications;
+        const { is_mobile } = ui;
+
         const is_high_risk = account_status.risk_classification === 'high';
 
         const from_platform = getPlatformRedirect(app_routing_history);
@@ -271,6 +273,7 @@ const POISubmission = observer(
                 return (
                     <VerificationStatus
                         icon={content.icon}
+                        is_mobile={is_mobile}
                         status_description={content.description}
                         status_title={content.title}
                     >

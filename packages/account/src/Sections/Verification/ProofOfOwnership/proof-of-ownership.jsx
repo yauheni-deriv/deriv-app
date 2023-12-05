@@ -12,7 +12,7 @@ export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();
     const { account_status, email: client_email, updateAccountStatus } = client;
     const { refreshNotifications } = notifications;
-    const { is_dark_mode_on: is_dark_mode } = ui;
+    const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = React.useState(POO_STATUSES.none);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -69,6 +69,7 @@ export const ProofOfOwnership = observer(() => {
     return (
         <VerificationStatus
             icon={status_content.icon}
+            is_mobile={is_mobile}
             status_description={status_content.description}
             status_title={status_content.title}
         >

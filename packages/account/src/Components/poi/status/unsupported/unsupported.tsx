@@ -119,6 +119,7 @@ const Unsupported = ({
         return (
             <VerificationStatus
                 icon={content.icon}
+                is_mobile={isMobile()}
                 status_description={content.description}
                 status_title={content.title}
             >

@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetAccountStatus } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, isMobile, formatIDVError, getPlatformRedirect, platforms } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import { getIDVStatusMessages } from './proof-of-identity-configs';
@@ -61,6 +61,7 @@ const Idv = ({
     return (
         <VerificationStatus
             icon={status_content.icon}
+            is_mobile={isMobile()}
             status_description={status_content.description}
             status_title={status_content.title}
         >

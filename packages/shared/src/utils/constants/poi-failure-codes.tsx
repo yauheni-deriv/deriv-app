@@ -1,21 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-type TIDVErrorStatus = Readonly<{
-    [key: string]: {
-        code: keyof typeof IDV_ERROR_STATUS;
-        message: React.ReactNode;
-    };
-}>;
-
-type TOnfidoErrorStatus = Readonly<{
-    [key: string]: {
-        code: keyof typeof ONFIDO_ERROR_STATUS;
-        message: React.ReactNode;
-    };
-}>;
-
-export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
+export const IDV_ERROR_STATUS = {
     DobMismatch: {
         code: 'DobMismatch',
         message: (
@@ -96,9 +82,9 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
             <Localize i18n_default_text='For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.' />
         ),
     },
-});
+} as const;
 
-export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
+export const ONFIDO_ERROR_STATUS = {
     AgeValidationMinimumAcceptedAge: {
         code: 'AgeValidationMinimumAcceptedAge',
         message: (
@@ -342,4 +328,4 @@ export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
         code: 'VisualAuthenticityTemplate',
         message: <Localize i18n_default_text='Your document appears to be invalid.' />,
     },
-});
+} as const;

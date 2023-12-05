@@ -38,10 +38,11 @@ const ProofOfAddressContainer = observer(() => {
         poa_address_mismatch: false,
     });
 
-    const { client, notifications, common } = useStore();
+    const { client, notifications, common, ui } = useStore();
     const { app_routing_history } = common;
     const { has_restricted_mt5_account, is_switching } = client;
     const { refreshNotifications } = notifications;
+    const { is_mobile } = ui;
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -153,6 +154,7 @@ const ProofOfAddressContainer = observer(() => {
     return (
         <VerificationStatus
             icon={status_content.icon}
+            is_mobile={is_mobile}
             status_description={status_content.description}
             status_title={status_content.title}
         >
