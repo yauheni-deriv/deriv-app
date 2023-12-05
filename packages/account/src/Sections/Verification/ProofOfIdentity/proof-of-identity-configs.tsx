@@ -6,10 +6,10 @@ import {
     isNavigationFromP2P,
     routes,
     IDV_ERROR_STATUS,
-    TIDVErrorStatus,
 } from '@deriv/shared';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 import { TAuthStatusCode } from '../../../Types/common.type';
+import { TIDVErrorStatus } from '../../../Helpers/utils';
 
 export const submission_status_code = {
     selecting: 'selecting',
