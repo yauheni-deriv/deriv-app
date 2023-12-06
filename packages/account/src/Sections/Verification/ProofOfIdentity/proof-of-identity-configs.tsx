@@ -1,4 +1,5 @@
 import React from 'react';
+import { LiveChatLink } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import {
     AUTH_STATUS_CODES,
@@ -149,17 +150,7 @@ export const getPOIStatusMessages = (
     };
 
     const live_chat_link = (
-        <Localize
-            i18n_default_text='Please contact us via <0>live chat</0>.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    onClick={() => window.LC_API.open_chat_window()}
-                    onKeyDown={e => e.key === 'Enter' && window.LC_API.open_chat_window()}
-                />,
-            ]}
-        />
+        <Localize i18n_default_text='Please contact us via <0/>.' components={[<LiveChatLink key={0} />]} />
     );
 
     const titles: Record<typeof status, React.ReactElement | null> = {
