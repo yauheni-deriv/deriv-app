@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 
 const LiveChatLink = () => {
     return (
-        <button className='livechat__link' onClick={() => window.LC_API.open_chat_window()}>
+        <button type='button' className='livechat__link' onClick={() => window.LC_API.open_chat_window()}>
             <Text size='xs' weight='bold' color='brand-red-coral'>
                 <Localize i18n_default_text='live chat' />
             </Text>
