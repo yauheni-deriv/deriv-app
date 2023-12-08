@@ -12,7 +12,6 @@ type TAuthenticationStatus = Record<
     | 'allow_document_upload'
     | 'allow_poi_resubmission'
     | 'allow_poa_resubmission'
-    | 'is_age_verified'
     | 'has_poi'
     | 'has_submitted_poa'
     | 'needs_poa'
@@ -34,7 +33,6 @@ const ProofOfAddressContainer = observer(() => {
         resubmit_poa: false,
         has_submitted_poa: false,
         document_status: AUTH_STATUS_CODES.NONE,
-        is_age_verified: false,
         poa_address_mismatch: false,
     });
 
@@ -54,7 +52,6 @@ const ProofOfAddressContainer = observer(() => {
                         allow_poa_resubmission,
                         document_status,
                         has_submitted_poa,
-                        is_age_verified,
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
@@ -66,7 +63,6 @@ const ProofOfAddressContainer = observer(() => {
                         allow_poa_resubmission,
                         document_status,
                         has_submitted_poa,
-                        is_age_verified,
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
@@ -104,7 +100,6 @@ const ProofOfAddressContainer = observer(() => {
         needs_poi,
         resubmit_poa,
         has_submitted_poa,
-        is_age_verified,
         poa_address_mismatch,
     } = authentication_status;
 
@@ -126,9 +121,7 @@ const ProofOfAddressContainer = observer(() => {
         poa_address_mismatch;
 
     const should_show_poa_form =
-        is_age_verified &&
-        allow_document_upload &&
-        (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required);
+        allow_document_upload && (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required);
 
     const buttonOnclick = () => {
         if (
