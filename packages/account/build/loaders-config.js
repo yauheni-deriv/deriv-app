@@ -71,6 +71,7 @@ const css_loaders = [
         options: {
             sourceMap: !IS_RELEASE,
             modules: {
+                auto: path => path.includes('.module.'),
                 localIdentName: IS_RELEASE ? '[hash:base64]' : '[path][name]__[local]',
             },
         },
