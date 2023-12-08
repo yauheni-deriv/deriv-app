@@ -163,4 +163,9 @@ export type TServerError = {
     fields?: string[];
 };
 
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};
+
 export type TAuthStatusCode = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
+import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormBodySection from '../../../Components/form-body-section';
@@ -14,31 +16,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
-import { useFileUploader } from '@deriv/hooks';
-import { getFilesDescriptions } from './proof-of-address-configs';
-
-const FilesDescription = observer(() => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
-
-    const { title, descriptions } = React.useMemo(() => getFilesDescriptions(), []);
-
-    return (
-        <div className='files-description'>
-            <Text size={is_mobile ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
-                {title}
-            </Text>
-            <ul>
-                {descriptions.map(item => (
-                    <li key={item.key}>
-                        <Text size={is_mobile ? 'xxs' : 'xs'}>{item.value}</Text>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-});
+import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 
 type TProofOfAddressForm = {
     className?: string;
@@ -91,6 +69,8 @@ const ProofOfAddressForm = observer(
             should_allow_submit: true,
             should_show_form: true,
         });
+
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
 
         const { upload } = useFileUploader();
 
@@ -263,9 +243,7 @@ const ProofOfAddressForm = observer(
             address_postcode,
         };
 
-        if (api_initial_load_error) {
-            return <LoadErrorMessage error_message={api_initial_load_error} />;
-        }
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (form_initial_values.address_state) {
@@ -279,6 +257,7 @@ const ProofOfAddressForm = observer(
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
+
         return (
             <Formik
                 initialValues={form_initial_values}
@@ -327,7 +306,12 @@ const ProofOfAddressForm = observer(
                                                     setDocumentFiles(files);
                                                 }}
                                                 onError={setFileSelectionError}
-                                                files_description={<FilesDescription />}
+                                                files_description={
+                                                    <FilesDescription
+                                                        title={poa_uploader_files_descriptions.title}
+                                                        descriptions={poa_uploader_files_descriptions.descriptions}
+                                                    />
+                                                }
                                                 examples={<CommonMistakeExamples />}
                                             />
                                         </FormBodySection>
