@@ -1,9 +1,11 @@
 import React from 'react';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { POO_STATUSES } from './constants/constants';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
 
-export const getPOOStatusMessages = (status: typeof POO_STATUSES[keyof typeof POO_STATUSES]) => {
+type TPooStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export const getPOOStatusMessages = (status: Exclude<TPooStatus, 'locked' | 'expired' | 'suspected'>) => {
     const resubmitButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (
         <VerificationStatusActionButton button_text={<Localize i18n_default_text='Try again' />} onClick={onClick} />
     );

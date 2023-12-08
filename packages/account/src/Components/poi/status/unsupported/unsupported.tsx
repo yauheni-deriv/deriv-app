@@ -8,12 +8,12 @@ import { localize } from '@deriv/translations';
 import {
     getPOIStatusMessages,
     getUploadCompleteStatusMessages,
+    TPoiStatus,
 } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-configs';
 import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import VerificationStatus from '../../../verification-status/verification-status';
-import { TAuthStatusCode } from '../../../../Types/common.type';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -29,7 +29,7 @@ type TUnsupported = {
     country_code: string;
     handlePOIforMT5Complete: () => void;
     manual?: {
-        status: TAuthStatusCode;
+        status: TPoiStatus;
     };
     redirect_button: React.ReactElement;
     needs_poa: boolean;

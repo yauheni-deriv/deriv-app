@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Loading } from '@deriv/components';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { POO_STATUSES } from './constants/constants';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import getPaymentMethodsConfig from './payment-method-config.js';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
@@ -14,7 +14,7 @@ export const ProofOfOwnership = observer(() => {
     const { refreshNotifications } = notifications;
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = React.useState(POO_STATUSES.none);
+    const [status, setStatus] = React.useState(AUTH_STATUS_CODES.NONE);
     const [is_loading, setIsLoading] = React.useState(true);
     const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
 
@@ -48,14 +48,14 @@ export const ProofOfOwnership = observer(() => {
     }, [account_status]);
 
     const onTryAgain = () => {
-        setStatus(POO_STATUSES.none);
+        setStatus(AUTH_STATUS_CODES.NONE);
     };
 
     const status_content = getPOOStatusMessages(status);
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
-    if (cards?.length > 0 && status !== POO_STATUSES.rejected) {
+    if (cards?.length > 0 && status !== AUTH_STATUS_CODES.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data.groups}

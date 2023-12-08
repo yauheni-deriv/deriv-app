@@ -9,7 +9,6 @@ import {
     IDV_ERROR_STATUS,
 } from '@deriv/shared';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
-import { TAuthStatusCode } from '../../../Types/common.type';
 import { TIDVErrorStatus } from '../../../Helpers/utils';
 
 export const submission_status_code = {
@@ -23,6 +22,8 @@ export const service_code = {
     onfido: 'onfido',
     manual: 'manual',
 } as const;
+
+export type TPoiStatus = Exclude<typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES], 'locked'>;
 
 type TAuthStatus = {
     needs_poa?: boolean;
@@ -108,7 +109,7 @@ const createPendingButton = ({
 };
 
 export const getPOIStatusMessages = (
-    status: TAuthStatusCode,
+    status: TPoiStatus,
     auth_status?: TAuthStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
@@ -208,7 +209,7 @@ export const getPOIStatusMessages = (
 };
 
 export const getIDVStatusMessages = (
-    status: TAuthStatusCode,
+    status: TPoiStatus,
     auth_status?: TAuthIDVStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean,
@@ -328,7 +329,7 @@ export const getIDVStatusMessages = (
 };
 
 export const getUploadCompleteStatusMessages = (
-    status: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES],
+    status: TPoiStatus,
     auth_status?: TAuthUploadCompleteStatus,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
