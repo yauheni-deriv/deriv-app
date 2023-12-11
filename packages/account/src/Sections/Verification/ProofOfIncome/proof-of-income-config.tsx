@@ -1,7 +1,9 @@
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
-import { AUTH_STATUS_CODES } from '@deriv/shared';
+import { TAuthStatus } from '../../../Types/common.type';
+
+export type TPoincStatus = Exclude<TAuthStatus, 'suspected' | 'expired'>;
 
 export const getPoincDocumentsList = () =>
     [
@@ -15,8 +17,6 @@ export const getPoincDocumentsList = () =>
         { text: localize('Authorization letter'), value: 'authorisation_letter' },
         { text: localize('Declarations'), value: 'declarations' },
     ] as const;
-
-export type TPoincStatus = Exclude<typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES], 'suspected' | 'expired'>;
 
 export const getPOOINCStatusMessages = (status: TPoincStatus) => {
     const resubmitButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (

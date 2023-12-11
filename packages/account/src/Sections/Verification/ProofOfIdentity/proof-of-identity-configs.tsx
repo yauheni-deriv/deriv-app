@@ -1,15 +1,10 @@
 import React from 'react';
 import { LiveChatLink } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import {
-    AUTH_STATUS_CODES,
-    isNavigationFromDerivGO,
-    isNavigationFromP2P,
-    routes,
-    IDV_ERROR_STATUS,
-} from '@deriv/shared';
+import { IDV_ERROR_STATUS, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 import { TIDVErrorStatus } from '../../../Helpers/utils';
+import { TAuthStatus } from '../../../Types/common.type';
 
 export const submission_status_code = {
     selecting: 'selecting',
@@ -23,13 +18,13 @@ export const service_code = {
     manual: 'manual',
 } as const;
 
-export type TPoiStatus = Exclude<typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES], 'locked'>;
+export type TPoiStatus = Exclude<TAuthStatus, 'locked'>;
 
-type TAuthStatus = {
+type TAuthParams = {
     needs_poa?: boolean;
 };
 
-type TAuthIDVStatus = TAuthStatus & {
+type TAuthIDVStatus = TAuthParams & {
     mismatch_status?: TIDVErrorStatus | null;
     is_already_attempted?: boolean;
 };
@@ -42,7 +37,7 @@ type TActionButtonProps = {
     should_show_redirect_btn?: boolean;
 };
 
-type TAuthUploadCompleteStatus = TAuthStatus & {
+type TAuthUploadCompleteStatus = TAuthParams & {
     is_manual_upload?: boolean;
 };
 
@@ -110,7 +105,7 @@ const createPendingButton = ({
 
 export const getPOIStatusMessages = (
     status: TPoiStatus,
-    auth_status?: TAuthStatus,
+    auth_status?: TAuthParams,
     should_show_redirect_btn?: boolean,
     is_from_external?: boolean
 ) => {

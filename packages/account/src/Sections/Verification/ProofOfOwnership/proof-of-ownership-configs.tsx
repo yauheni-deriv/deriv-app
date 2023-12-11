@@ -1,11 +1,11 @@
 import React from 'react';
-import { AUTH_STATUS_CODES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
+import { TAuthStatus } from '../../../Types/common.type';
 
-type TPooStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+export type TPooStatus = Exclude<TAuthStatus, 'locked' | 'expired' | 'suspected'>;
 
-export const getPOOStatusMessages = (status: Exclude<TPooStatus, 'locked' | 'expired' | 'suspected'>) => {
+export const getPOOStatusMessages = (status: TPooStatus) => {
     const resubmitButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (
         <VerificationStatusActionButton button_text={<Localize i18n_default_text='Try again' />} onClick={onClick} />
     );

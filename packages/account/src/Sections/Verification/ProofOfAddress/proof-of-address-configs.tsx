@@ -1,7 +1,23 @@
 import React from 'react';
-import { AUTH_STATUS_CODES, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
+import { isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
+import { TAuthStatus } from '../../../Types/common.type';
+
+export type TPoaStatus = Exclude<TAuthStatus, 'locked'>;
+
+type TAuthParams = {
+    needs_poi?: boolean;
+    is_submitted?: boolean;
+};
+
+type TActionButtonProps = {
+    onClick?: React.MouseEventHandler<HTMLElement>;
+    platform_name?: string;
+    auth_status?: TAuthParams;
+    should_show_redirect_btn?: boolean;
+    is_redirected_from_platform: boolean;
+};
 
 export const getFilesDescriptions = () => ({
     title: (
@@ -24,19 +40,6 @@ export const getFilesDescriptions = () => ({
         },
     ],
 });
-
-type TAuthStatus = {
-    needs_poi?: boolean;
-    is_submitted?: boolean;
-};
-
-type TActionButtonProps = {
-    onClick?: React.MouseEventHandler<HTMLElement>;
-    platform_name?: string;
-    auth_status?: TAuthStatus;
-    should_show_redirect_btn?: boolean;
-    is_redirected_from_platform: boolean;
-};
 
 const createPendingButton = ({
     auth_status,
@@ -107,8 +110,8 @@ const createVerifiedButton = ({
 };
 
 export const getPOAStatusMessages = (
-    status: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES],
-    auth_status?: TAuthStatus,
+    status: TPoaStatus,
+    auth_status?: TAuthParams,
     should_show_redirect_btn?: boolean
 ) => {
     const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();

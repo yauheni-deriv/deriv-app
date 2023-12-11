@@ -167,3 +167,5 @@ export type TFilesDescription = {
     descriptions: { id: string; value: JSX.Element }[];
     title: React.ReactNode;
 };
+
+export type TAuthStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
