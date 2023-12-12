@@ -6,6 +6,7 @@ import {
     getPlatformRedirect,
     IDV_ERROR_STATUS,
     platforms,
+    POIContext,
     service_code,
     submission_status_code,
     WS,
@@ -16,7 +17,6 @@ import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
 import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
-import { POIContext } from '../../../Helpers/poi-context';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { getIDVStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 
