@@ -6,18 +6,6 @@ import { VerificationStatusActionButton } from '../../../Components/verification
 import { TIDVErrorStatus } from '../../../Helpers/utils';
 import { TAuthStatus } from '../../../Types/common.type';
 
-export const submission_status_code = {
-    selecting: 'selecting',
-    submitting: 'submitting',
-    complete: 'complete',
-} as const;
-
-export const service_code = {
-    idv: 'idv',
-    onfido: 'onfido',
-    manual: 'manual',
-} as const;
-
 export type TPoiStatus = Exclude<TAuthStatus, 'locked'>;
 
 type TAuthParams = {

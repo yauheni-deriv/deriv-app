@@ -5,12 +5,13 @@ import {
     formatIDVError,
     formatIDVFormValues,
     isVerificationServiceSupported,
+    service_code,
+    submission_status_code,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
-import { service_code, submission_status_code } from './proof-of-identity-configs';
 import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { makeSettingsRequest } from '../../../Helpers/utils';

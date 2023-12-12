@@ -1,20 +1,24 @@
 import React from 'react';
-import { AUTH_STATUS_CODES, formatIDVError, getPlatformRedirect, IDV_ERROR_STATUS, platforms, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import CountrySelector from 'Components/poi/poi-country-selector';
-import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvFailed from 'Components/poi/idv-status/idv-failed';
-import Unsupported from 'Components/poi/status/unsupported';
-import OnfidoSdkViewContainer from './onfido-sdk-view-container';
+import { useHistory } from 'react-router';
 import {
-    getIDVStatusMessages,
-    getUploadCompleteStatusMessages,
+    AUTH_STATUS_CODES,
+    formatIDVError,
+    getPlatformRedirect,
+    IDV_ERROR_STATUS,
+    platforms,
     service_code,
     submission_status_code,
-} from './proof-of-identity-configs';
-import { POIContext } from '../../../Helpers/poi-context';
+    WS,
+} from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import CountrySelector from '../../../Components/poi/poi-country-selector';
+import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
+import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
-import { useHistory } from 'react-router';
+import { POIContext } from '../../../Helpers/poi-context';
+import OnfidoSdkViewContainer from './onfido-sdk-view-container';
+import { getIDVStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 
 const POISubmission = observer(
     ({

@@ -3,16 +3,16 @@ import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
 import { AUTH_STATUS_CODES, getPlatformRedirect, platforms, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-configs';
-import DemoMessage from 'Components/demo-message';
-import ErrorMessage from 'Components/error-component';
-import IdvContainer from './idv';
 import { Localize } from '@deriv/translations';
-import Onfido from './onfido.jsx';
-import POISubmission from './proof-of-identity-submission.jsx';
-import Unsupported from 'Components/poi/status/unsupported';
-import { populateVerificationStatus } from '../Helpers/verification';
+import DemoMessage from '../../../Components/demo-message';
+import ErrorMessage from '../../../Components/error-component';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { populateVerificationStatus } from '../Helpers/verification';
+import IdvContainer from './idv';
+import Onfido from './onfido.jsx';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-configs';
+import POISubmission from './proof-of-identity-submission.jsx';
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
@@ -62,6 +62,7 @@ const ProofOfIdentityContainer = observer(
                 refreshNotifications();
             });
         };
+
         const loadResidenceList = React.useCallback(() => {
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {

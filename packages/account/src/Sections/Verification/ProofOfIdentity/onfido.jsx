@@ -1,9 +1,9 @@
 import React from 'react';
 import { AUTH_STATUS_CODES, isMobile, formatOnfidoError, getPlatformRedirect, platforms } from '@deriv/shared';
-import RejectedReasons from 'Components/poi/status/rejected-reasons';
-import Unsupported from 'Components/poi/status/unsupported';
-import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
+import RejectedReasons from '../../../Components/poi/status/rejected-reasons';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 
 const Onfido = ({
     handleRequireSubmission,

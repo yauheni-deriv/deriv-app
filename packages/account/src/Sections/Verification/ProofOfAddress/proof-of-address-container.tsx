@@ -8,6 +8,10 @@ import { populateVerificationStatus } from '../Helpers/verification.js';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import { getPOAStatusMessages } from 'Sections/Verification/ProofOfAddress/proof-of-address-configs';
 
+type TProofOfAddressContainer = {
+    onSubmit: () => void;
+};
+
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'
     | 'allow_poi_resubmission'
@@ -21,7 +25,7 @@ type TAuthenticationStatus = Record<
     boolean
 > & { document_status: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
-const ProofOfAddressContainer = observer(() => {
+const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
@@ -40,7 +44,7 @@ const ProofOfAddressContainer = observer(() => {
     const { app_routing_history } = common;
     const { has_restricted_mt5_account, is_switching } = client;
     const { refreshNotifications } = notifications;
-    const { is_mobile } = ui;
+    const { is_mobile, is_verification_modal_visible } = ui;
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -86,11 +90,14 @@ const ProofOfAddressContainer = observer(() => {
         }
     };
 
-    const onSubmit = (needs_poi: boolean) => {
+    const onSubmitDocument = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
             ...{ has_submitted_poa: true, needs_poi },
         }));
+        if (is_verification_modal_visible) {
+            onSubmit();
+        }
     };
 
     const {
@@ -141,7 +148,7 @@ const ProofOfAddressContainer = observer(() => {
     }
 
     if (should_show_poa_form) {
-        return <ProofOfAddressForm is_resubmit={is_resubmission_required} onSubmit={onSubmit} />;
+        return <ProofOfAddressForm is_resubmit={is_resubmission_required} onSubmit={onSubmitDocument} />;
     }
 
     return (
