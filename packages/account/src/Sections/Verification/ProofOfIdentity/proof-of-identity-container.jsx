@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
-import { AUTH_STATUS_CODES, getPlatformRedirect, platforms, WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, getPlatformRedirect, platforms, service_code, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import DemoMessage from '../../../Components/demo-message';
@@ -11,7 +11,7 @@ import VerificationStatus from '../../../Components/verification-status/verifica
 import { populateVerificationStatus } from '../Helpers/verification';
 import IdvContainer from './idv';
 import Onfido from './onfido.jsx';
-import { getPOIStatusMessages, getUploadCompleteStatusMessages, service_code } from './proof-of-identity-configs';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 import POISubmission from './proof-of-identity-submission.jsx';
 
 const ProofOfIdentityContainer = observer(
