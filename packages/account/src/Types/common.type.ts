@@ -2,7 +2,7 @@
 import React from 'react';
 import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
-import { AUTH_STATUS_CODES, Platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -163,9 +163,11 @@ export type TServerError = {
     fields?: string[];
 };
 
+export type TAuthStatusCode = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+
 export type TFilesDescription = {
     descriptions: { id: string; value: JSX.Element }[];
     title: React.ReactNode;
 };
-
-export type TAuthStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];

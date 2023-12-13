@@ -21,10 +21,10 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { isServerError } from 'Helpers/utils';
 import { getPoincDocumentsList } from 'Sections/Verification/ProofOfIncome/proof-of-income-config';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
 type TProofOfIncomeForm = {
-    onSubmit: (status: TAuthStatus) => void;
+    onSubmit: (status: TAuthStatusCode) => void;
 };
 
 type TInitialValues = {

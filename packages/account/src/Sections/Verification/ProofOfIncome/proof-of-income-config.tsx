@@ -1,9 +1,9 @@
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
-export type TPoincStatus = Exclude<TAuthStatus, 'suspected' | 'expired'>;
+export type TPoincStatus = Exclude<TAuthStatusCode, 'suspected' | 'expired'>;
 
 export const getPoincDocumentsList = () =>
     [

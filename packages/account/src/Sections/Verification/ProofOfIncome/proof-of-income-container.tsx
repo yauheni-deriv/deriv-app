@@ -7,7 +7,7 @@ import ProofOfIncomeForm from './proof-of-income-form';
 import { populateVerificationStatus } from '../Helpers/verification';
 import VerificationStatus from '../../../Components/verification-status/verification-status';
 import { getPOOINCStatusMessages, TPoincStatus } from './proof-of-income-config';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
 type TProofOfIncomeContainer = {
     is_switching?: boolean;
@@ -58,7 +58,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    const handleSubmit = (status: TAuthStatus) => {
+    const handleSubmit = (status: TAuthStatusCode) => {
         setAuthenticationStatus({ ...authentication_status, ...{ income_status: status } });
     };
 

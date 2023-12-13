@@ -4,9 +4,9 @@ import { Localize } from '@deriv/translations';
 import { IDV_ERROR_STATUS, isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
 import { TIDVErrorStatus } from '../../../Helpers/utils';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
-export type TPoiStatus = Exclude<TAuthStatus, 'locked'>;
+export type TPoiStatus = Exclude<TAuthStatusCode, 'locked'>;
 
 type TAuthParams = {
     needs_poa?: boolean;

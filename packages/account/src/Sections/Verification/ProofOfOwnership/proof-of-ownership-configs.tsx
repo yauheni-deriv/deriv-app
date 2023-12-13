@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { VerificationStatusActionButton } from 'Components/verification-status-action-button';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
-export type TPooStatus = Exclude<TAuthStatus, 'locked' | 'expired' | 'suspected'>;
+export type TPooStatus = Exclude<TAuthStatusCode, 'locked' | 'expired' | 'suspected'>;
 
 export const getPOOStatusMessages = (status: TPooStatus) => {
     const resubmitButton = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLElement> }) => (

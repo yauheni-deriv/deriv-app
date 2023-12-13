@@ -2,9 +2,9 @@ import React from 'react';
 import { isNavigationFromDerivGO, isNavigationFromP2P, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { VerificationStatusActionButton } from '../../../Components/verification-status-action-button';
-import { TAuthStatus } from '../../../Types/common.type';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
-export type TPoaStatus = Exclude<TAuthStatus, 'locked'>;
+export type TPoaStatus = Exclude<TAuthStatusCode, 'locked'>;
 
 type TAuthParams = {
     needs_poi?: boolean;
