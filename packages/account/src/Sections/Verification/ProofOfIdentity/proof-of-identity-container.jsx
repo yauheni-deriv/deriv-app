@@ -17,7 +17,6 @@ import Unsupported from '../../../Components/poi/status/unsupported';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
 import Verified from '../../../Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
-import { MockComponent } from '@deriv/account-v2';
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
@@ -150,7 +149,6 @@ const ProofOfIdentityContainer = observer(
         ) {
             return (
                 <>
-                    <MockComponent />
                     <POISubmission
                         account_settings={account_settings}
                         allow_poi_resubmission={allow_poi_resubmission}
