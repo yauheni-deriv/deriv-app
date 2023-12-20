@@ -10,8 +10,8 @@ export default (env: BuildEnv) => {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     const paths: BuildPaths = {
-        entry: path.resolve(__dirname, './src', 'index.tsx'),
-        output: path.resolve(__dirname, './dist'),
+        entry: path.resolve(__dirname, 'src', 'index.tsx'),
+        output: path.resolve(__dirname, 'dist'),
         root: path.resolve(__dirname),
     };
 
