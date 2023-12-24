@@ -18,6 +18,7 @@ export const populateVerificationStatus = account_status => {
     const has_poi = !(identity && identity.status === 'none');
     const has_poinc = !(income && income.status === 'none');
     const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission;
+
     const needs_poa = Boolean(needs_verification.length) && needs_verification.includes('document');
     const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
     const needs_poinc = needs_verification.length && needs_verification.includes('income');
