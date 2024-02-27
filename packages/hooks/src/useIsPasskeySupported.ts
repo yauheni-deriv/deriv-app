@@ -7,7 +7,7 @@ const useIsPasskeySupported = () => {
     const [is_passkey_support_checking, setIsPasskeySupportChecking] = React.useState(true);
     const is_passkeys_enabled = useGrowthbookFeatureFlag({
         featureFlag: 'web_passkeys',
-        defaultValue: true,
+        defaultValue: false,
     });
 
     React.useEffect(() => {
@@ -27,7 +27,7 @@ const useIsPasskeySupported = () => {
         checkPasskeySupport();
     }, []);
 
-    return { is_passkey_supported, is_passkey_support_checking, is_passkeys_enabled };
+    return { is_passkey_supported, is_passkey_support_checking };
 };
 
 export default useIsPasskeySupported;
