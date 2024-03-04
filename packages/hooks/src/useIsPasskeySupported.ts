@@ -14,7 +14,6 @@ const useIsPasskeySupported = () => {
         const checkPasskeySupport = async () => {
             try {
                 const result = await platformAuthenticatorIsAvailable();
-                //TODO: add feature flag with growthbook instead of is_passkeys_enabled here
                 setIsPasskeySupported(result && (is_passkeys_enabled as unknown as boolean));
             } catch (error) {
                 /* eslint-disable no-console */
