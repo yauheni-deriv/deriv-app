@@ -14,7 +14,7 @@ const useIsPasskeySupported = () => {
         const checkPasskeySupport = async () => {
             try {
                 const result = await platformAuthenticatorIsAvailable();
-                setIsPasskeySupported(result && (is_passkeys_enabled as unknown as boolean));
+                setIsPasskeySupported(result && !!is_passkeys_enabled);
             } catch (error) {
                 /* eslint-disable no-console */
                 console.error('Error checking passkey support:', error);
