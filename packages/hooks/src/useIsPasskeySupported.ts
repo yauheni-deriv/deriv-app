@@ -7,7 +7,7 @@ const useIsPasskeySupported = () => {
     const [is_passkey_support_checking, setIsPasskeySupportChecking] = React.useState(true);
     const is_passkeys_enabled = useGrowthbookFeatureFlag({
         featureFlag: 'web_passkeys',
-        defaultValue: false,
+        defaultValue: 'unintialised',
     });
 
     React.useEffect(() => {
@@ -15,7 +15,7 @@ const useIsPasskeySupported = () => {
             try {
                 const result = await platformAuthenticatorIsAvailable();
                 //TODO: add feature flag with growthbook instead of is_passkeys_enabled here
-                setIsPasskeySupported(result && is_passkeys_enabled);
+                setIsPasskeySupported(result && (is_passkeys_enabled as unknown as boolean));
             } catch (error) {
                 /* eslint-disable no-console */
                 console.error('Error checking passkey support:', error);
@@ -23,9 +23,8 @@ const useIsPasskeySupported = () => {
                 setIsPasskeySupportChecking(false);
             }
         };
-
-        checkPasskeySupport();
-    }, []);
+        if (is_passkeys_enabled !== 'unintialised') checkPasskeySupport();
+    }, [is_passkeys_enabled]);
 
     return { is_passkey_supported, is_passkey_support_checking };
 };
