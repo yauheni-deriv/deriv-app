@@ -118,7 +118,7 @@ export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
     const error_message_header = (
         <Text size='xs' weight='bold'>
-            <Localize i18n_default_text='Passkey login unavailable' />
+            <Localize i18n_default_text='Passkey setup failed' />
         </Text>
     );
 
