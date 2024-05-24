@@ -136,6 +136,7 @@
 
         & > .dc-icon:first-child {
             margin-top: 0.4rem;
+            min-width: fit-content;
         }
 
         & > .dc-icon:last-child {
@@ -146,9 +147,55 @@
             border-bottom: none;
         }
 
-        &__passkey-type-icon {
-            margin-top: 0.4rem;
+        &__passkey {
+            &-type-icon {
+                margin-top: 0.4rem;
+            }
+
+            &-name {
+                word-break: break-word;
+            }
         }
+
+        .dc-dropdown-container {
+            min-width: unset;
+            margin-left: auto;
+
+            .dc-dropdown__list {
+                left: -120px;
+
+                .dc-list {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+
+                    &--has-suffix-icon {
+                        width: 16.8rem;
+                    }
+
+                    &__item {
+                        padding-top: 8px;
+                        height: 4.8rem;
+
+                        &-text {
+                            padding-left: 1.6rem;
+                        }
+                    }
+                }
+            }
+
+            .dc-dropdown__display {
+                border: unset;
+            }
+        }
+    }
+
+    &-snackbar__container {
+        position: absolute;
+        bottom: 8.2rem;
+        margin-inline: auto;
+        left: 0;
+        right: 0;
+        max-width: 34.4rem;
     }
 }
 
