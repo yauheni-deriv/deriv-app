@@ -4,6 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { PasskeyCard } from '../passkey-card';
 import { mock_passkeys_list } from '../../__tests__/passkeys.spec';
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getOSNameWithUAParser: () => 'test OS',
+}));
+
 describe('PasskeyCard', () => {
     const mockOnPasskeyMenuClick = jest.fn();
     const mock_card = mock_passkeys_list[0];
