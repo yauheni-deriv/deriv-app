@@ -76,6 +76,7 @@ const Passkeys = observer(() => {
         if (is_passkey_renamed) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
             setIsSnackbarOpen(true);
+            passkeysMenuActionEventTrack('passkey_rename_success');
             clearTimeOut(snackbar_timeout);
             snackbar_timeout.current = setTimeout(() => {
                 setIsSnackbarOpen(false);
@@ -151,7 +152,6 @@ const Passkeys = observer(() => {
         }
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
             renamePasskey(current_managed_passkey.id, passkey_data?.name ?? current_managed_passkey.name);
-            passkeysMenuActionEventTrack('passkey_rename_success');
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             // TODO: add the logic for revoking and tracking events
