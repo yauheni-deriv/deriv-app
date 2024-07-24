@@ -65,12 +65,12 @@ const Passkeys = observer(() => {
     const onSuccessPasskeyRegister = () => {
         passkeysMenuActionEventTrack('create_passkey_finished');
         setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+        setPasskeysStatusToCookie('available');
     };
 
     const onSuccessPasskeyRemove = () => {
         setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVED);
         passkeysMenuActionEventTrack('passkey_remove_success');
-        setPasskeysStatusToCookie('available');
     };
 
     const onSuccessPasskeyRename = () => {
