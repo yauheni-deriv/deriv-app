@@ -6,6 +6,8 @@ type TError = { code?: string; name?: string; message: string };
 const useRenamePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const [passkey_renaming_error, setPasskeyRenamingError] = useState<TError | null>(null);
 
+    const clearError = () => setPasskeyRenamingError(null);
+
     const renamePasskey = async (passkey_id: number, new_passkey_name = '') => {
         try {
             const passkeys_rename_response = await WS.send({
@@ -26,6 +28,7 @@ const useRenamePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     return {
         renamePasskey,
         passkey_renaming_error,
+        clearError,
     };
 };
 

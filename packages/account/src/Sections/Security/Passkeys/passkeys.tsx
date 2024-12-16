@@ -89,15 +89,44 @@ const Passkeys = observer(() => {
         }, 5000);
     };
 
-    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, refetchPasskeysList } = useGetPasskeysList();
-    const { passkey_removing_error, removePasskey } = useRemovePasskey({ onSuccess: onSuccessPasskeyRemove });
-    const { passkey_renaming_error, renamePasskey } = useRenamePasskey({ onSuccess: onSuccessPasskeyRename });
-    const { createPasskey, startPasskeyRegistration, passkey_registration_error } = useRegisterPasskey({
+    const {
+        passkeys_list,
+        is_passkeys_list_loading,
+        passkeys_list_error,
+        refetchPasskeysList,
+        clearError: clearPasskeyListError,
+    } = useGetPasskeysList();
+    const {
+        passkey_removing_error,
+        removePasskey,
+        clearError: clearPasskeyRemoveError,
+    } = useRemovePasskey({ onSuccess: onSuccessPasskeyRemove });
+    const {
+        passkey_renaming_error,
+        renamePasskey,
+        clearError: clearPasskeyRenameError,
+    } = useRenamePasskey({ onSuccess: onSuccessPasskeyRename });
+    const {
+        createPasskey,
+        startPasskeyRegistration,
+        passkey_registration_error,
+        clearError: clearPasskeyRegisterError,
+    } = useRegisterPasskey({
         onSuccess: onSuccessPasskeyRegister,
     });
 
     const should_show_passkeys = is_passkey_supported && isMobile;
     const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error || passkey_removing_error;
+
+    const error_title = passkeys_list_error
+        ? 'passkey_list_error'
+        : passkey_registration_error
+          ? 'passkey_register_error'
+          : passkey_renaming_error
+            ? 'passkey_rename_error'
+            : passkey_removing_error
+              ? 'passkey_remove_error'
+              : '';
 
     useEffect(() => {
         const should_not_render_main_page =
@@ -119,13 +148,13 @@ const Passkeys = observer(() => {
 
     useEffect(() => {
         if (error) {
-            passkeysMenuActionEventTrack('error', { error_message: (error as TServerError)?.message });
+            // passkeysMenuActionEventTrack('error', { error_message: (error as TServerError)?.message });
 
-            const should_hide_error =
-                excluded_error_names.some(name => name === (error as TServerError).name) ||
-                excluded_error_codes.some(code => code === (error as TServerError).code);
+            // const should_hide_error =
+            //     excluded_error_names.some(name => name === (error as TServerError).name) ||
+            //     excluded_error_codes.some(code => code === (error as TServerError).code);
 
-            if (should_hide_error) return;
+            // if (should_hide_error) return;
 
             if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
                 setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
@@ -147,7 +176,21 @@ const Passkeys = observer(() => {
     }
 
     const onCloseErrorModal = () => {
-        history.push(routes.traders_hub);
+        // history.push(routes.traders_hub);
+        [
+            { error: passkey_registration_error, clearError: clearPasskeyRegisterError },
+            { error: passkey_renaming_error, clearError: clearPasskeyRenameError },
+            { error: passkey_removing_error, clearError: clearPasskeyRemoveError },
+            { error: passkeys_list_error, clearError: clearPasskeyListError },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+        ].forEach(({ error, clearError }) => {
+            if (error) {
+                clearError();
+            }
+        });
+
+        setIsErrorModalOpen(false);
     };
 
     const onCloseReminderModal = () => {
@@ -240,7 +283,12 @@ const Passkeys = observer(() => {
                 onButtonClick={onContinueReminderModal}
                 toggleModal={onCloseReminderModal}
             />
-            <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
+            <PasskeyErrorModal
+                error={error}
+                is_modal_open={is_error_modal_open}
+                onButtonClick={onCloseErrorModal}
+                error_title={error_title}
+            />
             {/* TODO: Remove confirmation modal, when verification page is implemented*/}
             <PasskeyRemoveConfirmationModal
                 is_modal_open={passkey_status === PASSKEY_STATUS_CODES.REMOVING && !is_error_modal_open}

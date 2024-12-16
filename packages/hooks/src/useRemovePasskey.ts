@@ -5,6 +5,7 @@ type TError = { code?: string; name?: string; message: string };
 
 const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const [passkey_removing_error, setPasskeyRemovingError] = useState<TError | null>(null);
+    const clearError = () => setPasskeyRemovingError(null);
 
     const removePasskey = async (id: number) => {
         try {
@@ -26,6 +27,7 @@ const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     return {
         removePasskey,
         passkey_removing_error,
+        clearError,
     };
 };
 

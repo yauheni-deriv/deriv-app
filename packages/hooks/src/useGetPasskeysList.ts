@@ -10,6 +10,8 @@ const useGetPasskeysList = () => {
     const [is_passkeys_list_loading, setIsPasskeysListLoading] = useState(false);
     const [passkeys_list_error, setPasskeysListError] = useState<TError | null>(null);
 
+    const clearError = () => setPasskeysListError(null);
+
     const refetchPasskeysList = async () => {
         try {
             setIsPasskeysListLoading(true);
@@ -26,6 +28,7 @@ const useGetPasskeysList = () => {
         passkeys_list_error,
         is_passkeys_list_loading,
         refetchPasskeysList,
+        clearError,
     };
 };
 

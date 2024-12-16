@@ -9,6 +9,8 @@ const useRegisterPasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const [passkey_registration_error, setPasskeyRegistrationError] = useState<TError | null>(null);
     const [public_key, setPublicKey] = useState<null | PublicKeyCredentialCreationOptionsJSON>(null);
 
+    const clearError = () => setPasskeyRegistrationError(null);
+
     const startPasskeyRegistration = async () => {
         try {
             const passkeys_register_options_response = await WS.send({ passkeys_register_options: 1 });
@@ -21,6 +23,8 @@ const useRegisterPasskey = ({ onSuccess }: { onSuccess: () => void }) => {
 
     const createPasskey = async () => {
         try {
+            // eslint-disable-next-line no-console
+            console.log('public_key: ', public_key);
             if (public_key) {
                 const authenticator_response = await startRegistration(public_key);
                 const passkeys_register_response = await WS.send({
@@ -44,6 +48,7 @@ const useRegisterPasskey = ({ onSuccess }: { onSuccess: () => void }) => {
         createPasskey,
         passkey_registration_error,
         startPasskeyRegistration,
+        clearError,
     };
 };
 
